@@ -1,5 +1,20 @@
 import { HttpResponse, HttpStatus } from './http'
 
+export enum ErrorMessage {
+  // register
+  MISSING_FIELDS = 'Missing fields',
+  USERNAME_ALREADY_USED = 'Username already used',
+  EMAIL_ALREADY_USED = 'Email already used',
+  INVALID_EMAIL = 'Invalid email',
+  PASSWORD_NOT_STRONG_ENOUGH = 'Password is not strong enough',
+  PASSWORDS_DO_NOT_MATCH = 'Passwords do not match',
+
+  //login
+  INVALID_TOKEN = 'Invalid token',
+  INVALID_USERNAME = 'Invalid username',
+  INVALID_PASSWORD = 'Invalid password'
+}
+
 export class HttpError extends Error {
   status: number
 
