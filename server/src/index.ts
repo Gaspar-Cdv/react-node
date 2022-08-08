@@ -16,7 +16,7 @@ app.use('/api', routes)
 app.use(errorHandler)
 
 app.listen(PORT, () => {
-  console.info(`Server running at http://${HOSTNAME}:${PORT}/`)
+	console.info(`Server running at http://${HOSTNAME}:${PORT}/`)
 })
 
 export default app

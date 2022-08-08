@@ -1,0 +1,127 @@
+{
+	"env": {
+		"node": true,
+		"browser": true,
+		"es2021": true
+	},
+	"extends": [
+		"eslint:recommended",
+		"plugin:@typescript-eslint/recommended"
+	],
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"ecmaVersion": "latest",
+		"sourceType": "module",
+		"impliedStrict ": true
+	},
+	"plugins": [
+		"@typescript-eslint"
+	],
+	"rules": {
+		"indent": [
+			"error",
+			"tab"
+		],
+		"linebreak-style": [
+			"error",
+			"windows"
+		],
+		"quotes": [
+			"error",
+			"single"
+		],
+		"semi": [
+			"error",
+			"never"
+		],
+		"eqeqeq": [
+			"error",
+			"smart"
+		],
+		"no-else-return": "error",
+		"no-mixed-operators": "error",
+		"no-return-await": "warn",
+		"no-unneeded-ternary": "error",
+		"no-useless-catch": "error",
+		"no-useless-return": "error",
+		"no-var": "error",
+		"prefer-const": "error",
+		"prefer-destructuring": "error",
+		"arrow-spacing": "error",
+		"comma-spacing": [
+			"error",
+			{
+				"before": false,
+				"after": true
+			}
+		],
+		"eol-last": "error",
+		"key-spacing": "error",
+		"keyword-spacing": "error",
+		"lines-between-class-members": "error",
+		"max-len": [
+			"warn",
+			{
+				"code": 120,
+				"ignoreUrls": true,
+				"ignoreComments": true,
+				"ignoreStrings": true,
+				"ignoreTemplateLiterals": true,
+				"ignoreRegExpLiterals": true
+			}
+		],
+		"no-trailing-spaces": "error",
+		"no-whitespace-before-property": "error",
+		"object-curly-spacing": [
+			"error",
+			"always"
+		],
+		"max-statements-per-line": "error",
+		"no-extra-parens": "error",
+		"no-mixed-spaces-and-tabs": "error",
+		"no-multiple-empty-lines": "error",
+		"no-multi-spaces": "error",
+		"padding-line-between-statements": [
+			"error",
+			{
+				"blankLine": "always",
+				"prev": "*",
+				"next": "return"
+			},
+			{
+				"blankLine": "always",
+				"prev": "*",
+				"next": "block-like"
+			},
+			{
+				"blankLine": "always",
+				"prev": "*",
+				"next": "class"
+			}
+		],
+		"rest-spread-spacing": [
+			"error",
+			"never"
+		],
+		"semi-spacing": [
+			"error",
+			{
+				"before": false,
+				"after": true
+			}
+		],
+		"space-before-blocks": "error",
+		"space-before-function-paren": "error",
+		"space-in-parens": [
+			"error",
+			"never"
+		],
+		"space-unary-ops": "error",
+		"switch-colon-spacing": "error",
+		"template-curly-spacing": [
+			"error",
+			"never"
+		],
+		"no-const-assign": "error"
+	}
+}

@@ -13,126 +13,129 @@ const assertionService = AssertionService.getService()
 
 export default class AuthService {
 
-  static service: AuthService
-  
-  /* PUBLIC */
-  
-  register = async (req: Req<RegisterRequest>, res: Response) => {
-    const { username, email, password, passwordConfirmation } = req.body
+	static service: AuthService
 
-    assertionService.assertTrue(username != null && email != null && password != null && passwordConfirmation != null, ErrorMessage.MISSING_FIELDS)
-    assertionService.assertNull(await this.findByUsername(username), ErrorMessage.USERNAME_ALREADY_USED)
-    assertionService.assertNull(await this.findByEmail(email), ErrorMessage.EMAIL_ALREADY_USED)
-    assertionService.assertTrue(this.isEmailValid(email), ErrorMessage.INVALID_EMAIL)
-    assertionService.assertTrue(this.isPasswordStrongEnough(password), ErrorMessage.PASSWORD_NOT_STRONG_ENOUGH)
-    assertionService.assertEqual(password, passwordConfirmation, ErrorMessage.PASSWORDS_DO_NOT_MATCH)
+	/* PUBLIC */
 
-    const hashedPassword = await this.hashPassword(password)
+	register = async (req: Req<RegisterRequest>, res: Response) => {
+		const { username, email, password, passwordConfirmation } = req.body
 
-    await prisma.user.create({
-      data: {
-        username,
-        email,
-        password: hashedPassword
-      }
-    })
+		assertionService.assertTrue(username != null && email != null && password != null && passwordConfirmation != null, ErrorMessage.MISSING_FIELDS)
+		assertionService.assertNull(await this.findByUsername(username), ErrorMessage.USERNAME_ALREADY_USED)
+		assertionService.assertNull(await this.findByEmail(email), ErrorMessage.EMAIL_ALREADY_USED)
+		assertionService.assertTrue(this.isEmailValid(email), ErrorMessage.INVALID_EMAIL)
+		assertionService.assertTrue(this.isPasswordStrongEnough(password), ErrorMessage.PASSWORD_NOT_STRONG_ENOUGH)
+		assertionService.assertEqual(password, passwordConfirmation, ErrorMessage.PASSWORDS_DO_NOT_MATCH)
 
-    res.sendStatus(201)
-  }
-  
-  login = async (req: Req<LoginRequest>, res: Response) => {
-    const { username, password } = req.body
+		const hashedPassword = await this.hashPassword(password)
 
-    const user = await this.findByUsername(username)
-    assertionService.assertNotNull(user, ErrorMessage.INVALID_USERNAME)
-    assertionService.assertTrue(await this.isPasswordValid(password, user.password), ErrorMessage.INVALID_PASSWORD)
+		await prisma.user.create({
+			data: {
+				username,
+				email,
+				password: hashedPassword
+			}
+		})
 
-    const token = this.generateToken(user)
+		res.sendStatus(201)
+	}
 
-    res.header('Authorization', 'Bearer ' + token)
-    res.sendStatus(200)
-  }
-  
-  /* PRIVATE */
-  
-  findById = async (userId: number): Promise<User | null> => {
-    return await prisma.user.findFirst({ where: { userId } })
-  }
-  
-  findByUsername = async (username: string): Promise<User | null> => {
-    return await prisma.user.findFirst({ where: { username } })
-  }
-  
-  findByEmail = async (email: string): Promise<User | null> => {
-    return await prisma.user.findFirst({ where: { email } })
-  }
-  
-  isEmailValid = (email: string): boolean => {
-    return /^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$/i.test(email)
-  }
-  
-  isPasswordStrongEnough = (password: string, hardcheck = false): boolean => {
-    // TODO move into stringUtils, and handle diacritics in regex
-    const MINIMUM_LENGTH = hardcheck ? 12 : 8
-    const MINIMUM_TYPES = hardcheck ? 4 : 3
+	login = async (req: Req<LoginRequest>, res: Response) => {
+		const { username, password } = req.body
 
-    const isLongEnough = password.length >= MINIMUM_LENGTH
-    const hasEnoughTypes = [
-      /[a-z]/.test(password),
-      /[A-Z]/.test(password),
-      /[0-9]/.test(password),
-      /[^a-zA-Z0-9]/.test(password),
-    ].filter(Boolean).length >= MINIMUM_TYPES
+		const user = await this.findByUsername(username)
+		assertionService.assertNotNull(user, ErrorMessage.INVALID_USERNAME)
+		assertionService.assertTrue(await this.isPasswordValid(password, user.password), ErrorMessage.INVALID_PASSWORD)
 
-    return isLongEnough && hasEnoughTypes
-  }
-  
-  hashPassword = (password: string): Promise<string> => {
-    return bcrypt.hash(password, 10)
-  }
-  
-  isPasswordValid = (password: string, hashedPassword: string): Promise<boolean> => {
-    return bcrypt.compare(password, hashedPassword)
-  }
-  
-  generateToken = (user: User): string => {
-    const payload: TokenPayload = {
-      userId: user.userId,
-      username: user.username,
-      email: user.email
-    }
+		const token = this.generateToken(user)
 
-    const options: jwt.SignOptions = {
-      expiresIn: JWT_EXPIRATION_TIME
-    }
+		res.header('Authorization', 'Bearer ' + token)
+		res.sendStatus(200)
+	}
 
-    return jwt.sign(payload, JWT_SECRET, options)
-  }
-  
-  getTokenFromHeader = (req: Req<any>): string | undefined => {
-    const token = req.header('x-access-token') || req.header('authorization')
-    return token?.replace('Bearer ', '')
-  }
-  
-  extractPayloadFromToken = (token: string): TokenPayload | undefined => {
-    return jwt.decode(token) as TokenPayload
-  }
-  
-  isTokenValid = (token: string): boolean => {
-    try {
-      jwt.verify(token, JWT_SECRET)
-      return true
-    } catch (e) {
-      return false
-    }
-  }
-  
-  /* STATIC */
-  
-  static getService = () => {
-    if (AuthService.service == null) {
-      AuthService.service = new AuthService()
-    }
-    return AuthService.service
-  }
+	/* PRIVATE */
+
+	findById = async (userId: number): Promise<User | null> => {
+		return prisma.user.findFirst({ where: { userId } })
+	}
+
+	findByUsername = async (username: string): Promise<User | null> => {
+		return prisma.user.findFirst({ where: { username } })
+	}
+
+	findByEmail = async (email: string): Promise<User | null> => {
+		return prisma.user.findFirst({ where: { email } })
+	}
+
+	isEmailValid = (email: string): boolean => {
+		return /^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$/i.test(email)
+	}
+
+	isPasswordStrongEnough = (password: string, hardcheck = false): boolean => {
+		// TODO move into stringUtils, and handle diacritics in regex
+		const MINIMUM_LENGTH = hardcheck ? 12 : 8
+		const MINIMUM_TYPES = hardcheck ? 4 : 3
+
+		const isLongEnough = password.length >= MINIMUM_LENGTH
+		const hasEnoughTypes = [
+			/[a-z]/.test(password),
+			/[A-Z]/.test(password),
+			/[0-9]/.test(password),
+			/[^a-zA-Z0-9]/.test(password),
+		].filter(Boolean).length >= MINIMUM_TYPES
+
+		return isLongEnough && hasEnoughTypes
+	}
+
+	hashPassword = (password: string): Promise<string> => {
+		return bcrypt.hash(password, 10)
+	}
+
+	isPasswordValid = (password: string, hashedPassword: string): Promise<boolean> => {
+		return bcrypt.compare(password, hashedPassword)
+	}
+
+	generateToken = (user: User): string => {
+		const payload: TokenPayload = {
+			userId: user.userId,
+			username: user.username,
+			email: user.email
+		}
+
+		const options: jwt.SignOptions = {
+			expiresIn: JWT_EXPIRATION_TIME
+		}
+
+		return jwt.sign(payload, JWT_SECRET, options)
+	}
+
+	getTokenFromHeader = (req: Req<any>): string | undefined => { //dsdsd
+		const token = req.header('x-access-token') || req.header('authorization')
+
+		return token?.replace('Bearer ', '')
+	}
+
+	extractPayloadFromToken = (token: string): TokenPayload | undefined => {
+		return jwt.decode(token) as TokenPayload
+	}
+
+	isTokenValid = (token: string): boolean => {
+		try {
+			jwt.verify(token, JWT_SECRET)
+
+			return true
+		} catch (e) {
+			return false
+		}
+	}
+
+	/* STATIC */
+
+	static getService = () => {
+		if (AuthService.service == null) {
+			AuthService.service = new AuthService()
+		}
+
+		return AuthService.service
+	}
 }

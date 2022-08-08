@@ -9,11 +9,11 @@ const JWT_SECRET = process.env.JWT_SECRET || 'secret'
 const JWT_EXPIRATION_TIME = parseInt(process.env.JWT_EXPIRATION || '3600')
 
 export {
-  ENV,
+	ENV,
 
-  HOSTNAME,
-  PORT,
+	HOSTNAME,
+	PORT,
 
-  JWT_SECRET,
-  JWT_EXPIRATION_TIME
+	JWT_SECRET,
+	JWT_EXPIRATION_TIME
 }
