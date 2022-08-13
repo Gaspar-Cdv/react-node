@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-jss": "^10.9.2"
   },
   "devDependencies": {
     "@types/node": "^16.11.47",
