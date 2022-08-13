@@ -13,13 +13,14 @@
     "experimentalDecorators": true,
     "outDir": "./build",
     "sourceMap": true,
+		"declaration": true,
 		"declarationMap": true,
+		"skipLibCheck": true,
 
 		"noImplicitAny": true,
 		"noImplicitOverride": true,
 		"noImplicitReturns": true,
 		"noPropertyAccessFromIndexSignature": true,
-		"strictNullChecks": true,
-		"strictPropertyInitialization": true
+		"strictNullChecks": true
   }
 }
