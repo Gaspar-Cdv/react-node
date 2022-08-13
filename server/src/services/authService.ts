@@ -21,7 +21,8 @@ export default class AuthService {
 	register = async (req: Req<RegisterRequest>, res: Response) => {
 		const { username, email, password, passwordConfirmation } = req.body
 
-		assertionService.assertTrue(username != null && email != null && password != null && passwordConfirmation != null, ErrorMessage.MISSING_FIELDS)
+		const areAllFieldsFilled = username != null && email != null && password != null && passwordConfirmation != null
+		assertionService.assertTrue(areAllFieldsFilled, ErrorMessage.MISSING_FIELDS)
 		assertionService.assertNull(await this.findByUsername(username), ErrorMessage.USERNAME_ALREADY_USED)
 		assertionService.assertNull(await this.findByEmail(email), ErrorMessage.EMAIL_ALREADY_USED)
 		assertionService.assertTrue(isEmailValid(email), ErrorMessage.INVALID_EMAIL)
