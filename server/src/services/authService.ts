@@ -46,9 +46,9 @@ export default class AuthService {
 
 		const user = await this.findByUsername(username)
 		assertionService.assertNotNull(user, ErrorMessage.INVALID_USERNAME)
-		assertionService.assertTrue(await this.isPasswordValid(password, user.password), ErrorMessage.INVALID_PASSWORD)
+		assertionService.assertTrue(await this.isPasswordValid(password, user!.password), ErrorMessage.INVALID_PASSWORD)
 
-		const token = this.generateToken(user)
+		const token = this.generateToken(user!)
 
 		res.header('Authorization', 'Bearer ' + token)
 		res.sendStatus(200)
@@ -90,7 +90,7 @@ export default class AuthService {
 		return jwt.sign(payload, JWT_SECRET, options)
 	}
 
-	getTokenFromHeader = (req: Req<any>): string | undefined => { //dsdsd
+	getTokenFromHeader = (req: Req): string | undefined => {
 		const token = req.header('x-access-token') || req.header('authorization')
 
 		return token?.replace('Bearer ', '')
@@ -100,7 +100,7 @@ export default class AuthService {
 		return jwt.decode(token) as TokenPayload
 	}
 
-	isTokenValid = (token: string): boolean => {
+	isTokenValid = (token = ''): boolean => {
 		try {
 			jwt.verify(token, JWT_SECRET)
 
