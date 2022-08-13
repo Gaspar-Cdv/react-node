@@ -3,26 +3,27 @@ import { UnprocessableEntityError } from '../types/errors'
 export default class AssertionService {
 	static service: AssertionService
 
-	assertTrue (condition: boolean, message: string) {
+	assertTrue (condition: boolean, message: string): condition is true {
 		if (!condition) {
 			throw new UnprocessableEntityError(message)
 		}
+		return true
 	}
 
-	assertFalse (condition: boolean, message: string) {
-		this.assertTrue(!condition, message)
+	assertFalse (condition: boolean, message: string): condition is false {
+		return this.assertTrue(!condition, message)
 	}
 
-	assertNull (value: any, message: string) {
-		this.assertTrue(value == null, message)
+	assertNull<T> (value: T | null, message: string): value is null {
+		return this.assertTrue(value == null, message)
 	}
 
-	assertNotNull (value: any, message: string) {
-		this.assertTrue(value != null, message)
+	assertNotNull<T> (value: T | null, message: string): value is T {
+		return this.assertTrue(value != null, message)
 	}
 
 	assertEqual (value: any, expected: any, message: string) {
-		this.assertTrue(value === expected, message)
+		return this.assertTrue(value === expected, message)
 	}
 
 	static getService () {
