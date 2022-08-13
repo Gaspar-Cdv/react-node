@@ -1,6 +1,6 @@
 import { User } from '@prisma/client'
 import bcrypt from 'bcrypt'
-import { Request, Response } from 'express'
+import { Response } from 'express'
 import jwt from 'jsonwebtoken'
 import { JWT_EXPIRATION_TIME, JWT_SECRET } from '../config/environment'
 import { prisma } from '../prisma'

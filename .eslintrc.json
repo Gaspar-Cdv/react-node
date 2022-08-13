@@ -67,12 +67,6 @@
 			"always"
 		],
 		"max-statements-per-line": "error",
-		"no-extra-parens": [
-			"error",
-			{
-				"conditionalAssign": false
-			}
-		],
 		"no-mixed-spaces-and-tabs": "error",
 		"no-multiple-empty-lines": "error",
 		"no-multi-spaces": "error",

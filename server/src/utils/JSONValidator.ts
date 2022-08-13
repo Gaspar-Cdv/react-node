@@ -44,7 +44,7 @@ export class JSONValidator {
 			const expectedType = validator[key]
 			const foundType = getType(object?.[key])
 			const newPath = path === '' ? key : [path, key].join('.')
-	
+
 			if (JSONValidator.isValidator(expectedType)) {
 				missingProperties.push(...this.findMissingPropertiesInternal(object?.[key], expectedType, newPath))
 			}
@@ -60,7 +60,7 @@ export class JSONValidator {
 	private static isAllowedType = (object: ValidatorTemplate | AllowedType): object is AllowedType => {
 		return ALLOWED_TYPES.some(x => x === getType(object))
 	}
-	
+
 	private static isValidator = (object: ValidatorTemplate | AllowedType): object is ValidatorTemplate => {
 		return getType(object) === 'object'
 	}

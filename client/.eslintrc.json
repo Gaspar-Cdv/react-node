@@ -24,6 +24,8 @@
     }
   },
 	"rules": {
+		"@typescript-eslint/no-non-null-assertion": "off",
+
 		"react/boolean-prop-naming": "warn",
 		"react/hook-use-state": "error",
 		"react/no-array-index-key": "warn",
