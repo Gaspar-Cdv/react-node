@@ -5,6 +5,7 @@
       "start": "nodemon src/index.ts",
       "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register",
       "test-all": "npm test 'tests/**/*.ts'",
+			"test-unit": "npm test 'tests/unit/**/*.ts'",
       "migrate": "npx prisma migrate dev --name",
       "format": "npx prisma format",
       "eslint": "npx eslint .",
