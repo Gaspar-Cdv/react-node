@@ -1,5 +1,6 @@
 import { User } from '@prisma/client'
 import chai from 'chai'
+import { isEmailValid, isPasswordStrongEnough } from 'server/src/utils/stringUtils'
 import { JWT_EXPIRATION_TIME } from '../../src/config/environment'
 import AuthService from '../../src/services/authService'
 
@@ -48,8 +49,8 @@ describe('authService', () => {
 			'test@test.123'
 		]
 
-		expect(correctEmails.every(email => authService.isEmailValid(email))).to.be.true
-		expect(incorrectEmails.every(email => !authService.isEmailValid(email))).to.be.true
+		expect(correctEmails.every(email => isEmailValid(email))).to.be.true
+		expect(incorrectEmails.every(email => !isEmailValid(email))).to.be.true
 	})
 
 	it('should verify if password is strong enough', () => {
@@ -79,13 +80,13 @@ describe('authService', () => {
 			'abAB12!'
 		]
 
-		expect(softCorrectPasswords.every(password => authService.isPasswordStrongEnough(password))).to.be.true
-		expect(hardCorrectPasswords.every(password => authService.isPasswordStrongEnough(password))).to.be.true
-		expect(incorrectPasswords.every(password => !authService.isPasswordStrongEnough(password))).to.be.true
+		expect(softCorrectPasswords.every(password => isPasswordStrongEnough(password))).to.be.true
+		expect(hardCorrectPasswords.every(password => isPasswordStrongEnough(password))).to.be.true
+		expect(incorrectPasswords.every(password => !isPasswordStrongEnough(password))).to.be.true
 
-		expect(hardCorrectPasswords.every(password => authService.isPasswordStrongEnough(password, true))).to.be.true
-		expect(softCorrectPasswords.every(password => !authService.isPasswordStrongEnough(password, true))).to.be.true
-		expect(incorrectPasswords.every(password => !authService.isPasswordStrongEnough(password, true))).to.be.true
+		expect(hardCorrectPasswords.every(password => isPasswordStrongEnough(password, true))).to.be.true
+		expect(softCorrectPasswords.every(password => !isPasswordStrongEnough(password, true))).to.be.true
+		expect(incorrectPasswords.every(password => !isPasswordStrongEnough(password, true))).to.be.true
 	})
 
 	it('should generate, decode and verify token', () => {

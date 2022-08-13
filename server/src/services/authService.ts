@@ -7,6 +7,7 @@ import { prisma } from '../prisma'
 import { LoginRequest, RegisterRequest, TokenPayload } from '../types/auth'
 import { ErrorMessage } from '../types/errors'
 import { Req } from '../types/requestResponse'
+import { isEmailValid, isPasswordStrongEnough } from '../utils/stringUtils'
 import AssertionService from './assertionService'
 
 const assertionService = AssertionService.getService()
@@ -23,8 +24,8 @@ export default class AuthService {
 		assertionService.assertTrue(username != null && email != null && password != null && passwordConfirmation != null, ErrorMessage.MISSING_FIELDS)
 		assertionService.assertNull(await this.findByUsername(username), ErrorMessage.USERNAME_ALREADY_USED)
 		assertionService.assertNull(await this.findByEmail(email), ErrorMessage.EMAIL_ALREADY_USED)
-		assertionService.assertTrue(this.isEmailValid(email), ErrorMessage.INVALID_EMAIL)
-		assertionService.assertTrue(this.isPasswordStrongEnough(password), ErrorMessage.PASSWORD_NOT_STRONG_ENOUGH)
+		assertionService.assertTrue(isEmailValid(email), ErrorMessage.INVALID_EMAIL)
+		assertionService.assertTrue(isPasswordStrongEnough(password), ErrorMessage.PASSWORD_NOT_STRONG_ENOUGH)
 		assertionService.assertEqual(password, passwordConfirmation, ErrorMessage.PASSWORDS_DO_NOT_MATCH)
 
 		const hashedPassword = await this.hashPassword(password)
@@ -65,26 +66,6 @@ export default class AuthService {
 
 	findByEmail = async (email: string): Promise<User | null> => {
 		return prisma.user.findFirst({ where: { email } })
-	}
-
-	isEmailValid = (email: string): boolean => {
-		return /^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$/i.test(email)
-	}
-
-	isPasswordStrongEnough = (password: string, hardcheck = false): boolean => {
-		// TODO move into stringUtils, and handle diacritics in regex
-		const MINIMUM_LENGTH = hardcheck ? 12 : 8
-		const MINIMUM_TYPES = hardcheck ? 4 : 3
-
-		const isLongEnough = password.length >= MINIMUM_LENGTH
-		const hasEnoughTypes = [
-			/[a-z]/.test(password),
-			/[A-Z]/.test(password),
-			/[0-9]/.test(password),
-			/[^a-zA-Z0-9]/.test(password),
-		].filter(Boolean).length >= MINIMUM_TYPES
-
-		return isLongEnough && hasEnoughTypes
 	}
 
 	hashPassword = (password: string): Promise<string> => {
