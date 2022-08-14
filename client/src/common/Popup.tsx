@@ -25,7 +25,7 @@ const userStyles = createUseStyles(theme => ({
 	}
 }))
 
-interface PopupProps {
+export interface PopupProps {
 	show: boolean
 	onCancel: () => void
 	title?: string
