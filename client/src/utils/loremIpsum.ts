@@ -12,10 +12,18 @@ const lorem = [
 	'Cras maximus mi nibh, in condimentum elit laoreet ut. Donec vitae tristique lectus. Proin vel ligula viverra, condimentum orci nec, fringilla nunc. In metus eros, fermentum eu porta sit amet, mattis quis ante. Nulla quam lorem, ornare ut commodo non, sagittis nec magna. Quisque tincidunt, augue non consequat egestas, lectus elit rutrum eros, eu rutrum enim risus ut massa. Suspendisse condimentum elementum ligula, et faucibus dolor tincidunt vel. Fusce placerat massa eget fringilla accumsan. Nulla eleifend posuere leo. Integer diam leo, vulputate sit amet bibendum quis, maximus eget odio. Sed nec posuere metus. Etiam feugiat vel nulla nec ultrices.'
 ]
 
+/**
+ * Generate an array of different lorem ipsum paragraphs.
+ * @param paragraphs number of paragraphs to generate (default: 1)
+ * @returns an array of lorem ipsum paragraphs
+ */
 export const generateLoremIpsum = (paragraphs = 1): string[] => {
+	if (paragraphs < 1) {
+		throw new Error('Paragraphs argument must be greater than 0')
+	}
 	const loremIpsum = [startLorem]
-	for (let i = 1; i < paragraphs; i++) {
-		loremIpsum.push(lorem[Math.floor(Math.random() * lorem.length)])
+	for (let i = 0; i < paragraphs - 1; i++) {
+		loremIpsum.push(lorem[i % lorem.length])
 	}
 	return loremIpsum
 }
