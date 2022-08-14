@@ -7,7 +7,7 @@ export const languageSlice = createSlice({
 	name: 'language',
 	initialState,
 	reducers: {
-		setLanguage: (state, action: PayloadAction<Language>) => {
+		setLanguage: (state, action: PayloadAction<Language>): Language => {
 			localStorage.setItem('language', action.payload)
 			return action.payload
 		}
@@ -15,7 +15,6 @@ export const languageSlice = createSlice({
 })
 
 export const {
-	setLanguage
-} = languageSlice.actions
-
-export default languageSlice.reducer
+	reducer: languageReducer,
+	actions: { setLanguage }
+} = languageSlice

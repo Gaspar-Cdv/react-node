@@ -1,9 +1,10 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
+import { languageReducer } from './language/reducer'
 
 const store = configureStore({
 	reducer: {
-
+		language: languageReducer,
 	},
 })
 
