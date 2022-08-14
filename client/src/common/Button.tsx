@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { ReactNode } from 'react'
+import { MouseEvent, ReactNode } from 'react'
 import { createUseStyles } from 'react-jss'
 import { colorShader } from '../utils/stringUtils'
 
@@ -43,7 +43,7 @@ const useStyles = createUseStyles(theme => ({
 
 export interface ButtonProps {
 	children: ReactNode
-	onClick?: () => void
+	onClick?: (e?: MouseEvent) => void
 	disabled?: boolean
 	variant?: 'primary' | 'secondary' | 'danger'
 	type?: 'button' | 'reset' | 'submit'
@@ -59,7 +59,7 @@ function Button ({ onClick, variant = 'primary', disabled = false, type = 'butto
 
 	return (
 		<div className={classes.container}>
-			<button type={type} className={className} onClick={onClick}>
+			<button type={type} className={className} onClick={e => !disabled && onClick?.(e)}>
 				{children}
 			</button>
 		</div>
