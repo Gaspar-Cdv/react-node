@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Language } from '../../types/Language'
 
-const initialState: Language = localStorage.getItem('language') as Language ?? Language.EN
+const initialState: Language = localStorage.getItem('language') as Language ?? Language.en
 
 export const languageSlice = createSlice({
 	name: 'language',

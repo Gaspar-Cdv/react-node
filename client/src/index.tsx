@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { I18nProvider } from './i18n'
 import { ThemeProvider } from 'react-jss'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
@@ -13,12 +14,14 @@ const root = ReactDOM.createRoot(
 )
 root.render(
 	<React.StrictMode>
-		<BrowserRouter>
-			<ThemeProvider theme={theme}>
-				<Provider store={store}>
-					<App />
-				</Provider>
-			</ThemeProvider>
-		</BrowserRouter>
+		<Provider store={store}>
+			<I18nProvider>
+				<ThemeProvider theme={theme}>
+					<BrowserRouter>
+						<App />
+					</BrowserRouter>
+				</ThemeProvider>
+			</I18nProvider>
+		</Provider>
 	</React.StrictMode>
 )
