@@ -7,6 +7,9 @@ export default {
 	args: {
 		title: 'Button',
 		disabled: false
+	},
+	argTypes: {
+		onClick: { action: 'onClick' }
 	}
 } as ComponentMeta<typeof ButtonWrapper>
 
