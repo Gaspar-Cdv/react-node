@@ -6,10 +6,10 @@ const userStyles = createUseStyles(theme => ({
 	popup: {
 		zIndex: theme.zIndexes.popup,
 		backgroundColor: 'white',
-		minWidth: 400,
-		minHeight: 400,
-		maxWidth: '100%',
-		maxHeight: '100%',
+		width: '100%',
+		height: '100%',
+		maxWidth: 400,
+		maxHeight: 400,
 		borderRadius: 5,
 		display: 'flex',
 		flexDirection: 'column',
@@ -21,7 +21,8 @@ const userStyles = createUseStyles(theme => ({
 		fontWeight: 700
 	},
 	content: {
-		flex: '1 1 auto'
+		flex: '1 1 auto',
+		overflowY: 'auto'
 	}
 }))
 
