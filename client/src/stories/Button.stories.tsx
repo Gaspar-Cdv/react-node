@@ -9,7 +9,8 @@ export default {
 		disabled: false
 	},
 	argTypes: {
-		onClick: { action: 'onClick' }
+		onClick: { action: 'onClick' },
+		variant: { control: false }
 	}
 } as ComponentMeta<typeof ButtonWrapper>
 
