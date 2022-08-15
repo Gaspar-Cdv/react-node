@@ -1,5 +1,6 @@
 import { ThemeProvider } from 'react-jss'
 import { Provider } from 'react-redux'
+import { I18nProvider } from '../src/i18n'
 import theme from '../src/theme'
 import store from '../src/store/store'
 
@@ -15,10 +16,12 @@ export const parameters = {
 
 export const decorators = [
 	(Story) => (
-		<ThemeProvider theme={theme}>
-			<Provider store={store}>
-				<Story />
-			</Provider>
-		</ThemeProvider>
+		<Provider store={store}>
+			<I18nProvider>
+				<ThemeProvider theme={theme}>
+					<Story />
+				</ThemeProvider>
+			</I18nProvider>
+		</Provider>
 	),
 ]
