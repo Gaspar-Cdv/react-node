@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react'
+import { Key, ReactNode, useMemo, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import { DropdownItem } from '../Dropdown/Dropdown'
 import DropdownToggle from '../Dropdown/DropdownToggle'
@@ -16,9 +16,13 @@ const useStyles = createUseStyles(theme => ({
 		borderRadius: 3,
 		border: [1, 'solid', theme.color.secondary],
 		minHeight: 30,
+		maxWidth: 200
 	},
 	select: {
 		padding: [5, 10],
+		whiteSpace: 'nowrap',
+		textOverflow: 'ellipsis',
+		overflow: 'hidden'
 	},
 	arrow: ({ isOpen }: JssProps) => ({
 		display: 'flex',
@@ -31,13 +35,19 @@ const useStyles = createUseStyles(theme => ({
 }))
 
 interface SelectProps {
+	placeholder?: ReactNode
 	options: DropdownItem[]
-	children: ReactNode
+	selected?: Key
 }
 
-function Select ({ options, children }: SelectProps) {
+function Select ({ placeholder, options, selected }: SelectProps) {
 	const [isOpen, setIsOpen] = useState(false)
 	const classes = useStyles({ isOpen })
+
+	const selectedLabel = useMemo(() => {
+		const option = options.find(o => o.key === selected)
+		return option?.label || placeholder
+	}, [selected, options, placeholder])
 
 	const handleClick = () => {
 		setIsOpen(isOpen => !isOpen)
@@ -49,9 +59,9 @@ function Select ({ options, children }: SelectProps) {
 
 	return (
 		<DropdownToggle items={options} show={isOpen} onClick={handleClick} onClose={handleClose}>
-			<div className={classes.container}>
+			<div className={classes.container} title={selectedLabel?.toString()}>
 				<div className={classes.select}>
-					{children}
+					{selectedLabel}
 				</div>
 				<div className={classes.arrow}>
 					<ArrowIcon />

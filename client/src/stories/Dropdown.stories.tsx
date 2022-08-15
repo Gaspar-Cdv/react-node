@@ -1,4 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react'
+import { Key, useState } from 'react'
 import Select from '../common/Form/Select'
 
 export default {
@@ -14,17 +15,20 @@ interface SelectWrapperProps {
 }
 
 function SelectWrapper ({ itemsCount }: SelectWrapperProps) {
+	const [selected, setSelected] = useState<Key | undefined>(undefined)
+
 	const items = [...Array(itemsCount)].map((_, i) => ({
 		key: i,
 		label: `Item ${i + 1}`,
-		onClick: () => console.log(`Item ${i + 1} clicked`)
+		onClick: () => {
+			setSelected(i)
+			console.log(`Item ${i + 1} clicked`)
+		}
 	}))
 
 
 	return (
-		<Select options={items}>
-			Click me
-		</Select>
+		<Select placeholder='Click me' selected={selected} options={items} />
 	)
 }
 
