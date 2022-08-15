@@ -43,7 +43,7 @@ function LanguageSwitcher () {
 	const classes = useStyles()
 	const translate = useTranslate()
 	const [isOpen, setIsOpen] = useState(false)
-	const language = useSelector(languageSelector)
+	const currentLanguage = useSelector(languageSelector)
 	const setLanguage = useSetLanguage()
 	const [isFlagVisible, setIsFlagVisible] = useState(true)
 
@@ -62,6 +62,10 @@ function LanguageSwitcher () {
 				</div>
 			),
 			onClick: () => {
+				if (language === currentLanguage) {
+					return
+				}
+
 				setIsFlagVisible(false)
 				setTimeout(() => {
 					setLanguage(language)
@@ -69,7 +73,7 @@ function LanguageSwitcher () {
 				}, transitionDuration)
 			}
 		}))
-	}, [classes.option, languages, setLanguage, translate])
+	}, [classes.option, currentLanguage, languages, setLanguage, translate])
 
 	const handleClick = () => {
 		setIsOpen(isOpen => !isOpen)
@@ -86,7 +90,7 @@ function LanguageSwitcher () {
 			onClick={handleClick}
 			onClose={handleClose}
 		>
-			<CountryFlag language={language} className={classNames(classes.flag, { [classes.transparent]: !isFlagVisible })} />
+			<CountryFlag language={currentLanguage} className={classNames(classes.flag, { [classes.transparent]: !isFlagVisible })} />
 		</DropdownToggle>
 	)
 }
