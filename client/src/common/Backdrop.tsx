@@ -1,7 +1,6 @@
 import { MouseEventHandler, ReactElement, useEffect, useState } from 'react'
 import { createUseStyles } from 'react-jss'
-
-const transitionDuration = 200
+import { backdropTransitionDuration } from '../constants'
 
 interface JSSProps {
 	visible: boolean
@@ -20,7 +19,7 @@ const useStyles = createUseStyles(theme => ({
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
-		transition: `opacity ${transitionDuration}ms`,
+		transition: `opacity ${backdropTransitionDuration}ms`,
 		opacity: visible ? 1 : 0,
 		backdropFilter: 'blur(1px)'
 	})
@@ -42,7 +41,7 @@ function Backdrop ({ show, close, zIndex, children }: BackdropProps) {
 		if (inDOM !== show) {
 			setTimeout(() => {
 				setInDOM(show)
-			}, show ? 0 : transitionDuration)
+			}, show ? 0 : backdropTransitionDuration)
 		}
 	}, [show, inDOM])
 

@@ -2,9 +2,9 @@ import { forwardRef, Key, ReactNode, useEffect, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import DropdownItem from './DropdownItem'
 import Scrollbar from '../Scrollbar'
+import { dropdownTransitionDuration } from '../../constants'
 
 const maxHeight = 200
-const transitionDuration = 200
 
 interface JssProps {
 	visible: boolean
@@ -23,7 +23,7 @@ const useStyles = createUseStyles(theme => ({
 		border: '1px solid #dddddd',
 		borderRadius: 3,
 		minWidth: minWidth || 100,
-		transition: `all ${transitionDuration}ms`,
+		transition: `all ${dropdownTransitionDuration}ms`,
 		transitionProperty: 'max-height, opacity',
 		opacity: visible ? 1 : 0,
 		maxHeight: visible ? maxHeight : 0
@@ -56,7 +56,7 @@ const Dropdown = forwardRef(({ show, onClose, items, minWidth, ...positions }: D
 		if (inDOM !== show) {
 			setTimeout(() => {
 				setInDOM(show)
-			}, show ? 0 : transitionDuration)
+			}, show ? 0 : dropdownTransitionDuration)
 		}
 	}, [show, inDOM])
 
