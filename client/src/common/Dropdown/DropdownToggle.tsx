@@ -17,18 +17,18 @@ export interface DropdownToggleProps {
 	show: boolean
 	onClick: (e: MouseEvent<HTMLDivElement>) => void
 	onClose: () => void
+	align?: 'left' | 'right'
 	children: ReactNode
 }
 
 /**
- * IMPORTANT: To prevent undesirable extra space between the component and the dropdown menu, the child component should be displayed block.\
- * TODO: Add a way to prevent window overflow when the dropdown is open too far to the right.
+ * IMPORTANT: To prevent undesirable extra space between the component and the dropdown menu, the child component should be displayed block.
  */
-function DropdownToggle ({ items, show, onClick, onClose, children }: DropdownToggleProps) {
+function DropdownToggle ({ items, show, onClick, onClose, align = 'left', children }: DropdownToggleProps) {
 	const classes = useStyles()
 	const anchorEl = useRef<HTMLDivElement>(null)
-	const top = anchorEl.current?.getBoundingClientRect().height
-	const width = anchorEl.current?.getBoundingClientRect().width
+	const { height, width } = anchorEl.current?.getBoundingClientRect() || { height: 0, width: 0 }
+	const right = align === 'right' ? 0 : undefined
 
 	const handleClick = (e: MouseEvent<HTMLDivElement>) => {
 		e.stopPropagation()
@@ -45,7 +45,8 @@ function DropdownToggle ({ items, show, onClick, onClose, children }: DropdownTo
 				show={show}
 				onClose={onClose}
 				items={items}
-				top={top}
+				top={height}
+				right={right}
 				minWidth={width}
 			/>
 		</div>

@@ -39,7 +39,11 @@ const useStyles = createUseStyles(theme => ({
 	}
 }))
 
-function LanguageSwitcher () {
+interface LanguageSwitcherProps {
+	align?: 'left' | 'right'
+}
+
+function LanguageSwitcher ({ align = 'left' }: LanguageSwitcherProps) {
 	const classes = useStyles()
 	const translate = useTranslate()
 	const [isOpen, setIsOpen] = useState(false)
@@ -89,6 +93,7 @@ function LanguageSwitcher () {
 			show={isOpen}
 			onClick={handleClick}
 			onClose={handleClose}
+			align={align}
 		>
 			<CountryFlag language={currentLanguage} className={classNames(classes.flag, { [classes.transparent]: !isFlagVisible })} />
 		</DropdownToggle>
