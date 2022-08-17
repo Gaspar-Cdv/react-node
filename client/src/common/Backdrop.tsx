@@ -1,14 +1,15 @@
-import { MouseEventHandler, ReactElement, useEffect, useState } from 'react'
+import classNames from 'classnames'
+import { MouseEventHandler, ReactElement } from 'react'
 import { createUseStyles } from 'react-jss'
 import { backdropTransitionDuration } from '../constants'
+import { useFadeTransition } from '../hooks'
 
 interface JSSProps {
-	visible: boolean
 	zIndex?: number
 }
 
 const useStyles = createUseStyles(theme => ({
-	backdrop: ({ visible, zIndex }: JSSProps) => ({
+	backdrop: ({ zIndex }: JSSProps) => ({
 		zIndex: zIndex ?? theme.zIndexes.backdrop,
 		position: 'fixed',
 		top: 0,
@@ -19,8 +20,6 @@ const useStyles = createUseStyles(theme => ({
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
-		transition: `opacity ${backdropTransitionDuration}ms`,
-		opacity: visible ? 1 : 0,
 		backdropFilter: 'blur(1px)'
 	})
 }))
@@ -33,24 +32,15 @@ interface BackdropProps {
 }
 
 function Backdrop ({ show, close, zIndex, children }: BackdropProps) {
-	const [inDOM, setInDOM] = useState(false)
-	const visible = show && inDOM
-	const classes = useStyles({ visible, zIndex })
-
-	useEffect(() => {
-		if (inDOM !== show) {
-			setTimeout(() => {
-				setInDOM(show)
-			}, show ? 0 : backdropTransitionDuration)
-		}
-	}, [show, inDOM])
+	const classes = useStyles({ zIndex })
+	const { fadeTransition, inDOM } = useFadeTransition(show, backdropTransitionDuration)
 
 	if (!show && !inDOM) {
 		return null
 	}
 
 	return (
-		<div className={classes.backdrop} onClick={close}>
+		<div className={classNames(classes.backdrop, fadeTransition)} onClick={close}>
 			<div onClick={e => e.stopPropagation()}>
 				{children}
 			</div>
