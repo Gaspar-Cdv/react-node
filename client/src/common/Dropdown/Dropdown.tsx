@@ -1,4 +1,4 @@
-import { forwardRef, Key, ReactNode, useEffect, useState } from 'react'
+import { forwardRef, Key, ReactNode, useEffect, useLayoutEffect, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import DropdownItem from './DropdownItem'
 import Scrollbar from '../Scrollbar'
@@ -23,10 +23,11 @@ const useStyles = createUseStyles(theme => ({
 		border: '1px solid #dddddd',
 		borderRadius: 3,
 		minWidth: minWidth || 100,
-		transition: `all ${dropdownTransitionDuration}ms`,
+		transition: `all ${dropdownTransitionDuration}ms linear`,
 		transitionProperty: 'max-height, opacity',
 		opacity: visible ? 1 : 0,
-		maxHeight: visible ? maxHeight : 0
+		maxHeight: visible ? maxHeight : 0,
+		overflow: 'hidden'
 	})
 }))
 
@@ -52,7 +53,7 @@ const Dropdown = forwardRef(({ show, onClose, items, minWidth, ...positions }: D
 	const visible = show && inDOM
 	const classes = useStyles({ visible, minWidth, ...positions })
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (inDOM !== show) {
 			setTimeout(() => {
 				setInDOM(show)
