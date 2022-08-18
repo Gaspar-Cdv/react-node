@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { Key, useState } from 'react'
-import Select from '../common/Form/Select'
+import Select from '../common/form/Select'
 
 export default {
 	title: 'Common/Select',

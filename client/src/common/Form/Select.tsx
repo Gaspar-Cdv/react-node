@@ -1,7 +1,7 @@
 import { Key, ReactNode, useMemo, useState } from 'react'
 import { createUseStyles } from 'react-jss'
-import { DropdownItem } from '../Dropdown/Dropdown'
-import DropdownToggle from '../Dropdown/DropdownToggle'
+import { DropdownItem } from '../dropdown/Dropdown'
+import DropdownToggle from '../dropdown/DropdownToggle'
 import { ReactComponent as ArrowIcon } from '../../images/arrow.svg'
 
 interface JssProps {
