@@ -1,5 +1,5 @@
-import { lazy } from 'react'
-import { RouteObject, useRoutes } from 'react-router-dom'
+import { lazy, ReactNode } from 'react'
+import { useRoutes } from 'react-router-dom'
 import { defineI18n, IntlMessages } from '../../i18n'
 
 const Home = lazy(() => import(/* webpackChunkName: "home" */ '../../components/Home'))
@@ -11,29 +11,32 @@ export type RouteName =
 	| 'login'
 	| 'notFound'
 
-export interface Route extends RouteObject {
-	name: RouteName
+export interface Route<T extends RouteName = RouteName> {
+	name: T
 	path: string
-	children?: Route[]
+	element: ReactNode
 }
 
-export const routes: Route[] = [
-	{
+type Routes = {
+	[K in RouteName]: Route<K>
+}
+
+export const routes: Routes = {
+	home: {
 		name: 'home',
 		path: '/',
 		element: <Home />
 	},
-	{
+	login: {
 		name: 'login',
 		path: '/login',
 		element: <Login />
+	},
+	notFound: {
+		name: 'notFound',
+		path: '*',
+		element: <NotFound />
 	}
-]
-
-export const notFoundRoute: Route = {
-	name: 'notFound',
-	path: '*',
-	element: <NotFound />
 }
 
 type RoutesI18n = IntlMessages & {
@@ -54,7 +57,7 @@ export const pageTitles = defineI18n<RoutesI18n>({
 })
 
 function Router () {
-	return useRoutes([...routes, notFoundRoute])
+	return useRoutes(Object.values(routes))
 }
 
 export default Router

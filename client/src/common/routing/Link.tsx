@@ -3,11 +3,7 @@ import { RouteName, routes } from './Router'
 
 
 export const getUrl = (to: RouteName): string => {
-	const url = routes.find(({ name }) => name === to)
-
-	if (url === undefined) {
-		throw new Error(`Route ${to} not found`)
-	}
+	const url = routes[to]
 
 	return url.path
 }

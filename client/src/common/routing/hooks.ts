@@ -1,6 +1,6 @@
 import { useLocation, useParams } from 'react-router-dom'
 import { useTranslate } from '../../i18n'
-import { notFoundRoute, pageTitles, Route, routes } from './Router'
+import { pageTitles, Route, routes } from './Router'
 
 /**
  * Get the raw path of the current route, as defined in useRoutes.\
@@ -29,9 +29,9 @@ function useRawPath (): string {
  */
 export function useCurrentRoute (): Route {
 	const rawPath = useRawPath()
-	const currentRoute = routes.find(({ path }) => path && path === rawPath) || notFoundRoute
+	const currentRoute = Object.values(routes).find(({ path }) => path && path === rawPath)
 
-	return currentRoute
+	return currentRoute || routes.notFound
 }
 
 /**
@@ -41,5 +41,6 @@ export function useCurrentTitle (): string {
 	const translate = useTranslate()
 	const { name } = useCurrentRoute()
 	const params = useParams()
-	return translate(pageTitles[name], params)
+
+	return translate(pageTitles[name!], params)
 }
