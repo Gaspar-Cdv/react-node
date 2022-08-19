@@ -13,6 +13,7 @@ export type RouteName =
 
 export interface Route extends RouteObject {
 	name: RouteName
+	path: string
 	children?: Route[]
 }
 
