@@ -1,12 +1,14 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import Button, { ButtonProps } from '../common/button/Button'
+import { ReactComponent as Info } from '../images/icons/info.svg'
 
 export default {
 	title: 'Common/Button',
 	component: ButtonWrapper,
 	args: {
 		title: 'Button',
-		disabled: false
+		disabled: false,
+		withIcon: false
 	},
 	argTypes: {
 		onClick: { action: 'onClick' },
@@ -16,11 +18,12 @@ export default {
 
 interface ButtonWrapperProps extends ButtonProps {
 	title: string
+	withIcon: boolean
 }
 
-function ButtonWrapper ({ title, ...args }: ButtonWrapperProps) {
+function ButtonWrapper ({ title, withIcon, ...args }: ButtonWrapperProps) {
 	return (
-		<Button {...args}>
+		<Button {...withIcon && { icon: Info }} {...args}>
 			{title}
 		</Button>
 	)

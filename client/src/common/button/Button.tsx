@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { MouseEvent, ReactNode } from 'react'
+import { FunctionComponent, MouseEvent, ReactNode } from 'react'
 import { createUseStyles } from 'react-jss'
 import { colorShader } from '../../utils/stringUtils'
 
@@ -11,9 +11,12 @@ const useStyles = createUseStyles(theme => ({
 		backgroundColor: 'white' // to handle background opacity safely
 	},
 	button: {
+		display: 'flex',
+		alignItems: 'center',
+		gap: theme.size.xs,
 		backgroundColor: theme.color.cta,
 		border: 'none',
-		padding: [theme.size.xs, theme.size.md],
+		padding: [theme.size.xs, theme.size.sm],
 		borderRadius: 1,
 		cursor: 'pointer',
 		transition: 'background-color 0.2s',
@@ -47,9 +50,10 @@ export interface ButtonProps {
 	disabled?: boolean
 	variant?: 'primary' | 'secondary' | 'danger'
 	type?: 'button' | 'reset' | 'submit'
+	icon?: FunctionComponent<React.SVGProps<SVGSVGElement>>
 }
 
-function Button ({ onClick, variant = 'primary', disabled = false, type = 'button', children }: ButtonProps) {
+function Button ({ onClick, variant = 'primary', disabled = false, type = 'button', icon: Icon, children }: ButtonProps) {
 	const classes = useStyles()
 	const className = classNames(classes.button, {
 		[classes.disabled]: disabled,
@@ -60,6 +64,9 @@ function Button ({ onClick, variant = 'primary', disabled = false, type = 'butto
 	return (
 		<div className={classes.container}>
 			<button type={type} className={className} onClick={e => !disabled && onClick?.(e)}>
+				{Icon != null && (
+					<Icon width='1rem' height='1rem' />
+				)}
 				{children}
 			</button>
 		</div>
