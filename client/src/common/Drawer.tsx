@@ -15,6 +15,7 @@ const useStyles = createUseStyles(theme => ({
 		top: 0,
 		width: width,
 		height: '100vh',
+		backgroundColor: 'white',
 		zIndex: theme.zIndex.drawer
 	}),
 	left: ({ visible, width }: JssProps) => ({
