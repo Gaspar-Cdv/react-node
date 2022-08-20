@@ -1,15 +1,14 @@
-import { ReactElement } from 'react'
+import { ReactNode } from 'react'
 import { createUseStyles } from 'react-jss'
+import theme from '../../theme'
 import Backdrop from '../Backdrop'
+import Scrollbar from '../Scrollbar'
 
 const userStyles = createUseStyles(theme => ({
 	popup: {
-		zIndex: theme.zIndexes.popup,
 		backgroundColor: 'white',
 		width: '100%',
 		height: '100%',
-		maxWidth: '25rem',
-		maxHeight: '25rem',
 		borderRadius: 5,
 		display: 'flex',
 		flexDirection: 'column',
@@ -22,7 +21,7 @@ const userStyles = createUseStyles(theme => ({
 	},
 	content: {
 		flex: '1 1 auto',
-		overflowY: 'auto'
+		maxWidth: '30rem'
 	}
 }))
 
@@ -30,21 +29,21 @@ export interface PopupProps {
 	show: boolean
 	onCancel: () => void
 	title?: string
-	children: ReactElement | ReactElement[]
+	children: ReactNode | ReactNode[]
 }
 
 function Popup ({ show, title, children, onCancel }: PopupProps) {
 	const classes = userStyles()
 
 	return (
-		<Backdrop show={show} close={onCancel}>
+		<Backdrop show={show} close={onCancel} zIndex={theme.zIndexes.popup}>
 			<div className={classes.popup}>
 				{title != null && (
 					<div className={classes.title}>{title}</div>
 				)}
-				<div className={classes.content}>
+				<Scrollbar maxHeight='20rem' className={classes.content}>
 					{children}
-				</div>
+				</Scrollbar>
 			</div>
 		</Backdrop>
 	)
