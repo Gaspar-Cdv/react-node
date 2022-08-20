@@ -1,8 +1,8 @@
 import { Helmet } from 'react-helmet'
 import { useSelector } from 'react-redux'
-import { useCurrentTitle } from './common/routing/hooks'
-import { defineI18n, useTranslate } from './i18n'
-import { languageSelector } from './store/language/selectors'
+import { useCurrentTitle } from '../common/routing/hooks'
+import { defineI18n, useTranslate } from '../utils/i18n'
+import { languageSelector } from '../store/language/selectors'
 
 const i18n = defineI18n({
 	en: {

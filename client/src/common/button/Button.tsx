@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { MouseEvent, ReactNode } from 'react'
 import { createUseStyles } from 'react-jss'
-import { colorShader } from '../utils/stringUtils'
+import { colorShader } from '../../utils/stringUtils'
 
 const useStyles = createUseStyles(theme => ({
 	container: {

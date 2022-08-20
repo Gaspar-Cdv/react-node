@@ -1,6 +1,6 @@
 import { ThemeProvider } from 'react-jss'
 import { Provider } from 'react-redux'
-import { I18nProvider } from '../src/i18n'
+import { I18nProvider } from '../src/utils/i18n'
 import theme from '../src/theme'
 import store from '../src/store/store'
 

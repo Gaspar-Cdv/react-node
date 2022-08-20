@@ -1,6 +1,6 @@
 import Button, { ButtonProps } from './Button'
-import Link, { LinkParams } from './routing/Link'
-import { RouteName } from './routing/Router'
+import Link, { LinkParams } from '../routing/Link'
+import { RouteName } from '../routing/Router'
 
 interface ButtonLinkProps extends ButtonProps {
 	to: RouteName

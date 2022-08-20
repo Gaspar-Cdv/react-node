@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import LanguageSwitcher from '../components/LanguageSwitcher'
+import LanguageSwitcher from '../components/LanguageSwitcher/LanguageSwitcher'
 
 export default {
 	title: 'Components',

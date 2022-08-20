@@ -1,9 +1,9 @@
 import { createUseStyles } from 'react-jss'
-import { ReactComponent as InfoIcon } from '../images/info.svg'
-import { ReactComponent as QuestionIcon } from '../images/question.svg'
-import { ReactComponent as WarningIcon } from '../images/warning.svg'
-import theme from '../theme'
-import { generateId } from '../utils/stringUtils'
+import { ReactComponent as InfoIcon } from '../../images/icons/info.svg'
+import { ReactComponent as QuestionIcon } from '../../images/icons/question.svg'
+import { ReactComponent as WarningIcon } from '../../images/icons/warning.svg'
+import theme from '../../theme'
+import { generateId } from '../../utils/stringUtils'
 import Tooltip from './Tooltip'
 
 interface JssProps {

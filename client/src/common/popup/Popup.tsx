@@ -1,6 +1,6 @@
 import { ReactElement } from 'react'
 import { createUseStyles } from 'react-jss'
-import Backdrop from './Backdrop'
+import Backdrop from '../Backdrop'
 
 const userStyles = createUseStyles(theme => ({
 	popup: {

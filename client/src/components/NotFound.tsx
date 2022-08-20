@@ -1,6 +1,6 @@
 import { createUseStyles } from 'react-jss'
-import ButtonLink from '../common/ButtonLink'
-import { defineI18n, useTranslate } from '../i18n'
+import ButtonLink from '../common/button/ButtonLink'
+import { defineI18n, useTranslate } from '../utils/i18n'
 
 const useStyles = createUseStyles({
 	container: {

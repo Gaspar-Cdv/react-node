@@ -1,5 +1,5 @@
 import { useLocation, useParams } from 'react-router-dom'
-import { useTranslate } from '../../i18n'
+import { useTranslate } from '../../utils/i18n'
 import { pageTitles, Route, routes } from './Router'
 
 /**

@@ -4,8 +4,8 @@ import memoizeOne from 'memoize-one'
 import { useSelector } from 'react-redux'
 import { PrimitiveType, FormatXMLElementFn } from 'intl-messageformat'
 import { EventEmitter } from 'events'
-import { Language } from './types/Language'
-import { languageSelector } from './store/language/selectors'
+import { Language } from '../types/Language'
+import { languageSelector } from '../store/language/selectors'
 
 export interface IntlMessages {
 	[key: string]: string | IntlMessages

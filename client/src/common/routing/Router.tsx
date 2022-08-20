@@ -1,9 +1,9 @@
 import { lazy, ReactNode } from 'react'
 import { useRoutes } from 'react-router-dom'
-import { defineI18n, IntlMessages } from '../../i18n'
+import { defineI18n, IntlMessages } from '../../utils/i18n'
 
-const Home = lazy(() => import(/* webpackChunkName: "home" */ '../../components/Home'))
-const Login = lazy(() => import(/* webpackChunkName: "login" */ '../../components/Login'))
+const Home = lazy(() => import(/* webpackChunkName: "home" */ '../../components/Home/Home'))
+const Login = lazy(() => import(/* webpackChunkName: "login" */ '../../components/Login/Login'))
 const NotFound = lazy(() => import(/* webpackChunkName: "notFound" */ '../../components/NotFound'))
 
 export type RouteName =

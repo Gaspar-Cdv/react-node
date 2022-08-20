@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { createUseStyles } from 'react-jss'
-import Tooltip, { TooltipProps } from '../common/Tooltip'
+import Tooltip, { TooltipProps } from '../common/tooltip/Tooltip'
 
 const useStyles = createUseStyles({
 	verticalContainer: {

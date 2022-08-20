@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import { MouseEventHandler, ReactElement } from 'react'
 import { createUseStyles } from 'react-jss'
 import { backdropTransitionDuration } from '../constants'
-import { useFadeTransition } from '../hooks'
+import { useFadeTransition } from '../utils/hooks'
 
 interface JSSProps {
 	zIndex?: number

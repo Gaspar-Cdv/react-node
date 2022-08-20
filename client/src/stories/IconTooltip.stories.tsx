@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import IconTooltip, { IconTooltipProps } from '../common/IconTooltip'
+import IconTooltip, { IconTooltipProps } from '../common/tooltip/IconTooltip'
 
 export default {
 	title: 'Common/Tooltip/IconTooltip',

@@ -1,9 +1,9 @@
 import classNames from 'classnames'
 import { useMemo } from 'react'
 import { createUseStyles } from 'react-jss'
-import { ReactComponent as FrenchFlag } from '../images/flags/fr.svg'
-import { ReactComponent as EnglishFlag } from '../images/flags/us.svg'
-import { Language } from '../types/Language'
+import { ReactComponent as FrenchFlag } from '../../images/flags/fr.svg'
+import { ReactComponent as EnglishFlag } from '../../images/flags/us.svg'
+import { Language } from '../../types/Language'
 
 const useStyles = createUseStyles(theme => ({
 	container: {

@@ -1,6 +1,6 @@
 import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import Popup, { PopupProps } from '../common/Popup'
+import Popup, { PopupProps } from '../common/popup/Popup'
 import Placeholder from './Placeholder'
 
 export default {
