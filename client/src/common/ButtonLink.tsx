@@ -1,14 +1,15 @@
 import Button, { ButtonProps } from './Button'
-import Link from './routing/Link'
+import Link, { LinkParams } from './routing/Link'
 import { RouteName } from './routing/Router'
 
 interface ButtonLinkProps extends ButtonProps {
 	to: RouteName
+	params?: LinkParams
 }
 
-function ButtonLink ({ to, ...props }: ButtonLinkProps) {
+function ButtonLink ({ to, params = {}, ...props }: ButtonLinkProps) {
 	return (
-		<Link to={to}>
+		<Link to={to} params={params}>
 			<Button {...props} />
 		</Link>
 	)
