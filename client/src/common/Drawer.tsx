@@ -15,14 +15,14 @@ const useStyles = createUseStyles(theme => ({
 		top: 0,
 		width: width,
 		height: '100vh',
-		zIndex: theme.zIndex.menu
+		zIndex: theme.zIndex.drawer
 	}),
 	left: ({ visible, width }: JssProps) => ({
-		transition: `left ${theme.duration.menuTransition}ms ease-in-out`,
+		transition: `left ${theme.duration.drawerTransition}ms ease-in-out`,
 		left: visible ? 0 : `-${width}`
 	}),
 	right: ({ visible, width }: JssProps) => ({
-		transition: `right ${theme.duration.menuTransition}ms ease-in-out`,
+		transition: `right ${theme.duration.drawerTransition}ms ease-in-out`,
 		right: visible ? 0 : `-${width}`
 	})
 }))
@@ -48,7 +48,7 @@ function Drawer ({ open, onClose, width = '100vw', direction = 'left', className
 		if (inDOM !== open) {
 			setTimeout(() => {
 				setInDOM(open)
-			}, open ? 0 : theme.duration.menuTransition)
+			}, open ? 0 : theme.duration.drawerTransition)
 		}
 	}, [open, inDOM])
 
@@ -61,8 +61,8 @@ function Drawer ({ open, onClose, width = '100vw', direction = 'left', className
 			<Backdrop
 				close={onClose}
 				show={open}
-				zIndex={theme.zIndex.menu}
-				transitionDuration={theme.duration.menuTransition}
+				zIndex={theme.zIndex.drawer}
+				transitionDuration={theme.duration.drawerTransition}
 			/>
 			<div className={classNames(classes.container, classes[direction], className)}>
 				{children}

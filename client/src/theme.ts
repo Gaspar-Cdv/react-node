@@ -20,15 +20,15 @@ const theme = {
 		menuHeight: 50
 	},
 	zIndex: {
-		menu: 50,
-		backdrop: 100,
+		drawer: 50,
+		defaultBackdrop: 100,
 		popup: 200,
 		loader: 500
 	},
 	duration: {
 		dropdownTransition: 200,
 		backdropTransition: 200,
-		menuTransition: 500,
+		drawerTransition: 500,
 	}
 }
 
