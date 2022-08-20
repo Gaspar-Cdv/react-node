@@ -27,8 +27,7 @@ const useStyles = createUseStyles(theme => ({
 	option: {
 		display: 'flex',
 		alignItems: 'center',
-		gap: 15,
-		padding: [5, 0]
+		gap: '1rem'
 	},
 	flag: {
 		transition: `opacity ${transitionDuration}ms ease-in-out`,

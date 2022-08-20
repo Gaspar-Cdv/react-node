@@ -2,7 +2,7 @@ import { forwardRef, ReactNode } from 'react'
 import { Scrollbars } from 'react-custom-scrollbars'
 
 export interface ScrollbarProps {
-	maxHeight: number
+	maxHeight: string | number
 	className?: string
 	children: ReactNode | ReactNode[]
 }

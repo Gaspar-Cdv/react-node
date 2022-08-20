@@ -15,11 +15,11 @@ const useStyles = createUseStyles(theme => ({
 		alignItems: 'center',
 		borderRadius: 3,
 		border: [1, 'solid', theme.color.secondary],
-		minHeight: 30,
-		maxWidth: 200
+		minHeight: '2rem',
+		maxWidth: '12rem'
 	},
 	select: {
-		padding: [5, 10],
+		padding: ['0.5rem', '1rem'],
 		whiteSpace: 'nowrap',
 		textOverflow: 'ellipsis',
 		overflow: 'hidden'
@@ -30,7 +30,7 @@ const useStyles = createUseStyles(theme => ({
 		alignItems: 'center',
 		transform: isOpen ? 'rotateX(-180deg)' : 'rotateX(0deg)',
 		transition: 'transform 300ms',
-		marginRight: 5,
+		marginRight: '0.5rem',
 	})
 }))
 

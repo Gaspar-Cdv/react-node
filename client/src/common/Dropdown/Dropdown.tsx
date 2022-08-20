@@ -4,7 +4,8 @@ import DropdownItem from './DropdownItem'
 import Scrollbar from '../Scrollbar'
 import theme from '../../theme'
 
-const maxHeight = 200
+const MIN_WIDTH = '6rem'
+const MAX_HEIGHT = '16rem'
 
 interface JssProps {
 	visible: boolean
@@ -22,11 +23,11 @@ const useStyles = createUseStyles(theme => ({
 		backgroundColor: theme.color.background,
 		border: '1px solid #dddddd',
 		borderRadius: 3,
-		minWidth: minWidth || 100,
+		minWidth: minWidth || MIN_WIDTH,
 		transition: `all ${theme.duration.dropdownTransition}ms linear`,
 		transitionProperty: 'max-height, opacity',
 		opacity: visible ? 1 : 0,
-		maxHeight: visible ? maxHeight : 0,
+		maxHeight: visible ? MAX_HEIGHT : 0,
 		overflow: 'hidden'
 	})
 }))
@@ -76,7 +77,7 @@ const Dropdown = forwardRef(({ show, onClose, items, minWidth, ...positions }: D
 	}
 
 	return (
-		<Scrollbar className={classes.menu} maxHeight={maxHeight} ref={ref}>
+		<Scrollbar className={classes.menu} maxHeight={MAX_HEIGHT} ref={ref}>
 			{items.map(({ key, label, onClick }) => {
 				const handleClick = () => {
 					onClick()

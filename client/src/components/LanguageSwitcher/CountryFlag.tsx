@@ -10,12 +10,12 @@ const useStyles = createUseStyles(theme => ({
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
-		height: 30
+		height: '2rem'
 	},
 	flag: {
 		borderRadius: 5,
 		boxShadow: '1px 1px 1px 1px rgba(0, 0, 0, 0.4)',
-		width: 40
+		width: '2.5rem'
 	}
 }))
 

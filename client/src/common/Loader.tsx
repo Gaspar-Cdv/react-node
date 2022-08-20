@@ -9,7 +9,7 @@ interface LoaderProps {
 function Loader ({ show }: LoaderProps) {
 	return (
 		<Backdrop show={show} zIndex={theme.zIndexes.loader}>
-			<img src={loader} alt='loading' width={120} />
+			<img src={loader} alt='loading' style={{ width: '7.5rem' }} />
 		</Backdrop>
 	)
 }

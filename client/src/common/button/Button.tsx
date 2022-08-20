@@ -13,7 +13,7 @@ const useStyles = createUseStyles(theme => ({
 	button: {
 		backgroundColor: theme.color.cta,
 		border: 'none',
-		padding: [10, 20],
+		padding: [theme.size.xs, theme.size.md],
 		borderRadius: 1,
 		cursor: 'pointer',
 		transition: 'background-color 0.2s',

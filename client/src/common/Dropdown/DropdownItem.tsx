@@ -5,8 +5,8 @@ const useStyles = createUseStyles({
 	item: {
 		display: 'flex',
 		alignItems: 'center',
-		minHeight: 30,
-		padding: [5, 10],
+		minHeight: '2rem',
+		padding: ['0.5rem', '1rem'],
 		cursor: 'pointer',
 		transition: 'background-color 0.1s',
 		'&:hover': {

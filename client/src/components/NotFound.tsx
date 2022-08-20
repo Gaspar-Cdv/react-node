@@ -8,7 +8,7 @@ const useStyles = createUseStyles({
 		flexDirection: 'column',
 		justifyContent: 'center',
 		alignItems: 'center',
-		gap: 30,
+		gap: '2rem',
 		height: '100%',
 		width: '100%',
 	}

@@ -8,13 +8,13 @@ const userStyles = createUseStyles(theme => ({
 		backgroundColor: 'white',
 		width: '100%',
 		height: '100%',
-		maxWidth: 400,
-		maxHeight: 400,
+		maxWidth: '25rem',
+		maxHeight: '25rem',
 		borderRadius: 5,
 		display: 'flex',
 		flexDirection: 'column',
-		gap: theme.size.small,
-		padding: theme.size.medium
+		gap: theme.size.xs,
+		padding: theme.size.sm
 	},
 	title: {
 		textAlign: 'center',
