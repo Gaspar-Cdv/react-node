@@ -2,7 +2,7 @@ import { forwardRef, Key, ReactNode, useEffect, useLayoutEffect, useState } from
 import { createUseStyles } from 'react-jss'
 import DropdownItem from './DropdownItem'
 import Scrollbar from '../Scrollbar'
-import { dropdownTransitionDuration } from '../../constants'
+import theme from '../../theme'
 
 const maxHeight = 200
 
@@ -23,7 +23,7 @@ const useStyles = createUseStyles(theme => ({
 		border: '1px solid #dddddd',
 		borderRadius: 3,
 		minWidth: minWidth || 100,
-		transition: `all ${dropdownTransitionDuration}ms linear`,
+		transition: `all ${theme.duration.dropdownTransition}ms linear`,
 		transitionProperty: 'max-height, opacity',
 		opacity: visible ? 1 : 0,
 		maxHeight: visible ? maxHeight : 0,
@@ -57,7 +57,7 @@ const Dropdown = forwardRef(({ show, onClose, items, minWidth, ...positions }: D
 		if (inDOM !== show) {
 			setTimeout(() => {
 				setInDOM(show)
-			}, show ? 0 : dropdownTransitionDuration)
+			}, show ? 0 : theme.duration.dropdownTransition)
 		}
 	}, [show, inDOM])
 

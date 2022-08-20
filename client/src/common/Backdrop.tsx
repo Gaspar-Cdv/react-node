@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { MouseEventHandler, ReactElement } from 'react'
 import { createUseStyles } from 'react-jss'
-import { backdropTransitionDuration } from '../constants'
+import theme from '../theme'
 import { useFadeTransition } from '../utils/hooks'
 
 interface JSSProps {
@@ -33,7 +33,7 @@ interface BackdropProps {
 
 function Backdrop ({ show, close, zIndex, children }: BackdropProps) {
 	const classes = useStyles({ zIndex })
-	const { fadeTransition, inDOM } = useFadeTransition(show, backdropTransitionDuration)
+	const { fadeTransition, inDOM } = useFadeTransition(show, theme.duration.backdropTransition)
 
 	if (!show && !inDOM) {
 		return null

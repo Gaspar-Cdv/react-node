@@ -22,6 +22,10 @@ const theme = {
 		backdrop: 100,
 		popup: 200,
 		loader: 500
+	},
+	duration: {
+		dropdownTransition: 200,
+		backdropTransition: 200
 	}
 }
 
