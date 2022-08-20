@@ -19,7 +19,7 @@ const theme = {
 		xl: '3rem',
 		menuHeight: 50
 	},
-	zIndexes: {
+	zIndex: {
 		menu: 50,
 		backdrop: 100,
 		popup: 200,

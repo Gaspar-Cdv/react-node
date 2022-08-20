@@ -36,7 +36,7 @@ function Popup ({ show, title, children, onCancel }: PopupProps) {
 	const classes = userStyles()
 
 	return (
-		<Backdrop show={show} close={onCancel} zIndex={theme.zIndexes.popup}>
+		<Backdrop show={show} close={onCancel} zIndex={theme.zIndex.popup}>
 			<div className={classes.popup}>
 				{title != null && (
 					<div className={classes.title}>{title}</div>

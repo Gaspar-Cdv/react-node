@@ -14,7 +14,7 @@ const useStyles = createUseStyles(theme => ({
 		top: 0,
 		width: width,
 		height: '100vh',
-		zIndex: theme.zIndexes.menu
+		zIndex: theme.zIndex.menu
 	}),
 	left: ({ visible, width }: JssProps) => ({
 		transition: `left ${theme.duration.menuTransition}ms ease-in-out`,

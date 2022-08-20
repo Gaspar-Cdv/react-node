@@ -10,7 +10,7 @@ interface JSSProps {
 
 const useStyles = createUseStyles(theme => ({
 	backdrop: ({ zIndex }: JSSProps) => ({
-		zIndex: zIndex ?? theme.zIndexes.backdrop,
+		zIndex: zIndex ?? theme.zIndex.backdrop,
 		position: 'fixed',
 		top: 0,
 		left: 0,

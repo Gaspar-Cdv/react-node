@@ -40,7 +40,7 @@ function Loader ({ show }: LoaderProps) {
 	const translate = useTranslate()
 
 	return (
-		<Backdrop show={show} zIndex={theme.zIndexes.loader}>
+		<Backdrop show={show} zIndex={theme.zIndex.loader}>
 			<div className={classes.container}>
 				<img src={loader} alt='loading' className={classes.loader} />
 				<span className={classes.message}>
