@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import { ReactNode, useLayoutEffect, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import theme from '../theme'
+import Backdrop from './Backdrop'
 
 interface JssProps {
 	width: string
@@ -28,13 +29,14 @@ const useStyles = createUseStyles(theme => ({
 
 export interface DrawerProps {
 	open: boolean
+	onClose: () => void
 	width?: number | string
 	direction?: 'left' | 'right'
 	className?: string
 	children?: ReactNode | ReactNode[]
 }
 
-function Drawer ({ open, width = '100vw', direction = 'left', className, children }: DrawerProps) {
+function Drawer ({ open, onClose, width = '100vw', direction = 'left', className, children }: DrawerProps) {
 	const [inDOM, setInDOM] = useState(false)
 	const visible = open && inDOM
 	const classes = useStyles({
@@ -55,9 +57,17 @@ function Drawer ({ open, width = '100vw', direction = 'left', className, childre
 	}
 
 	return (
-		<div className={classNames(classes.container, classes[direction], className)}>
-			{children}
-		</div>
+		<>
+			<Backdrop
+				close={onClose}
+				show={open}
+				zIndex={theme.zIndex.menu}
+				transitionDuration={theme.duration.menuTransition}
+			/>
+			<div className={classNames(classes.container, classes[direction], className)}>
+				{children}
+			</div>
+		</>
 	)
 }
 

@@ -28,12 +28,13 @@ interface BackdropProps {
 	show: boolean
 	close?: MouseEventHandler
 	zIndex?: number
-	children: ReactNode | ReactNode[]
+	transitionDuration?: number
+	children?: ReactNode | ReactNode[]
 }
 
-function Backdrop ({ show, close, zIndex, children }: BackdropProps) {
+function Backdrop ({ show, close, zIndex, transitionDuration = theme.duration.backdropTransition, children }: BackdropProps) {
 	const classes = useStyles({ zIndex })
-	const { fadeTransition, inDOM } = useFadeTransition(show, theme.duration.backdropTransition)
+	const { fadeTransition, inDOM } = useFadeTransition(show, transitionDuration)
 
 	if (!show && !inDOM) {
 		return null
