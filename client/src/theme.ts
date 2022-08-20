@@ -27,7 +27,8 @@ const theme = {
 	},
 	duration: {
 		dropdownTransition: 200,
-		backdropTransition: 200
+		backdropTransition: 200,
+		menuTransition: 500,
 	}
 }
 
