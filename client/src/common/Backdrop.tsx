@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { MouseEventHandler, ReactElement } from 'react'
+import { MouseEventHandler, ReactNode } from 'react'
 import { createUseStyles } from 'react-jss'
 import theme from '../theme'
 import { useFadeTransition } from '../utils/hooks'
@@ -28,7 +28,7 @@ interface BackdropProps {
 	show: boolean
 	close?: MouseEventHandler
 	zIndex?: number
-	children: ReactElement | ReactElement[]
+	children: ReactNode | ReactNode[]
 }
 
 function Backdrop ({ show, close, zIndex, children }: BackdropProps) {
