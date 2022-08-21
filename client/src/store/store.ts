@@ -1,10 +1,12 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
+import { elementsVisibilityReducer } from './elementsVisibility/reducer'
 import { languageReducer } from './language/reducer'
 
 const store = configureStore({
 	reducer: {
 		language: languageReducer,
+		elementsVisibility: elementsVisibilityReducer
 	},
 })
 
