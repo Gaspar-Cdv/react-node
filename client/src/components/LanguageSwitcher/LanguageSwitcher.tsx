@@ -7,8 +7,7 @@ import { defineI18n, useTranslate } from '../../utils/i18n'
 import DropdownToggle from '../../common/dropdown/DropdownToggle'
 import CountryFlag from './CountryFlag'
 import classNames from 'classnames'
-
-const transitionDuration = 100
+import { useAppTheme } from '../../theme'
 
 const i18n = defineI18n({
 	en: {
@@ -28,7 +27,7 @@ const useStyles = createUseStyles(theme => ({
 		gap: '1rem'
 	},
 	flag: {
-		transition: `opacity ${transitionDuration}ms ease-in-out`,
+		transition: `opacity ${theme.duration.crossFadeTransition}ms ease-in-out`,
 		opacity: 1
 	},
 	transparent: {
@@ -46,6 +45,7 @@ function LanguageSwitcher ({ align = 'left' }: LanguageSwitcherProps) {
 	const [isOpen, setIsOpen] = useState(false)
 	const { currentLanguage, setCurrentLanguage } = useCurrentLanguage()
 	const [isFlagVisible, setIsFlagVisible] = useState(true)
+	const theme = useAppTheme()
 
 	const languages = useMemo(() => [
 		Language.en,
@@ -70,10 +70,10 @@ function LanguageSwitcher ({ align = 'left' }: LanguageSwitcherProps) {
 				setTimeout(() => {
 					setCurrentLanguage(language)
 					setIsFlagVisible(true)
-				}, transitionDuration)
+				}, theme.duration.crossFadeTransition)
 			}
 		}))
-	}, [classes.option, currentLanguage, languages, setCurrentLanguage, translate])
+	}, [classes.option, currentLanguage, languages, setCurrentLanguage, theme.duration.crossFadeTransition, translate])
 
 	const handleClick = () => {
 		setIsOpen(isOpen => !isOpen)

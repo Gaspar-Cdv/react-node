@@ -34,7 +34,8 @@ const theme = {
 	duration: {
 		dropdownTransition: 200,
 		backdropTransition: 200,
-		drawerTransition: 500,
+		crossFadeTransition: 200,
+		drawerTransition: 400,
 	}
 }
 
