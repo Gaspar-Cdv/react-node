@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { ReactNode, useLayoutEffect, useState } from 'react'
 import { createUseStyles } from 'react-jss'
-import theme from '../theme'
+import { useAppTheme } from '../theme'
 import Backdrop from './Backdrop'
 
 interface JssProps {
@@ -40,6 +40,7 @@ export interface DrawerProps {
 }
 
 function Drawer ({ open, onClose, width = '100vw', position = 'left', zIndex, className, children }: DrawerProps) {
+	const theme = useAppTheme()
 	const [inDOM, setInDOM] = useState(false)
 	const visible = open && inDOM
 	const classes = useStyles({
@@ -54,7 +55,7 @@ function Drawer ({ open, onClose, width = '100vw', position = 'left', zIndex, cl
 				setInDOM(open)
 			}, open ? 0 : theme.duration.drawerTransition)
 		}
-	}, [open, inDOM])
+	}, [open, inDOM, theme.duration.drawerTransition])
 
 	if (!open && !inDOM) {
 		return null

@@ -1,3 +1,5 @@
+import { useTheme } from 'react-jss'
+
 const theme = {
 	color: {
 		text: '#000000',
@@ -37,5 +39,7 @@ const theme = {
 }
 
 export type AppTheme = typeof theme
+
+export const useAppTheme = () => useTheme<AppTheme>()
 
 export default theme

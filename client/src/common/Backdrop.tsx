@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { MouseEventHandler, ReactNode, useEffect } from 'react'
 import { createUseStyles } from 'react-jss'
-import theme from '../theme'
+import { useAppTheme } from '../theme'
 import { useFadeTransition } from '../utils/hooks'
 
 interface JSSProps {
@@ -35,9 +35,10 @@ interface BackdropProps {
 	children?: ReactNode | ReactNode[]
 }
 
-function Backdrop ({ show, close, zIndex, transitionDuration = theme.duration.backdropTransition, children }: BackdropProps) {
+function Backdrop ({ show, close, zIndex, transitionDuration, children }: BackdropProps) {
 	const classes = useStyles({ zIndex })
-	const { fadeTransition, inDOM } = useFadeTransition(show, transitionDuration)
+	const theme = useAppTheme()
+	const { fadeTransition, inDOM } = useFadeTransition(show, transitionDuration || theme.duration.backdropTransition)
 
 	useEffect(() => {
 		document.body.classList.add(classes.noScroll)

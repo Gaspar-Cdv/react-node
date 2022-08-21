@@ -1,6 +1,6 @@
 import Backdrop from './Backdrop'
 import loader from '../images/loader.svg'
-import theme from '../theme'
+import { useAppTheme } from '../theme'
 import { createUseStyles } from 'react-jss'
 import { defineI18n, useTranslate } from '../utils/i18n'
 
@@ -38,6 +38,7 @@ interface LoaderProps {
 function Loader ({ show }: LoaderProps) {
 	const classes = useStyles()
 	const translate = useTranslate()
+	const theme = useAppTheme()
 
 	return (
 		<Backdrop show={show} zIndex={theme.zIndex.loader}>

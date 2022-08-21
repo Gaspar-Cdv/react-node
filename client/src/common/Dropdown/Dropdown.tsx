@@ -2,7 +2,7 @@ import { forwardRef, Key, ReactNode, useEffect, useLayoutEffect, useState } from
 import { createUseStyles } from 'react-jss'
 import DropdownItem from './DropdownItem'
 import Scrollbar from '../Scrollbar'
-import theme from '../../theme'
+import { useAppTheme } from '../../theme'
 
 const MIN_WIDTH = '6rem'
 const MAX_HEIGHT = '16rem'
@@ -54,6 +54,7 @@ const Dropdown = forwardRef(({ show, onClose, items, minWidth, ...positions }: D
 	const [inDOM, setInDOM] = useState(false)
 	const visible = show && inDOM
 	const classes = useStyles({ visible, minWidth, ...positions })
+	const theme = useAppTheme()
 
 	useLayoutEffect(() => {
 		if (inDOM !== show) {
@@ -61,7 +62,7 @@ const Dropdown = forwardRef(({ show, onClose, items, minWidth, ...positions }: D
 				setInDOM(show)
 			}, show ? 0 : theme.duration.dropdownTransition)
 		}
-	}, [show, inDOM])
+	}, [show, inDOM, theme.duration.dropdownTransition])
 
 	useEffect(() => {
 		if (show) {

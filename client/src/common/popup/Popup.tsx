@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import { createUseStyles } from 'react-jss'
-import theme from '../../theme'
+import { useAppTheme } from '../../theme'
 import Backdrop from '../Backdrop'
 import Scrollbar from '../Scrollbar'
 
@@ -34,6 +34,7 @@ export interface PopupProps {
 
 function Popup ({ show, title, children, onCancel }: PopupProps) {
 	const classes = userStyles()
+	const theme = useAppTheme()
 
 	return (
 		<Backdrop show={show} close={onCancel} zIndex={theme.zIndex.popup}>
