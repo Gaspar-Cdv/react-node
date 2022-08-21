@@ -20,6 +20,7 @@ const useStyles = createUseStyles(theme => ({
 	menu: ({ visible, minWidth, ...positions }: JssProps) => ({
 		position: 'absolute',
 		...positions,
+		zIndex: theme.zIndex.dropdown,
 		backgroundColor: theme.color.background,
 		border: '1px solid #dddddd',
 		borderRadius: 3,

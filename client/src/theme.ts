@@ -25,7 +25,8 @@ const theme = {
 		defaultBackdrop: 200,
 		topbar: 200,
 		popup: 300,
-		loader: 400,
+		dropdown: 400,
+		loader: 500,
 		tooltip: 999 // from react-tooltip (do not change)
 	},
 	duration: {
