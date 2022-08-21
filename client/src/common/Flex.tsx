@@ -8,6 +8,7 @@ interface FlexCssProps {
 	flex?: Property.Flex<JssValue>
 	gap?: Property.Gap<JssValue>
 	padding?: Property.Padding<JssValue>
+	inline?: boolean
 }
 
 interface JssProps extends FlexCssProps {
@@ -18,8 +19,8 @@ interface JssProps extends FlexCssProps {
 }
 
 const useStyles = createUseStyles({
-	flex: (props: JssProps) => ({
-		display: 'flex',
+	flex: ({ inline, ...props }: JssProps) => ({
+		display: inline ? 'inline-flex' : 'flex',
 		...props
 	})
 })
@@ -36,6 +37,7 @@ function Flex ({
 	flex,
 	gap,
 	padding,
+	inline = true,
 	direction,
 	justify,
 	align,
@@ -48,6 +50,7 @@ function Flex ({
 		flex,
 		gap,
 		padding,
+		inline,
 		flexDirection: direction,
 		justifyContent: justify,
 		alignItems: align,
