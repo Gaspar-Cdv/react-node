@@ -1,8 +1,7 @@
 import { Helmet } from 'react-helmet'
-import { useSelector } from 'react-redux'
 import { useCurrentTitle } from '../common/routing/hooks'
 import { defineI18n, useTranslate } from '../utils/i18n'
-import { languageSelector } from '../store/language/selectors'
+import { useCurrentLanguage } from '../store/language/hooks'
 
 const i18n = defineI18n({
 	en: {
@@ -17,7 +16,7 @@ const i18n = defineI18n({
 
 function Head () {
 	const translate = useTranslate()
-	const language = useSelector(languageSelector)
+	const { currentLanguage } = useCurrentLanguage()
 	const pageTitle = useCurrentTitle()
 
 	const title = [
@@ -26,11 +25,11 @@ function Head () {
 	].filter(Boolean).join(' - ')
 
 	return (
-		<Helmet htmlAttributes={{ lang: language }}>
+		<Helmet htmlAttributes={{ lang: currentLanguage }}>
 			<meta charSet='UTF-8' />
 			<title>{title}</title>
 			<meta httpEquiv='X-UA-Compatible' content='IE=edge' />
-			<meta name='language' content={language} />
+			<meta name='language' content={currentLanguage} />
 			<meta name='description' content={translate(i18n.description)} />
 			<meta name='viewport' content='width=device-width, initial-scale=1' />
 		</Helmet>

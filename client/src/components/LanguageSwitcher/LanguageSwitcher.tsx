@@ -1,6 +1,4 @@
-import { useSelector } from 'react-redux'
-import { useSetLanguage } from '../../store/language/actions'
-import { languageSelector } from '../../store/language/selectors'
+import { useCurrentLanguage } from '../../store/language/hooks'
 import { Language } from '../../types/Language'
 import { useMemo, useState } from 'react'
 import { DropdownItem } from '../../common/dropdown/Dropdown'
@@ -46,8 +44,7 @@ function LanguageSwitcher ({ align = 'left' }: LanguageSwitcherProps) {
 	const classes = useStyles()
 	const translate = useTranslate()
 	const [isOpen, setIsOpen] = useState(false)
-	const currentLanguage = useSelector(languageSelector)
-	const setLanguage = useSetLanguage()
+	const { currentLanguage, setCurrentLanguage } = useCurrentLanguage()
 	const [isFlagVisible, setIsFlagVisible] = useState(true)
 
 	const languages = useMemo(() => [
@@ -71,12 +68,12 @@ function LanguageSwitcher ({ align = 'left' }: LanguageSwitcherProps) {
 
 				setIsFlagVisible(false)
 				setTimeout(() => {
-					setLanguage(language)
+					setCurrentLanguage(language)
 					setIsFlagVisible(true)
 				}, transitionDuration)
 			}
 		}))
-	}, [classes.option, currentLanguage, languages, setLanguage, translate])
+	}, [classes.option, currentLanguage, languages, setCurrentLanguage, translate])
 
 	const handleClick = () => {
 		setIsOpen(isOpen => !isOpen)

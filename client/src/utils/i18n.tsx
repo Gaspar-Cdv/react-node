@@ -1,11 +1,10 @@
 import React, { ReactNode, useCallback, useEffect, useReducer } from 'react'
 import { CustomFormats, IntlProvider, useIntl } from 'react-intl'
 import memoizeOne from 'memoize-one'
-import { useSelector } from 'react-redux'
 import { PrimitiveType, FormatXMLElementFn } from 'intl-messageformat'
 import { EventEmitter } from 'events'
 import { Language } from '../types/Language'
-import { languageSelector } from '../store/language/selectors'
+import { useCurrentLanguage } from '../store/language/hooks'
 
 export interface IntlMessages {
 	[key: string]: string | IntlMessages
@@ -154,7 +153,7 @@ interface I18nProviderProps {
 
 export function I18nProvider ({ children }: I18nProviderProps) {
 	const [, forceRender] = useReducer(s => s + 1, 0) // hack inspired by https://github.com/reduxjs/react-redux/blob/e15ccdcb616a05f9ae343fcb85aa3451fc47082c/src/hooks/useSelector.js
-	const locale = useSelector(languageSelector)
+	const { currentLanguage } = useCurrentLanguage()
 
 	useEffect(() => {
 		EventBus.on('i18nMessagesChanged', forceRender)
@@ -165,9 +164,9 @@ export function I18nProvider ({ children }: I18nProviderProps) {
 
 	return (
 		<IntlProvider
-			locale={locale}
-			messages={messages[locale]}
-			formats={formats(locale)}
+			locale={currentLanguage}
+			messages={messages[currentLanguage]}
+			formats={formats(currentLanguage)}
 		>
 			{children}
 		</IntlProvider>
