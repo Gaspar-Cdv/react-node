@@ -1,24 +1,26 @@
 import { lazy, ReactNode } from 'react'
 import { useRoutes } from 'react-router-dom'
-import { defineI18n, IntlMessages } from '../../utils/i18n'
+import { defineI18n } from '../../utils/i18n'
 
 const Home = lazy(() => import(/* webpackChunkName: "home" */ '../../components/Home/Home'))
 const Login = lazy(() => import(/* webpackChunkName: "login" */ '../../components/Login/Login'))
 const NotFound = lazy(() => import(/* webpackChunkName: "notFound" */ '../../components/NotFound'))
 
-export type RouteName =
+type RouteNameExtended =
 	| 'home'
 	| 'login'
 	| 'notFound'
 
-export interface Route<T extends RouteName = RouteName> {
+export type RouteName = Exclude<RouteNameExtended, 'notFound'>
+
+export interface Route<T extends RouteNameExtended = RouteNameExtended> {
 	name: T
 	path: string
 	element: ReactNode
 }
 
 type Routes = {
-	[K in RouteName]: Route<K>
+	[K in RouteNameExtended]: Route<K>
 }
 
 export const routes: Routes = {
@@ -39,8 +41,8 @@ export const routes: Routes = {
 	}
 }
 
-type RoutesI18n = IntlMessages & {
-	[key in RouteName]: string
+type RoutesI18n = {
+	[key in RouteNameExtended]: string
 }
 
 export const pageTitles = defineI18n<RoutesI18n>({
