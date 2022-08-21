@@ -1,6 +1,6 @@
 import Backdrop from './Backdrop'
 import loader from '../images/loader.svg'
-import { useAppTheme } from '../theme'
+import { useAppTheme } from '../theme/theme'
 import { createUseStyles } from 'react-jss'
 import { defineI18n, useTranslate } from '../utils/i18n'
 

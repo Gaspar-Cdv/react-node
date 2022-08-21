@@ -2,7 +2,7 @@ import { forwardRef, Key, ReactNode, useEffect, useLayoutEffect, useState } from
 import { createUseStyles } from 'react-jss'
 import DropdownItem from './DropdownItem'
 import Scrollbar from '../Scrollbar'
-import { useAppTheme } from '../../theme'
+import { useAppTheme } from '../../theme/theme'
 
 const MIN_WIDTH = '6rem'
 const MAX_HEIGHT = '16rem'
@@ -22,7 +22,7 @@ const useStyles = createUseStyles(theme => ({
 		...positions,
 		zIndex: theme.zIndex.dropdown,
 		backgroundColor: theme.color.background,
-		border: '1px solid #dddddd',
+		border: `1px solid ${theme.color.lightBorder}`,
 		borderRadius: 3,
 		minWidth: minWidth || MIN_WIDTH,
 		transition: `all ${theme.duration.dropdownTransition}ms linear`,

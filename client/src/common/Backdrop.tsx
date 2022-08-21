@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { MouseEventHandler, ReactNode, useEffect } from 'react'
 import { createUseStyles } from 'react-jss'
-import { useAppTheme } from '../theme'
+import { useAppTheme } from '../theme/theme'
 import { useFadeTransition } from '../utils/hooks'
 
 interface JSSProps {

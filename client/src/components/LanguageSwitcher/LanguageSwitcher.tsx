@@ -7,7 +7,7 @@ import { defineI18n, useTranslate } from '../../utils/i18n'
 import DropdownToggle from '../../common/dropdown/DropdownToggle'
 import CountryFlag from './CountryFlag'
 import classNames from 'classnames'
-import { useAppTheme } from '../../theme'
+import { useAppTheme } from '../../theme/theme'
 
 const i18n = defineI18n({
 	en: {

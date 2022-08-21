@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { ReactNode, useLayoutEffect, useState } from 'react'
 import { createUseStyles } from 'react-jss'
-import { useAppTheme } from '../theme'
+import { useAppTheme } from '../theme/theme'
 import Backdrop from './Backdrop'
 
 interface JssProps {

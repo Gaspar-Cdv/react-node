@@ -1,4 +1,4 @@
-import { AppTheme } from '../theme'
+import { AppTheme } from '../theme/theme'
 
 declare global {
   namespace Jss {

@@ -1,9 +1,9 @@
 import { ThemeProvider } from 'react-jss'
 import { Provider } from 'react-redux'
 import { I18nProvider } from '../src/utils/i18n'
-import theme from '../src/theme'
+import { useCss } from '../src/theme/useCss'
+import theme from '../src/theme/theme'
 import store from '../src/store/store'
-import '../src/index.css'
 
 export const parameters = {
 	actions: { argTypesRegex: "^on[A-Z].*" },
@@ -16,6 +16,11 @@ export const parameters = {
 }
 
 export const decorators = [
+	(Story) => {
+		useCss()
+
+		return <Story />
+	},
 	(Story) => (
 		<Provider store={store}>
 			<I18nProvider>
@@ -24,5 +29,5 @@ export const decorators = [
 				</ThemeProvider>
 			</I18nProvider>
 		</Provider>
-	),
+	)
 ]

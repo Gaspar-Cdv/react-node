@@ -2,7 +2,7 @@ import { createUseStyles } from 'react-jss'
 import { ReactComponent as InfoIcon } from '../../images/icons/info.svg'
 import { ReactComponent as QuestionIcon } from '../../images/icons/question.svg'
 import { ReactComponent as WarningIcon } from '../../images/icons/warning.svg'
-import theme from '../../theme'
+import theme from '../../theme/theme'
 import { generateId } from '../../utils/stringUtils'
 import Tooltip from './Tooltip'
 

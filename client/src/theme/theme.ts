@@ -2,8 +2,8 @@ import { useTheme } from 'react-jss'
 
 const theme = {
 	color: {
-		text: '#000000',
-		background: '#ffffff',
+		text: '#333333',
+		background: '#fcfcfc',
 		primary: '#0d6efd',
 		secondary: '#6c757d',
 		info: '#0dcaf0',
@@ -11,7 +11,9 @@ const theme = {
 		warning: '#ffc107',
 		danger: '#dc3545',
 		cta: '#ffc107',
-		disabled: '#aaaaaa'
+		disabled: '#aaaaaa',
+		menu: '#f5f5f5',
+		lightBorder: '#cccccc',
 	},
 	size: {
 		xs: '0.5rem',

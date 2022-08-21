@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import { createUseStyles } from 'react-jss'
-import { useAppTheme } from '../../theme'
+import { useAppTheme } from '../../theme/theme'
 import Backdrop from '../Backdrop'
 import Scrollbar from '../Scrollbar'
 

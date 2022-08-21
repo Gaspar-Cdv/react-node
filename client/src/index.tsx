@@ -6,8 +6,7 @@ import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import App from './components/App'
 import store from './store/store'
-import theme from './theme'
-import './index.css'
+import theme from './theme/theme'
 
 const root = ReactDOM.createRoot(
 	document.getElementById('root') as HTMLElement
