@@ -33,13 +33,13 @@ export interface DrawerProps {
 	open: boolean
 	onClose: () => void
 	width?: number | string
-	direction?: 'left' | 'right'
+	position?: 'left' | 'right'
 	zIndex?: number
 	className?: string
 	children?: ReactNode | ReactNode[]
 }
 
-function Drawer ({ open, onClose, width = '100vw', direction = 'left', zIndex, className, children }: DrawerProps) {
+function Drawer ({ open, onClose, width = '100vw', position = 'left', zIndex, className, children }: DrawerProps) {
 	const [inDOM, setInDOM] = useState(false)
 	const visible = open && inDOM
 	const classes = useStyles({
@@ -68,7 +68,7 @@ function Drawer ({ open, onClose, width = '100vw', direction = 'left', zIndex, c
 				zIndex={theme.zIndex.defaultDrawer}
 				transitionDuration={theme.duration.drawerTransition}
 			/>
-			<div className={classNames(classes.container, classes[direction], className)}>
+			<div className={classNames(classes.container, classes[position], className)}>
 				{children}
 			</div>
 		</>

@@ -7,7 +7,7 @@ export default {
 	args: {
 		open: true,
 		width: '100vw',
-		direction: 'left'
+		position: 'left'
 	},
 	argTypes: {
 		className: { control: false }
