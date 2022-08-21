@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '../store'
-import { setLoaderVisibility, setPopupVisibility, setMenuVisibility } from './reducer'
+import { setLoaderVisibility, setPopupVisibility, setSidebarVisibility } from './reducer'
 
 export const useLoaderVisibility = () => {
 	const dispatch = useAppDispatch()
@@ -19,11 +19,11 @@ export const usePopupVisibility = () => {
 	return { isPopupVisible, setIsPopupVisible }
 }
 
-export const useMenuVisibility = () => {
+export const useSidebarVisibility = () => {
 	const dispatch = useAppDispatch()
 
-	const isMenuVisible = useAppSelector(state => state.elementsVisibility.menu)
-	const setIsMenuVisible = (visible: boolean) => dispatch(setMenuVisibility(visible))
+	const isSidebarVisible = useAppSelector(state => state.elementsVisibility.sidebar)
+	const setIsSidebarVisible = (visible: boolean) => dispatch(setSidebarVisibility(visible))
 
-	return { isMenuVisible, setIsMenuVisible }
+	return { isSidebarVisible, setIsSidebarVisible }
 }

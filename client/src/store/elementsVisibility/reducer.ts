@@ -3,13 +3,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 export interface ElementsVisibilityState {
 	loader: boolean
 	popup: boolean
-	menu: boolean
+	sidebar: boolean
 }
 
 const initialState: ElementsVisibilityState = {
 	loader: false,
 	popup: false,
-	menu: false
+	sidebar: false
 }
 
 export const elementsVisibilitySlice = createSlice({
@@ -28,10 +28,10 @@ export const elementsVisibilitySlice = createSlice({
 				popup: action.payload
 			}
 		},
-		setMenuVisibility: (state, action: PayloadAction<boolean>): ElementsVisibilityState => {
+		setSidebarVisibility: (state, action: PayloadAction<boolean>): ElementsVisibilityState => {
 			return {
 				...state,
-				menu: action.payload
+				sidebar: action.payload
 			}
 		}
 	}
@@ -39,5 +39,5 @@ export const elementsVisibilitySlice = createSlice({
 
 export const {
 	reducer: elementsVisibilityReducer,
-	actions: { setLoaderVisibility, setPopupVisibility, setMenuVisibility }
+	actions: { setLoaderVisibility, setPopupVisibility, setSidebarVisibility }
 } = elementsVisibilitySlice
