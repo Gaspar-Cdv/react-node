@@ -7,16 +7,17 @@ import Backdrop from './Backdrop'
 interface JssProps {
 	width: string
 	visible: boolean
+	zIndex?: number
 }
 
 const useStyles = createUseStyles(theme => ({
-	container: ({ width }: JssProps) => ({
+	container: ({ width, zIndex }: JssProps) => ({
 		position: 'fixed',
 		top: 0,
 		width: width,
 		height: '100vh',
 		backgroundColor: 'white',
-		zIndex: theme.zIndex.drawer
+		zIndex: zIndex || theme.zIndex.defaultDrawer
 	}),
 	left: ({ visible, width }: JssProps) => ({
 		transition: `left ${theme.duration.drawerTransition}ms ease-in-out`,
@@ -33,16 +34,18 @@ export interface DrawerProps {
 	onClose: () => void
 	width?: number | string
 	direction?: 'left' | 'right'
+	zIndex?: number
 	className?: string
 	children?: ReactNode | ReactNode[]
 }
 
-function Drawer ({ open, onClose, width = '100vw', direction = 'left', className, children }: DrawerProps) {
+function Drawer ({ open, onClose, width = '100vw', direction = 'left', zIndex, className, children }: DrawerProps) {
 	const [inDOM, setInDOM] = useState(false)
 	const visible = open && inDOM
 	const classes = useStyles({
 		width: typeof width === 'number' ? `${width}px` : width,
-		visible
+		visible,
+		zIndex
 	})
 
 	useLayoutEffect(() => {
@@ -62,7 +65,7 @@ function Drawer ({ open, onClose, width = '100vw', direction = 'left', className
 			<Backdrop
 				close={onClose}
 				show={open}
-				zIndex={theme.zIndex.drawer}
+				zIndex={theme.zIndex.defaultDrawer}
 				transitionDuration={theme.duration.drawerTransition}
 			/>
 			<div className={classNames(classes.container, classes[direction], className)}>

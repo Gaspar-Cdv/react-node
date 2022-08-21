@@ -17,13 +17,16 @@ const theme = {
 		md: '1.5rem',
 		lg: '2rem',
 		xl: '3rem',
-		menuHeight: 50
+		menuHeight: '3rem'
 	},
 	zIndex: {
-		drawer: 50,
-		defaultBackdrop: 100,
-		popup: 200,
-		loader: 500
+		defaultDrawer: 100,
+		sidebar: 100,
+		defaultBackdrop: 200,
+		topbar: 200,
+		popup: 300,
+		loader: 400,
+		tooltip: 999 // from react-tooltip (do not change)
 	},
 	duration: {
 		dropdownTransition: 200,
