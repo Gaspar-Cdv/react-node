@@ -7,6 +7,7 @@ const useStyles = createUseStyles({
 		display: 'flex',
 		flexDirection: 'column',
 		justifyContent: 'center',
+		textAlign: 'center',
 		alignItems: 'center',
 		gap: '2rem',
 		height: '100%',
@@ -32,11 +33,11 @@ function NotFound () {
 	const translate = useTranslate()
 
 	return (
-		<div className={classes.container}>
+		<main className={classes.container}>
 			<h1>{translate(i18n.title)}</h1>
 			<span>{translate(i18n.description)}</span>
 			<ButtonLink to='home'>{translate(i18n.button)}</ButtonLink>
-		</div>
+		</main>
 	)
 }
 
