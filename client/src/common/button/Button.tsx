@@ -1,7 +1,6 @@
 import classNames from 'classnames'
 import { FunctionComponent, MouseEvent, ReactNode } from 'react'
 import { createUseStyles } from 'react-jss'
-import { colorShader } from '../../utils/stringUtils'
 
 const useStyles = createUseStyles(theme => ({
 	container: {
@@ -21,21 +20,21 @@ const useStyles = createUseStyles(theme => ({
 		cursor: 'pointer',
 		transition: 'background-color 0.2s',
 		'&:hover:not($disabled)': {
-			backgroundColor: colorShader(theme.color.cta, 20)
+			backgroundColor: theme.color.orange[400]
 		}
 	},
 	secondary: {
 		color: 'white',
 		backgroundColor: theme.color.secondary,
 		'&:hover:not($disabled)': {
-			backgroundColor: colorShader(theme.color.secondary, 20)
+			backgroundColor: theme.color.gray[600]
 		}
 	},
 	danger: {
 		color: 'white',
 		backgroundColor: theme.color.danger,
 		'&:hover:not($disabled)': {
-			backgroundColor: colorShader(theme.color.danger, 20)
+			backgroundColor: theme.color.red[400]
 		}
 	},
 	disabled: {
