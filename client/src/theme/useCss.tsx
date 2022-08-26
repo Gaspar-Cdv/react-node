@@ -33,23 +33,30 @@ export const useCss = createUseStyles(theme => ({
 			fontFamily: '\'Montserrat\', sans-serif',
 			fontWeight: 700
 		},
-		'h1': {
+		h1: {
 			fontSize: '3.5rem'
 		},
-		'h2': {
+		h2: {
 			fontSize: '3rem'
 		},
-		'h3': {
+		h3: {
 			fontSize: '2.5rem'
 		},
-		'h4': {
+		h4: {
 			fontSize: '2rem'
 		},
-		'h5': {
+		h5: {
 			fontSize: '1.5rem'
 		},
-		'h6': {
+		h6: {
 			fontSize: '1rem'
+		},
+		a: {
+			color: theme.color.cta,
+			textDecoration: 'none',
+			'&:hover': {
+				textDecoration: 'underline'
+			}
 		},
 
 		/* layout */
@@ -58,7 +65,7 @@ export const useCss = createUseStyles(theme => ({
 			listStylePosition: 'inside',
 			marginLeft: '1rem'
 		},
-		'table': {
+		table: {
 			borderCollapse: 'collapse'
 		},
 		'td, th': {
