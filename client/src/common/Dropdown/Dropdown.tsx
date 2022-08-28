@@ -37,6 +37,7 @@ export interface DropdownItem {
 	key: Key
 	label: ReactNode
 	onClick: () => void
+	selected?: boolean
 }
 
 export interface DropdownProps {
@@ -80,14 +81,14 @@ const Dropdown = forwardRef(({ show, onClose, items, minWidth, ...positions }: D
 
 	return (
 		<Scrollbar className={classes.menu} maxHeight={MAX_HEIGHT} ref={ref}>
-			{items.map(({ key, label, onClick }) => {
+			{items.map(({ key, label, onClick, selected }) => {
 				const handleClick = () => {
 					onClick()
 					onClose()
 				}
 
 				return (
-					<DropdownItem key={key} onClick={handleClick}>
+					<DropdownItem key={key} onClick={handleClick} selected={selected}>
 						{label}
 					</DropdownItem>
 				)
