@@ -1,11 +1,8 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react'
+import Main from '../components/Main'
 import BottomBar from '../components/Nav/BottomBar'
-import BottomBarItem from '../components/Nav/BottomBarItem'
 import Sidebar from '../components/Nav/Sidebar'
 import Topbar from '../components/Nav/Topbar'
-import { ReactComponent as InfoIcon } from '../images/icons/info.svg'
-import { ReactComponent as QuestionIcon } from '../images/icons/question.svg'
-import { ReactComponent as WarningIcon } from '../images/icons/warning.svg'
 
 export default {
 	title: 'Components/Navigation',
@@ -17,17 +14,15 @@ export default {
 
 function NavigationWrapper () {
 	return (
-		<>
+		<div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
 			<Topbar />
 
 			<Sidebar />
 
-			<BottomBar>
-				<BottomBarItem icon={<QuestionIcon />} />
-				<BottomBarItem icon={<InfoIcon />} />
-				<BottomBarItem icon={<WarningIcon />} />
-			</BottomBar>
-		</>
+			<Main />
+
+			<BottomBar />
+		</div>
 	)
 }
 

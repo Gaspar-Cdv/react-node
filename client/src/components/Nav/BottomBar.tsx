@@ -1,6 +1,7 @@
-import { ReactElement } from 'react'
 import { createUseStyles } from 'react-jss'
-import { BottomBarItemProps } from './BottomBarItem'
+import BottomBarItem from './BottomBarItem'
+import { ReactComponent as InfoIcon } from '../../images/icons/info.svg'
+import { ReactComponent as QuestionIcon } from '../../images/icons/question.svg'
 
 const useStyles = createUseStyles(theme => ({
 	container: {
@@ -12,16 +13,13 @@ const useStyles = createUseStyles(theme => ({
 	}
 }))
 
-interface BottomBarProps {
-	children: ReactElement<BottomBarItemProps> | ReactElement<BottomBarItemProps>[]
-}
-
-function BottomBar ({ children }: BottomBarProps) {
+function BottomBar () {
 	const classes = useStyles()
 
 	return (
 		<nav className={classes.container}>
-			{children}
+			<BottomBarItem icon={<InfoIcon />} route='home' />
+			<BottomBarItem icon={<QuestionIcon />} route='login' />
 		</nav>
 	)
 }

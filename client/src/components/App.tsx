@@ -3,9 +3,6 @@ import Head from './Head'
 import Topbar from './Nav/Topbar'
 import { useCss } from '../theme/useCss'
 import BottomBar from './Nav/BottomBar'
-import BottomBarItem from './Nav/BottomBarItem'
-import { ReactComponent as InfoIcon } from '../images/icons/info.svg'
-import { ReactComponent as QuestionIcon } from '../images/icons/question.svg'
 import Sidebar from './Nav/Sidebar'
 import Main from './Main'
 
@@ -22,10 +19,7 @@ function App () {
 
 			<Main />
 
-			<BottomBar>
-				<BottomBarItem icon={<InfoIcon />} route='home' />
-				<BottomBarItem icon={<QuestionIcon />} route='login' />
-			</BottomBar>
+			<BottomBar />
 		</>
 	)
 }
