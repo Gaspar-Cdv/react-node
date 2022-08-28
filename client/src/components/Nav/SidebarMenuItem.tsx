@@ -8,10 +8,11 @@ import { useSidebarVisibility } from '../../store/elementsVisibility/hooks'
 
 const useStyles = createUseStyles(theme => ({
 	link: {
-		color: theme.color.blue[700],
+		color: theme.color.cta,
 		textTransform: 'uppercase',
+		textDecoration: 'none',
 		'&:hover': {
-			color: theme.color.blue[600]
+			color: theme.color.amber[400]
 		}
 	},
 	active: {
