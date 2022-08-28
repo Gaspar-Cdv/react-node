@@ -24,7 +24,10 @@ export const useCss = createUseStyles(theme => ({
 		},
 
 		'#root': {
-			flex: 1
+			flex: 1,
+			display: 'flex',
+			flexDirection: 'column',
+			maxHeight: '100vh'
 		},
 
 		/* typography */

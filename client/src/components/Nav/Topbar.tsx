@@ -22,13 +22,8 @@ const i18n = defineI18n({
 })
 
 const useStyles = createUseStyles(theme => ({
-	placeholder: {
-		height: theme.size.menuHeight
-	},
 	navbar: {
 		height: theme.size.menuHeight,
-		width: '100%',
-		position: 'fixed',
 		display: 'flex',
 		justifyContent: 'space-between',
 		backgroundColor: theme.color.menu,
@@ -95,19 +90,15 @@ function Topbar () {
 	}, [isMenuIconVisible, isSidebarVisible])
 
 	return (
-		<>
-			<nav className={classes.navbar}>
-				<Link to='home' className={classes.title} onClick={() => setIsSidebarVisible(false)}>
-					{translate(i18n.title)}
-				</Link>
+		<nav className={classes.navbar}>
+			<Link to='home' className={classes.title} onClick={() => setIsSidebarVisible(false)}>
+				{translate(i18n.title)}
+			</Link>
 
-				<div onClick={handleClick} className={classNames(classes.menuIcon, { [classes.transparent]: !isMenuIconVisible })}>
-					{menuIcon}
-				</div>
-			</nav>
-
-			<div className={classes.placeholder} />
-		</>
+			<div onClick={handleClick} className={classNames(classes.menuIcon, { [classes.transparent]: !isMenuIconVisible })}>
+				{menuIcon}
+			</div>
+		</nav>
 	)
 }
 
