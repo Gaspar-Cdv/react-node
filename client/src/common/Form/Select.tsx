@@ -1,4 +1,4 @@
-import { Key, ReactNode, useMemo, useState } from 'react'
+import { Key, ReactNode, useCallback, useMemo, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import { DropdownItem } from '../dropdown/Dropdown'
 import DropdownToggle from '../dropdown/DropdownToggle'
@@ -49,6 +49,13 @@ function Select ({ placeholder, options, selected }: SelectProps) {
 		return option?.label || placeholder
 	}, [selected, options, placeholder])
 
+	const handleItemSelection = useCallback((item: DropdownItem) => {
+		return {
+			...item,
+			selected: item.key === selected
+		}
+	}, [selected])
+
 	const handleClick = () => {
 		setIsOpen(isOpen => !isOpen)
 	}
@@ -58,7 +65,12 @@ function Select ({ placeholder, options, selected }: SelectProps) {
 	}
 
 	return (
-		<DropdownToggle items={options} show={isOpen} onClick={handleClick} onClose={handleClose}>
+		<DropdownToggle
+			items={options.map(handleItemSelection)}
+			show={isOpen}
+			onClick={handleClick}
+			onClose={handleClose}
+		>
 			<div className={classes.container} title={selectedLabel?.toString()}>
 				<div className={classes.select}>
 					{selectedLabel}

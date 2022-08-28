@@ -3,6 +3,7 @@ import { createUseStyles } from 'react-jss'
 import { useAppTheme } from '../../theme/theme'
 import Backdrop from '../Backdrop'
 import Scrollbar from '../Scrollbar'
+import { ReactComponent as CloseIcon } from '../../images/icons/close.svg'
 
 const userStyles = createUseStyles(theme => ({
 	popup: {
@@ -11,15 +12,23 @@ const userStyles = createUseStyles(theme => ({
 		display: 'flex',
 		flexDirection: 'column',
 		gap: theme.size.xs,
-		padding: theme.size.sm
+		padding: theme.size.sm,
+		position: 'relative'
 	},
 	title: {
 		textAlign: 'center',
-		fontWeight: 700
+		fontWeight: 700,
+		minHeight: theme.size.md
 	},
 	content: {
 		flex: '1 1 auto',
 		maxWidth: '30rem'
+	},
+	close: {
+		position: 'absolute',
+		top: theme.size.sm,
+		right: theme.size.sm,
+		cursor: 'pointer'
 	}
 }))
 
@@ -37,9 +46,9 @@ function Popup ({ show, title, children, onCancel }: PopupProps) {
 	return (
 		<Backdrop show={show} close={onCancel} zIndex={theme.zIndex.popup}>
 			<div className={classes.popup}>
-				{title != null && (
-					<div className={classes.title}>{title}</div>
-				)}
+				<CloseIcon className={classes.close} onClick={onCancel} />
+
+				<div className={classes.title}>{title}</div>
 
 				<Scrollbar maxHeight='20rem' className={classes.content}>
 					{children}
