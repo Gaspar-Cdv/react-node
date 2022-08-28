@@ -3,6 +3,9 @@ import { createUseStyles } from 'react-jss'
 import { BottomBarItemProps } from './BottomBarItem'
 
 const useStyles = createUseStyles(theme => ({
+	placeholder: {
+		height: theme.size.menuHeight
+	},
 	container: {
 		display: 'flex',
 		position: 'fixed',
@@ -23,9 +26,13 @@ function BottomBar ({ children }: BottomBarProps) {
 	const classes = useStyles()
 
 	return (
-		<nav className={classes.container}>
-			{children}
-		</nav>
+		<>
+			<nav className={classes.container}>
+				{children}
+			</nav>
+
+			<div className={classes.placeholder} />
+		</>
 	)
 }
 
