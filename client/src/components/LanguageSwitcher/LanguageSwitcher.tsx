@@ -42,10 +42,11 @@ interface LanguageSwitcherProps {
 function LanguageSwitcher ({ align = 'left' }: LanguageSwitcherProps) {
 	const classes = useStyles()
 	const translate = useTranslate()
-	const [isOpen, setIsOpen] = useState(false)
-	const { currentLanguage, setCurrentLanguage } = useCurrentLanguage()
-	const [isFlagVisible, setIsFlagVisible] = useState(true)
 	const theme = useAppTheme()
+
+	const { currentLanguage, setCurrentLanguage } = useCurrentLanguage()
+	const [isOpen, setIsOpen] = useState(false)
+	const [isFlagVisible, setIsFlagVisible] = useState(true)
 
 	const languages = useMemo(() => [
 		Language.en,
@@ -67,6 +68,7 @@ function LanguageSwitcher ({ align = 'left' }: LanguageSwitcherProps) {
 				}
 
 				setIsFlagVisible(false)
+
 				setTimeout(() => {
 					setCurrentLanguage(language)
 					setIsFlagVisible(true)
@@ -91,7 +93,10 @@ function LanguageSwitcher ({ align = 'left' }: LanguageSwitcherProps) {
 			onClose={handleClose}
 			align={align}
 		>
-			<CountryFlag language={currentLanguage} className={classNames(classes.flag, { [classes.transparent]: !isFlagVisible })} />
+			<CountryFlag
+				language={currentLanguage}
+				className={classNames(classes.flag, { [classes.transparent]: !isFlagVisible })}
+			/>
 		</DropdownToggle>
 	)
 }

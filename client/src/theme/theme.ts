@@ -1,13 +1,11 @@
 import { useTheme } from 'react-jss'
 import tailwindColors from './tailwindColors'
 
-// see palette : https://javisperez.github.io/tailwindcolorshades/?blue=2f1ffa&gray=808080&cardinal=dc3545&sea-green=198754&amber=ffc107
-
 const theme = {
 	color: {
 		...tailwindColors,
 		get text (): string {
-			return this.gray[900]
+			return this.gray[700]
 		},
 		get background (): string {
 			return this.gray[50]
@@ -16,7 +14,7 @@ const theme = {
 			return this.blue[500]
 		},
 		get secondary (): string {
-			return this.gray[700]
+			return this.gray[500]
 		},
 		get info (): string {
 			return this.blue[500]
@@ -31,7 +29,7 @@ const theme = {
 			return this.red[500]
 		},
 		get cta (): string {
-			return this.amber[500]
+			return this.amber[400]
 		},
 		get menu (): string {
 			return this.gray[100]

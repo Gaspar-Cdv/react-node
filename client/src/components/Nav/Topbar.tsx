@@ -36,7 +36,7 @@ const useStyles = createUseStyles(theme => ({
 		alignItems: 'center',
 		padding: '0 1.5rem',
 		textDecoration: 'none',
-		color: '#333',
+		color: theme.color.text,
 		fontSize: '1.5rem',
 		fontWeight: 700,
 		'&:hover': {
@@ -51,9 +51,9 @@ const useStyles = createUseStyles(theme => ({
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
-		color: '#999',
+		color: theme.color.gray[400],
 		'&:hover': {
-			color: '#666'
+			color: theme.color.gray[500]
 		},
 		'& svg': {
 			padding: '0.5rem',

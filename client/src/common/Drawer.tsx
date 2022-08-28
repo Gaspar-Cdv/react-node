@@ -16,8 +16,10 @@ const useStyles = createUseStyles(theme => ({
 		top: 0,
 		width: width,
 		height: '100vh',
-		backgroundColor: 'white',
-		zIndex: zIndex || theme.zIndex.defaultDrawer
+		backgroundColor: theme.color.background,
+		zIndex: zIndex || theme.zIndex.defaultDrawer,
+		boxSizing: 'content-box',
+		borderLeft: `1px solid ${theme.color.lightBorder}`
 	}),
 	left: ({ visible, width }: JssProps) => ({
 		transition: `left ${theme.duration.drawerTransition}ms ease-in-out`,
@@ -39,7 +41,15 @@ export interface DrawerProps {
 	children?: ReactNode | ReactNode[]
 }
 
-function Drawer ({ open, onClose, width = '100vw', position = 'left', zIndex, className, children }: DrawerProps) {
+function Drawer ({
+	open,
+	onClose,
+	width = '100vw',
+	position = 'left',
+	zIndex,
+	className,
+	children
+}: DrawerProps) {
 	const theme = useAppTheme()
 	const [inDOM, setInDOM] = useState(false)
 	const visible = open && inDOM
@@ -69,6 +79,7 @@ function Drawer ({ open, onClose, width = '100vw', position = 'left', zIndex, cl
 				zIndex={theme.zIndex.defaultDrawer}
 				transitionDuration={theme.duration.drawerTransition}
 			/>
+
 			<div className={classNames(classes.container, classes[position], className)}>
 				{children}
 			</div>

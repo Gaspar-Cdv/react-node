@@ -3,10 +3,7 @@ import { createUseStyles } from 'react-jss'
 import { DropdownItem } from '../dropdown/Dropdown'
 import DropdownToggle from '../dropdown/DropdownToggle'
 import { ReactComponent as ArrowIcon } from '../../images/icons/arrow.svg'
-
-interface JssProps {
-	isOpen: boolean
-}
+import classNames from 'classnames'
 
 const useStyles = createUseStyles(theme => ({
 	container: {
@@ -24,14 +21,17 @@ const useStyles = createUseStyles(theme => ({
 		textOverflow: 'ellipsis',
 		overflow: 'hidden'
 	},
-	arrow: ({ isOpen }: JssProps) => ({
+	arrow: {
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
-		transform: isOpen ? 'rotateX(-180deg)' : 'rotateX(0deg)',
+		transform: 'rotateX(0deg)',
 		transition: 'transform 300ms',
 		marginRight: '0.5rem',
-	})
+	},
+	open: {
+		transform: 'rotateX(-180deg)'
+	}
 }))
 
 interface SelectProps {
@@ -41,8 +41,8 @@ interface SelectProps {
 }
 
 function Select ({ placeholder, options, selected }: SelectProps) {
+	const classes = useStyles()
 	const [isOpen, setIsOpen] = useState(false)
-	const classes = useStyles({ isOpen })
 
 	const selectedLabel = useMemo(() => {
 		const option = options.find(o => o.key === selected)
@@ -63,7 +63,8 @@ function Select ({ placeholder, options, selected }: SelectProps) {
 				<div className={classes.select}>
 					{selectedLabel}
 				</div>
-				<div className={classes.arrow}>
+
+				<div className={classNames(classes.arrow, { [classes.open]: isOpen })}>
 					<ArrowIcon />
 				</div>
 			</div>

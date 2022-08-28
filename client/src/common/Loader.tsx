@@ -4,7 +4,7 @@ import { useAppTheme } from '../theme/theme'
 import { createUseStyles } from 'react-jss'
 import { defineI18n, useTranslate } from '../utils/i18n'
 
-const useStyles = createUseStyles({
+const useStyles = createUseStyles(theme => ({
 	container: {
 		display: 'flex',
 		flexDirection: 'column',
@@ -17,10 +17,10 @@ const useStyles = createUseStyles({
 	},
 	message: {
 		fontSize: '1.2rem',
-		color: 'white',
+		color: theme.color.gray[50],
 		textShadow: '0 0 5px black'
 	}
-})
+}))
 
 const i18n = defineI18n({
 	en: {
@@ -44,6 +44,7 @@ function Loader ({ show }: LoaderProps) {
 		<Backdrop show={show} zIndex={theme.zIndex.loader}>
 			<div className={classes.container}>
 				<img src={loader} alt='loading' className={classes.loader} />
+
 				<span className={classes.message}>
 					{translate(i18n.loading)}
 				</span>

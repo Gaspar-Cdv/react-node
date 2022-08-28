@@ -1,11 +1,10 @@
 import classNames from 'classnames'
-import { useMemo } from 'react'
 import { createUseStyles } from 'react-jss'
 import { ReactComponent as FrenchFlag } from '../../images/flags/fr.svg'
 import { ReactComponent as EnglishFlag } from '../../images/flags/us.svg'
 import { Language } from '../../types/Language'
 
-const useStyles = createUseStyles(theme => ({
+const useStyles = createUseStyles({
 	container: {
 		display: 'flex',
 		justifyContent: 'center',
@@ -17,7 +16,7 @@ const useStyles = createUseStyles(theme => ({
 		boxShadow: '1px 1px 1px 1px rgba(0, 0, 0, 0.4)',
 		width: '2.5rem'
 	}
-}))
+})
 
 interface CountryFlagProps {
 	language: Language
@@ -27,10 +26,10 @@ interface CountryFlagProps {
 function CountryFlag ({ language, className }: CountryFlagProps) {
 	const classes = useStyles()
 
-	const flags = useMemo(() => ({
+	const flags = {
 		[Language.en]: EnglishFlag,
 		[Language.fr]: FrenchFlag
-	}), [])
+	}
 
 	const Icon = flags[language]
 

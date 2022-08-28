@@ -1,4 +1,6 @@
-export default {
+// see palette : https://javisperez.github.io/tailwindcolorshades/?blue=2f1ffa&gray=808080&cardinal=dc3545&sea-green=198754&amber=ffc107
+
+const customColors = {
 	gray: {
 		50: '#f9f9f9',
 		100: '#f2f2f2',
@@ -60,3 +62,5 @@ export default {
 		900: '#6c1a22'
 	}
 }
+
+export default customColors

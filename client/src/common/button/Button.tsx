@@ -20,18 +20,18 @@ const useStyles = createUseStyles(theme => ({
 		cursor: 'pointer',
 		transition: 'background-color 0.2s',
 		'&:hover:not($disabled)': {
-			backgroundColor: theme.color.orange[400]
+			backgroundColor: theme.color.amber[300]
 		}
 	},
 	secondary: {
-		color: 'white',
+		color: theme.color.gray[50],
 		backgroundColor: theme.color.secondary,
 		'&:hover:not($disabled)': {
 			backgroundColor: theme.color.gray[600]
 		}
 	},
 	danger: {
-		color: 'white',
+		color: theme.color.gray[50],
 		backgroundColor: theme.color.danger,
 		'&:hover:not($disabled)': {
 			backgroundColor: theme.color.red[400]
@@ -66,6 +66,7 @@ function Button ({ onClick, variant = 'primary', disabled = false, type = 'butto
 				{Icon != null && (
 					<Icon width='1rem' height='1rem' />
 				)}
+
 				{children}
 			</button>
 		</div>

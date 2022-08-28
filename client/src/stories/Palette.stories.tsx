@@ -45,7 +45,7 @@ function Palette () {
 					<>
 						<h6>{colorName}</h6>
 						<div key={colorName} className={classes.line}>
-							{Object.entries(colors).map(([index, color]) => {
+							{Object.values(colors).map(color => {
 								return (
 									<div
 										key={color}

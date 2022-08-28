@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 import { createUseStyles } from 'react-jss'
 
-const useStyles = createUseStyles({
+const useStyles = createUseStyles(theme => ({
 	item: {
 		display: 'flex',
 		alignItems: 'center',
@@ -10,10 +10,10 @@ const useStyles = createUseStyles({
 		cursor: 'pointer',
 		transition: 'background-color 0.1s',
 		'&:hover': {
-			backgroundColor: '#dddddd'
+			backgroundColor: theme.color.gray[300]
 		}
 	}
-})
+}))
 
 export interface DropdownItemProps {
 	onClick: () => void

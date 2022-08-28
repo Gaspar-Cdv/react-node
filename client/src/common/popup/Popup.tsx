@@ -6,9 +6,7 @@ import Scrollbar from '../Scrollbar'
 
 const userStyles = createUseStyles(theme => ({
 	popup: {
-		backgroundColor: 'white',
-		width: '100%',
-		height: '100%',
+		backgroundColor: theme.color.background,
 		borderRadius: 5,
 		display: 'flex',
 		flexDirection: 'column',
@@ -42,6 +40,7 @@ function Popup ({ show, title, children, onCancel }: PopupProps) {
 				{title != null && (
 					<div className={classes.title}>{title}</div>
 				)}
+
 				<Scrollbar maxHeight='20rem' className={classes.content}>
 					{children}
 				</Scrollbar>

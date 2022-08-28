@@ -48,6 +48,7 @@ function IconTooltip ({ type = 'info', children }: IconTooltipProps) {
 	return (
 		<div className={classes.container}>
 			<Icon data-tip data-for={id} height={24} />
+
 			<Tooltip id={id}>
 				{children}
 			</Tooltip>

@@ -1,10 +1,16 @@
 import { SERVER_URL } from '../config/environment'
 import HttpError from '../types/HttpError'
 
+type CommonType = string | number | boolean
+
+type Data = CommonType | {
+	[key in string]: Data
+}
+
 /**
  * @throws {HttpError}
  */
-const call = async (service: string, method: string, data?: any) => {
+const call = async (service: string, method: string, data?: Data) => {
 	const url = `${SERVER_URL}/api/${service}/${method}`
 
 	const response = await fetch(url, {
