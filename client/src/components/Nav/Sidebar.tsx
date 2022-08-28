@@ -31,7 +31,7 @@ const i18n = defineI18n<SidebarI18n>({
 
 const useStyles = createUseStyles(theme => ({
 	drawer: {
-		height: `calc(100vh - ${theme.size.menuHeight})`,
+		height: `calc(100vh - ${theme.size.menuHeight} * 2)`,
 		top: theme.size.menuHeight,
 		backgroundColor: theme.color.menu,
 	},
