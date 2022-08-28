@@ -1,12 +1,24 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App'
+import { I18nProvider } from './utils/i18n'
+import { ThemeProvider } from 'react-jss'
+import { Provider } from 'react-redux'
+import { BrowserRouter } from 'react-router-dom'
+import App from './components/App'
+import store from './store/store'
+import theme from './theme/theme'
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+	document.getElementById('root') as HTMLElement
 )
 root.render(
-	<React.StrictMode>
-		<App />
-	</React.StrictMode>
+	<Provider store={store}>
+		<I18nProvider>
+			<ThemeProvider theme={theme}>
+				<BrowserRouter>
+					<App />
+				</BrowserRouter>
+			</ThemeProvider>
+		</I18nProvider>
+	</Provider>
 )
