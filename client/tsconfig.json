@@ -1,7 +1,7 @@
 {
   "extends": "../tsconfig.json",
 	"compilerOptions": {
-		"lib": ["es2021", "DOM"],
+		"lib": ["ES6", "DOM"],
 		"jsx": "preserve"
 	}
 }
