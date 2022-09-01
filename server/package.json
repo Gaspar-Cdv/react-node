@@ -1,5 +1,5 @@
 {
-   "name": "server",
+   "name": "@title/server",
    "version": "0.1.0",
    "scripts": {
       "start": "nodemon src/index.ts",
@@ -11,6 +11,7 @@
       "eslint-fix": "npx eslint --fix ."
    },
    "dependencies": {
+			"@title/common": "file:../common",
       "@prisma/client": "^4.1.1",
       "bcrypt": "^5.0.1",
       "cors": "^2.8.5",

@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "@title/client",
   "version": "0.1.0",
   "scripts": {
     "start": "react-scripts start",
@@ -12,6 +12,7 @@
     "build-storybook": "build-storybook -s public"
   },
   "dependencies": {
+		"@title/common": "file:../common",
     "@reduxjs/toolkit": "^1.8.4",
     "classnames": "^2.3.1",
     "formik": "^2.2.9",
