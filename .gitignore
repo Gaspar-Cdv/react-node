@@ -13,3 +13,4 @@ node_modules
 
 #server
 server/prisma/migrations
+server/logs
