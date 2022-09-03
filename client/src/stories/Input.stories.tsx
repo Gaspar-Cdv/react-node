@@ -5,7 +5,7 @@ import { Form, Formik } from 'formik'
 import { ErrorMessage } from '@title/common/build/types/ErrorMessage'
 
 export default {
-	title: 'Common',
+	title: 'Common/Form/Input',
 	component: Input
 } as ComponentMeta<typeof Input>
 

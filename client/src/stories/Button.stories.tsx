@@ -3,7 +3,7 @@ import Button, { ButtonProps } from '../common/button/Button'
 import { ReactComponent as Info } from '../images/icons/info.svg'
 
 export default {
-	title: 'Common/Button',
+	title: 'Common/Form/Button',
 	component: ButtonWrapper,
 	args: {
 		title: 'Button',

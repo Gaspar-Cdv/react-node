@@ -3,7 +3,7 @@ import { Key, useState } from 'react'
 import Select from '../common/form/Select'
 
 export default {
-	title: 'Common/Select',
+	title: 'Common/Form/Select',
 	component: SelectWrapper,
 	args: {
 		itemsCount: 5
