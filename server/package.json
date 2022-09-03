@@ -1,6 +1,6 @@
 {
    "name": "@title/server",
-   "version": "0.1.0",
+   "version": "0.2.0",
    "scripts": {
       "start": "nodemon src/index.ts",
       "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register",
