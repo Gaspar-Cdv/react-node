@@ -9,7 +9,7 @@ const useStyles = createUseStyles(theme => ({
 		alignItems: 'center',
 		gap: 20,
 		padding: [10, 20],
-		borderRadius: 2
+		borderRadius: theme.borderRadius.xs
 	},
 	success: {
 		color: theme.color.success,

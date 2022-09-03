@@ -13,7 +13,7 @@ const useStyles = createUseStyles(theme => ({
 	fieldSet: {
 		padding: [7, 12, 12, 12],
 		backgroundColor: 'white',
-		borderRadius: 4,
+		borderRadius: theme.borderRadius.xs,
 		border: [1, 'solid', theme.color.lightBorder],
 		'&:focus-within': {
 			border: [1, 'solid', theme.color.info],

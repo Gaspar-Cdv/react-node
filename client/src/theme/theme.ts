@@ -46,6 +46,10 @@ const theme = {
 		xl: '3rem',
 		menuHeight: '3rem'
 	},
+	borderRadius: {
+		xs: 3,
+		sm: 5
+	},
 	zIndex: {
 		defaultDrawer: 100,
 		sidebar: 100,

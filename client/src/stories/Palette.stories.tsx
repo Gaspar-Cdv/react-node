@@ -7,7 +7,7 @@ export default {
 	component: Palette
 } as ComponentMeta<typeof Palette>
 
-const useStyles = createUseStyles({
+const useStyles = createUseStyles(theme => ({
 	container: {
 		display: 'flex',
 		flexDirection: 'column',
@@ -16,7 +16,7 @@ const useStyles = createUseStyles({
 	line: {
 		flex: 1,
 		display: 'flex',
-		borderRadius: 5,
+		borderRadius: theme.borderRadius.sm,
 		overflow: 'hidden',
 		boxShadow: '0 0 3px rgba(0, 0, 0, 0.2)'
 	},
@@ -33,7 +33,7 @@ const useStyles = createUseStyles({
 			color: 'black'
 		}
 	}
-})
+}))
 
 function Palette () {
 	const classes = useStyles()

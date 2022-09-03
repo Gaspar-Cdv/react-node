@@ -4,7 +4,7 @@ import { ReactComponent as FrenchFlag } from '../../images/flags/fr.svg'
 import { ReactComponent as EnglishFlag } from '../../images/flags/us.svg'
 import { Language } from '../../types/Language'
 
-const useStyles = createUseStyles({
+const useStyles = createUseStyles(theme => ({
 	container: {
 		display: 'flex',
 		justifyContent: 'center',
@@ -12,11 +12,11 @@ const useStyles = createUseStyles({
 		height: '2rem'
 	},
 	flag: {
-		borderRadius: 5,
+		borderRadius: theme.borderRadius.sm,
 		boxShadow: '1px 1px 1px 1px rgba(0, 0, 0, 0.4)',
 		width: '2.5rem'
 	}
-})
+}))
 
 interface CountryFlagProps {
 	language: Language

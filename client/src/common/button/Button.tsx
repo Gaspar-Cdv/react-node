@@ -17,7 +17,7 @@ const useStyles = createUseStyles(theme => ({
 		border: 'none',
 		padding: [theme.size.sm, theme.size.lg],
 		fontSize: '1rem',
-		borderRadius: 1,
+		borderRadius: theme.borderRadius.xs,
 		cursor: 'pointer',
 		transition: 'background-color 0.2s',
 		textTransform: 'uppercase',

@@ -8,7 +8,7 @@ import { ReactComponent as CloseIcon } from '../../images/icons/close.svg'
 const userStyles = createUseStyles(theme => ({
 	popup: {
 		backgroundColor: theme.color.background,
-		borderRadius: 5,
+		borderRadius: theme.borderRadius.sm,
 		display: 'flex',
 		flexDirection: 'column',
 		gap: theme.size.xs,
