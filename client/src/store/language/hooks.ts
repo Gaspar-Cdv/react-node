@@ -1,4 +1,4 @@
-import { Language } from 'client/src/types/Language'
+import { Language } from '../../types/Language'
 import { useAppDispatch, useAppSelector } from '../store'
 import { setLanguage } from './reducer'
 
