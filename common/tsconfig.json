@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-		"lib": ["es2021"],
+		"lib": ["ES6"],
 		"module": "commonjs",
-		"target": "es2021",
+		"target": "ES6",
 
 		"baseUrl": "./",
 		"strict": true,
@@ -11,6 +11,7 @@
 		"forceConsistentCasingInFileNames": true,
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
+		"rootDir": "./src",
 		"outDir": "./build",
 		"sourceMap": true,
 		"declaration": true,

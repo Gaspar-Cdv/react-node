@@ -1,13 +1,14 @@
 import { User } from '@prisma/client'
+import { registerValidationSchema } from '@title/common/build/services/validation'
+import { ErrorMessage } from '@title/common/build/types/ErrorMessage'
 import bcrypt from 'bcrypt'
 import { Response } from 'express'
 import jwt from 'jsonwebtoken'
 import { JWT_EXPIRATION_TIME, JWT_SECRET } from '../config/environment'
 import { prisma } from '../prisma'
 import { LoginRequest, RegisterRequest, TokenPayload } from '../types/auth'
-import { ErrorMessage } from '../types/errors'
+import { UnprocessableEntityError } from '../types/errors'
 import { Req } from '../types/requestResponse'
-import { isEmailValid, isPasswordStrongEnough } from '../utils/stringUtils'
 import AssertionService from './assertionService'
 
 const assertionService = AssertionService.getService()
@@ -19,15 +20,16 @@ export default class AuthService {
 	/* PUBLIC */
 
 	register = async (req: Req<RegisterRequest>, res: Response) => {
-		const { username, email, password, passwordConfirmation } = req.body
+		const { username, email, password } = req.body
 
-		const areAllFieldsFilled = username != null && email != null && password != null && passwordConfirmation != null
-		assertionService.assertTrue(areAllFieldsFilled, ErrorMessage.MISSING_FIELDS)
+		try {
+			registerValidationSchema.validateSync(req.body)
+		} catch (e) {
+			throw new UnprocessableEntityError(ErrorMessage.INVALID_VALUES)
+		}
+
 		assertionService.assertNull(await this.findByUsername(username), ErrorMessage.USERNAME_ALREADY_USED)
 		assertionService.assertNull(await this.findByEmail(email), ErrorMessage.EMAIL_ALREADY_USED)
-		assertionService.assertTrue(isEmailValid(email), ErrorMessage.INVALID_EMAIL)
-		assertionService.assertTrue(isPasswordStrongEnough(password), ErrorMessage.PASSWORD_NOT_STRONG_ENOUGH)
-		assertionService.assertEqual(password, passwordConfirmation, ErrorMessage.PASSWORDS_DO_NOT_MATCH)
 
 		const hashedPassword = await this.hashPassword(password)
 

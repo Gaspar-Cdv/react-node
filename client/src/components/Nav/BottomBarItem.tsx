@@ -12,7 +12,7 @@ const useStyles = createUseStyles(theme => ({
 		alignItems: 'center',
 		flex: 1,
 		margin: [3, 7],
-		borderRadius: 5,
+		borderRadius: theme.borderRadius.sm,
 		cursor: 'pointer',
 		color: theme.color.gray[400],
 		transition: 'color 100ms linear',

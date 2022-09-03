@@ -1,14 +1,15 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import Button, { ButtonProps } from '../common/button/Button'
-import { ReactComponent as Info } from '../images/icons/info.svg'
+import Button, { ButtonProps } from '../../common/button/Button'
+import { ReactComponent as Info } from '../../images/icons/info.svg'
 
 export default {
-	title: 'Common/Button',
+	title: 'Common/Form/Button',
 	component: ButtonWrapper,
 	args: {
 		title: 'Button',
 		disabled: false,
-		withIcon: false
+		withIcon: false,
+		small: false
 	},
 	argTypes: {
 		onClick: { action: 'onClick' },
@@ -23,7 +24,7 @@ interface ButtonWrapperProps extends ButtonProps {
 
 function ButtonWrapper ({ title, withIcon, ...args }: ButtonWrapperProps) {
 	return (
-		<Button {...withIcon && { icon: Info }} {...args}>
+		<Button {...withIcon && { icon: <Info /> }} {...args}>
 			{title}
 		</Button>
 	)

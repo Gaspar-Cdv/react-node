@@ -17,14 +17,16 @@ const i18n = defineI18n<SidebarI18n>({
 		menu: 'Menu',
 		route: {
 			home: 'Home',
-			login: 'Login'
+			login: 'Login',
+			register: 'Register'
 		}
 	},
 	fr: {
 		menu: 'Menu',
 		route: {
 			home: 'Accueil',
-			login: 'Connexion'
+			login: 'Connexion',
+			register: 'Inscription'
 		}
 	}
 })
@@ -61,7 +63,7 @@ function Sidebar () {
 		setIsSidebarVisible(false)
 	}
 
-	const menuItems: RouteName[] = ['home', 'login']
+	const menuItems: RouteName[] = ['home', 'login', 'register']
 
 	return (
 		<Drawer

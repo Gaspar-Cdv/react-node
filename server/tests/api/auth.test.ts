@@ -1,9 +1,9 @@
+import { ErrorMessage } from '@title/common/build/types/ErrorMessage'
 import chai from 'chai'
 import chaiHttp from 'chai-http'
 import app from '../../src'
 import { prisma } from '../../src/prisma'
 import AuthService from '../../src/services/authService'
-import { ErrorMessage } from '../../src/types/errors'
 
 const authService = AuthService.getService()
 

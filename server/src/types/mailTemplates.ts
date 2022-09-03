@@ -1,4 +1,4 @@
-import { ValidatorTemplate } from 'server/src/utils/JSONValidator'
+import { ValidatorTemplate } from '../utils/JSONValidator'
 
 export enum MailTemplate {
 	CONFIRM_EMAIL,

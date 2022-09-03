@@ -10,7 +10,7 @@ const useStyles = createUseStyles(theme => ({
 		backgroundColor: theme.color.background,
 		display: 'flex',
 		alignItems: 'center',
-		borderRadius: 3,
+		borderRadius: theme.borderRadius.xs,
 		border: [1, 'solid', theme.color.secondary],
 		minHeight: '2rem',
 		maxWidth: '12rem'
