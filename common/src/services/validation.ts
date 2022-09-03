@@ -36,8 +36,6 @@ const passwordValidator = (hardCheck: boolean) => {
 		.max(255, ErrorMessage.MAX_LENGTH_255)
 		.test({
 			test: (password, ctx) => {
-				const isLongEnough = passwordLengthValidator(hardCheck).isValidSync(password)
-
 				const score = [
 					containsLowerValidator,
 					containsUpperValidator,
@@ -47,8 +45,12 @@ const passwordValidator = (hardCheck: boolean) => {
 					.map(validator => validator.isValidSync(password))
 					.filter(Boolean).length
 
-				if (!isLongEnough || (hardCheck && score < 4) || score < 3) {
-					return ctx.createError({ message: ErrorMessage.PASSWORD_NOT_STRONG_ENOUGH })
+				if ((hardCheck && score < 4) || score < 3) {
+					return ctx.createError({
+						message: hardCheck
+							? ErrorMessage.PASSWORD_NOT_STRONG_ENOUGH_HARD_CHECK
+							: ErrorMessage.PASSWORD_NOT_STRONG_ENOUGH
+					})
 				}
 
 				return true
