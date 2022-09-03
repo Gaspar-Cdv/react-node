@@ -7,7 +7,10 @@ const usernameValidator = Yup.string()
 	.required(ErrorMessage.REQUIRED)
 
 const emailValidator = Yup.string()
-	.email(ErrorMessage.INVALID_EMAIL)
+	.matches(
+		/^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$/i,
+		ErrorMessage.INVALID_EMAIL
+	) // better than email() because it handles hyphens on start and end
 	.max(255, ErrorMessage.MAX_LENGTH_255)
 	.required(ErrorMessage.REQUIRED)
 
@@ -73,5 +76,7 @@ const registerValidationSchema = Yup.object({
 })
 
 export {
+	emailValidator,
+	passwordValidator,
 	registerValidationSchema
 }
