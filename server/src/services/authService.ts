@@ -1,5 +1,5 @@
 import { User } from '@prisma/client'
-import { registerValidationSchema } from '@title/common/build/services/validation'
+import { loginValidationSchema, registerValidationSchema } from '@title/common/build/services/validation'
 import { ErrorMessage } from '@title/common/build/types/ErrorMessage'
 import bcrypt from 'bcrypt'
 import { Response } from 'express'
@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken'
 import { JWT_EXPIRATION_TIME, JWT_SECRET } from '../config/environment'
 import { prisma } from '../prisma'
 import { LoginRequest, RegisterRequest, TokenPayload } from '../types/auth'
-import { UnprocessableEntityError } from '../types/errors'
+import { ForbiddenError, UnprocessableEntityError } from '../types/errors'
 import { Req } from '../types/requestResponse'
 import AssertionService from './assertionService'
 
@@ -47,14 +47,24 @@ export default class AuthService {
 	login = async (req: Req<LoginRequest>, res: Response) => {
 		const { username, password } = req.body
 
+		try {
+			loginValidationSchema.validateSync(req.body)
+		} catch (e) {
+			throw new UnprocessableEntityError(ErrorMessage.INVALID_VALUES)
+		}
+
 		const user = await this.findByUsername(username)
-		assertionService.assertNotNull(user, ErrorMessage.INVALID_USERNAME)
-		assertionService.assertTrue(await this.isPasswordValid(password, user!.password), ErrorMessage.INVALID_PASSWORD)
+
+		try {
+			assertionService.assertNotNull(user, ErrorMessage.INVALID_USERNAME)
+			assertionService.assertTrue(await this.isPasswordValid(password, user!.password), ErrorMessage.INVALID_PASSWORD)
+		} catch (e) {
+			throw new ForbiddenError(ErrorMessage.INVALID_CREDENTIALS)
+		}
 
 		const token = this.generateToken(user!)
 
-		res.header('Authorization', 'Bearer ' + token)
-		res.sendStatus(200)
+		res.status(200).send({ token })
 	}
 
 	/* PRIVATE */

@@ -1,13 +1,15 @@
-import { registerValidationSchema } from '@title/common/build/services/validation'
+import { loginValidationSchema } from '@title/common/build/services/validation'
 import { ErrorMessage } from '@title/common/build/types/ErrorMessage'
-import { Form, Formik, FormikHelpers } from 'formik'
+import { Form, Formik } from 'formik'
 import { useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import Alert from '../../common/Alert'
 import Button from '../../common/button/Button'
 import Input from '../../common/form/Input'
+import { useRouter } from '../../common/routing/hooks'
 import authService from '../../services/auth'
 import HttpError from '../../types/HttpError'
+import { useLocalStorage } from '../../utils/hooks'
 import { defineI18n, useTranslate } from '../../utils/i18n'
 import { useErrorMessage } from '../../utils/useErrorMessage'
 
@@ -15,12 +17,10 @@ const i18n = defineI18n({
 	en: {
 		form: {
 			username: 'Username',
-			email: 'Email',
-			password: 'Password',
-			confirmPassword: 'Confirm Password'
+			password: 'Password'
 		},
 		buttons: {
-			register: 'Register',
+			login: 'Login',
 			reset: 'Reset'
 		},
 		error: 'Error: {message}'
@@ -28,12 +28,10 @@ const i18n = defineI18n({
 	fr: {
 		form: {
 			username: 'Nom d\'utilisateur',
-			email: 'Adresse mail',
-			password: 'Mot de passe',
-			confirmPassword: 'Confirmation du mot de passe'
+			password: 'Mot de passe'
 		},
 		buttons: {
-			register: 'S\'inscrire',
+			login: 'Se connecter',
 			reset: 'Réinitialiser'
 		},
 		error: 'Erreur : {message}'
@@ -57,39 +55,32 @@ const useStyles = createUseStyles({
 	}
 })
 
-export interface RegisterFormValues {
+export interface LoginFormValues {
 	username: string
-	email: string
 	password: string
-	passwordConfirmation: string
 }
 
-const initialValues: RegisterFormValues = {
+const initialValues: LoginFormValues = {
 	username: '',
-	email: '',
-	password: '',
-	passwordConfirmation: ''
+	password: ''
 }
 
-interface RegisterFormProps {
-	onSuccess?: () => void
-}
-
-function RegisterForm ({ onSuccess }: RegisterFormProps) {
+function LoginForm () {
 	const classes = useStyles()
 	const translate = useTranslate()
 	const errorMessage = useErrorMessage()
+	const [, setToken] = useLocalStorage('token')
+	const { navigate } = useRouter()
 
 	const [serverError, setServerError] = useState('')
 	const [pending, setPending] = useState(false)
 
-	const handleSubmit = async (values: RegisterFormValues, formikHelpers: FormikHelpers<RegisterFormValues>) => {
+	const handleSubmit = async (values: LoginFormValues) => {
 		try {
 			setPending(true)
-			await authService.register(values)
-			formikHelpers.resetForm()
-			setServerError('')
-			onSuccess?.()
+			const { token } = await authService.login(values)
+			setToken(token)
+			navigate('home')
 		} catch (e) {
 			if (e instanceof HttpError) {
 				setServerError(e.message)
@@ -105,33 +96,22 @@ function RegisterForm ({ onSuccess }: RegisterFormProps) {
 	return (
 		<Formik
 			initialValues={initialValues}
-			validationSchema={registerValidationSchema}
 			onSubmit={handleSubmit}
+			validationSchema={loginValidationSchema}
 			validateOnChange={false}
 			validateOnBlur={false}
 		>
 			<Form onChange={() => setServerError('')}>
 				<div className={classes.container}>
 					<Input
-						label={translate(i18n.form.username)}
 						name='username'
+						label={translate(i18n.form.username)}
 					/>
 
 					<Input
-						label={translate(i18n.form.email)}
-						name='email'
-					/>
-
-					<Input
-						label={translate(i18n.form.password)}
 						name='password'
 						type='password'
-					/>
-
-					<Input
-						label={translate(i18n.form.confirmPassword)}
-						name='passwordConfirmation'
-						type='password'
+						label={translate(i18n.form.password)}
 					/>
 
 					<Alert show={serverError.length > 0}>
@@ -144,7 +124,7 @@ function RegisterForm ({ onSuccess }: RegisterFormProps) {
 						</Button>
 
 						<Button type='submit' disabled={pending}>
-							{translate(i18n.buttons.register)}
+							{translate(i18n.buttons.login)}
 						</Button>
 					</div>
 				</div>
@@ -153,4 +133,4 @@ function RegisterForm ({ onSuccess }: RegisterFormProps) {
 	)
 }
 
-export default RegisterForm
+export default LoginForm

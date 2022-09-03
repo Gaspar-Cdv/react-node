@@ -1,10 +1,9 @@
 import React from 'react'
+import LoginForm from './LoginForm'
 
 function Login () {
 	return (
-		<>
-			Login
-		</>
+		<LoginForm />
 	)
 }
 
