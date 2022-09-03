@@ -1,9 +1,14 @@
 {
   "name": "@title/common",
   "version": "0.1.0",
-	"main": "index.ts",
+  "main": "index.ts",
   "scripts": {
-		"build": "tsc",
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/parser": "^5.36.1",
+    "eslint": "^8.23.0"
   }
 }

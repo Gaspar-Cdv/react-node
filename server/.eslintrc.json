@@ -3,15 +3,6 @@
 		"node": true
 	},
 	"extends": [
-		"eslint:recommended",
-		"plugin:@typescript-eslint/recommended",
-		"../.eslintrc.json"
-	],
-	"parser": "@typescript-eslint/parser",
-	"plugins": [
-		"@typescript-eslint"
-	],
-	"rules": {
-		"@typescript-eslint/no-non-null-assertion": "off"
-	}
+		"../common/.eslintrc.json"
+	]
 }

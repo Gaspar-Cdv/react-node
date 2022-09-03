@@ -1,13 +1,10 @@
 {
 	"extends": [
-		"eslint:recommended",
 		"plugin:react/recommended",
-		"plugin:@typescript-eslint/recommended",
 		"plugin:react/jsx-runtime",
 		"plugin:react-hooks/recommended",
-		"../.eslintrc.json"
+		"../common/.eslintrc.json"
 	],
-	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"ecmaFeatures": {
 			"jsx": true
@@ -15,8 +12,7 @@
 	},
 	"plugins": [
 		"react",
-		"react-hooks",
-		"@typescript-eslint"
+		"react-hooks"
 	],
 	"settings": {
     "react": {
@@ -24,9 +20,6 @@
     }
   },
 	"rules": {
-		"@typescript-eslint/no-non-null-assertion": "off",
-		"@typescript-eslint/no-empty-interface": "off",
-
 		"react/boolean-prop-naming": "warn",
 		"react/hook-use-state": "error",
 		"react/no-array-index-key": "warn",
