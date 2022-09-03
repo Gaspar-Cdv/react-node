@@ -44,7 +44,7 @@ const useStyles = createUseStyles(theme => ({
 	}
 }))
 
-interface InputProps extends HTMLProps<HTMLInputElement> {
+export interface InputProps extends HTMLProps<HTMLInputElement> {
 	label?: string
 }
 
