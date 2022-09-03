@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import { FieldAttributes, useField } from 'formik'
-import { ChangeEvent, HTMLProps } from 'react'
+import { ChangeEvent, HTMLProps, useRef } from 'react'
 import { createUseStyles } from 'react-jss'
 import { useErrorMessage } from '../../utils/useErrorMessage'
 
@@ -15,11 +15,13 @@ const useStyles = createUseStyles(theme => ({
 		backgroundColor: 'white',
 		borderRadius: theme.borderRadius.xs,
 		border: [1, 'solid', theme.color.lightBorder],
+		cursor: 'text',
 		'&:focus-within': {
 			border: [1, 'solid', theme.color.info],
 		}
 	},
 	legend: {
+		cursor: 'default',
 		lineHeight: '0.75rem',
 		fontSize: '0.75rem',
 		padding: [0, 5]
@@ -51,6 +53,7 @@ function Input<T> ({ label, ...props }: InputProps & FieldAttributes<T>) {
 	const [{ onChange, ...field }, meta, helpers] = useField(props)
 	const showError = meta.touched && meta.error != null
 	const errorMessage = useErrorMessage()
+	const ref = useRef<HTMLInputElement>()
 
 	const handleChange = (e: ChangeEvent) => {
 		helpers.setError(undefined)
@@ -59,7 +62,11 @@ function Input<T> ({ label, ...props }: InputProps & FieldAttributes<T>) {
 
 	return (
 		<div className={classes.container}>
-			<fieldset className={classNames(classes.fieldSet, { [classes.errorInput]: showError })} title={label}>
+			<fieldset
+				title={label}
+				onClick={() => ref.current?.focus()}
+				className={classNames(classes.fieldSet, { [classes.errorInput]: showError })}
+			>
 				<legend className={classes.legend}>
 					{label}
 				</legend>
@@ -67,6 +74,7 @@ function Input<T> ({ label, ...props }: InputProps & FieldAttributes<T>) {
 				<input
 					className={classes.input}
 					onChange={handleChange}
+					ref={ref}
 					{...field}
 					{...props}
 				/>
