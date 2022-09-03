@@ -1,5 +1,5 @@
 import { User } from '@prisma/client'
-import { ErrorMessage } from '@title/common/types/ErrorMessage'
+import { ErrorMessage } from '@title/common/build/types/ErrorMessage'
 import bcrypt from 'bcrypt'
 import { Response } from 'express'
 import jwt from 'jsonwebtoken'
