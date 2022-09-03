@@ -6,6 +6,9 @@
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+	"dependencies": {
+		"yup": "^0.32.11"
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
