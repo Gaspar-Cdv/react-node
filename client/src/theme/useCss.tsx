@@ -37,19 +37,19 @@ export const useCss = createUseStyles(theme => ({
 			fontWeight: 700
 		},
 		h1: {
-			fontSize: '3.5rem'
-		},
-		h2: {
-			fontSize: '3rem'
-		},
-		h3: {
 			fontSize: '2.5rem'
 		},
+		h2: {
+			fontSize: '2.2rem'
+		},
+		h3: {
+			fontSize: '1.9rem'
+		},
 		h4: {
-			fontSize: '2rem'
+			fontSize: '1.6rem'
 		},
 		h5: {
-			fontSize: '1.5rem'
+			fontSize: '1.3rem'
 		},
 		h6: {
 			fontSize: '1rem'
@@ -75,15 +75,6 @@ export const useCss = createUseStyles(theme => ({
 			border: [1, 'solid', theme.color.lightBorder],
 			padding: '0.5rem',
 			textAlign: 'center'
-		},
-
-		/* form */
-
-		'input:not([type="file"], [type="button"], [type="submit"], [type="reset"]), textarea': {
-			border: [1, 'solid', theme.color.lightBorder],
-			borderRadius: '0.25rem',
-			padding: '0.5rem',
-			fontSize: '1rem'
 		},
 
 		/* misc */

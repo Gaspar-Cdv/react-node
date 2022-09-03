@@ -10,8 +10,29 @@ const useStyles = createUseStyles(theme => ({
 		flexDirection: 'column',
 		gap: 5
 	},
+	fieldSet: {
+		padding: [7, 12, 12, 12],
+		backgroundColor: 'white',
+		borderRadius: 4,
+		border: [1, 'solid', theme.color.lightBorder],
+		'&:focus-within': {
+			border: [1, 'solid', theme.color.info],
+		}
+	},
+	legend: {
+		lineHeight: '0.75rem',
+		fontSize: '0.75rem',
+		padding: [0, 5]
+	},
+	input: {
+		width: '100%',
+		backgroundColor: 'transparent',
+		border: 'none',
+		outline: 'none',
+		fontSize: '1rem'
+	},
 	errorInput: {
-		border: `1px solid ${theme.color.danger} !important`
+		border: [1, 'solid', theme.color.danger]
 	},
 	errorMessage: {
 		color: theme.color.danger,
@@ -40,16 +61,18 @@ function Input<T> ({ label, ...props }: InputProps & FieldAttributes<T>) {
 
 	return (
 		<div className={classes.container}>
-			{label != null && (
-				<label htmlFor={props.id || props.name}>{label}</label>
-			)}
+			<fieldset className={classNames(classes.fieldSet, { [classes.errorInput]: showError })}>
+				<legend className={classes.legend}>
+					{label}
+				</legend>
 
-			<input
-				className={classNames({ [classes.errorInput]: showError })}
-				onChange={handleChange}
-				{...field}
-				{...props}
-			/>
+				<input
+					className={classes.input}
+					onChange={handleChange}
+					{...field}
+					{...props}
+				/>
+			</fieldset>
 
 			<span className={classes.errorMessage}>
 				{showError && errorMessage(meta.error!)}
