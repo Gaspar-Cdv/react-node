@@ -37,10 +37,8 @@ const useStyles = createUseStyles(theme => ({
 	errorMessage: {
 		color: theme.color.danger,
 		textAlign: 'right',
-		marginBottom: 5,
-		minHeight: '0.875rem',
-		lineHeight: '0.875rem',
-		fontSize: '0.875rem'
+		fontSize: '0.875rem',
+		lineHeight: '0.875rem'
 	}
 }))
 
@@ -55,13 +53,13 @@ function Input<T> ({ label, ...props }: InputProps & FieldAttributes<T>) {
 	const errorMessage = useErrorMessage()
 
 	const handleChange = (e: ChangeEvent) => {
-		helpers.setTouched(false)
+		helpers.setError(undefined)
 		onChange(e)
 	}
 
 	return (
 		<div className={classes.container}>
-			<fieldset className={classNames(classes.fieldSet, { [classes.errorInput]: showError })}>
+			<fieldset className={classNames(classes.fieldSet, { [classes.errorInput]: showError })} title={label}>
 				<legend className={classes.legend}>
 					{label}
 				</legend>
@@ -74,9 +72,11 @@ function Input<T> ({ label, ...props }: InputProps & FieldAttributes<T>) {
 				/>
 			</fieldset>
 
-			<span className={classes.errorMessage}>
-				{showError && errorMessage(meta.error!)}
-			</span>
+			{showError && (
+				<span className={classes.errorMessage}>
+					{errorMessage(meta.error!)}
+				</span>
+			)}
 		</div>
 	)
 }

@@ -59,7 +59,7 @@ const i18n = defineI18n<ErrorI18n>({
 		INVALID_EMAIL: 'Email invalide',
 		PASSWORD_NOT_STRONG_ENOUGH: 'Le mot de passe doit contenir au moins trois des types suivants : minuscule, majuscule, chiffre, symbole.',
 		PASSWORD_NOT_STRONG_ENOUGH_HARD_CHECK: 'Le mot de passe doit contenir au moins une minuscule, une majuscule, un chiffre et un symbole',
-		PASSWORDS_DO_NOT_MATCH: 'Les deux mots de passes doivent être identiques',
+		PASSWORDS_DO_NOT_MATCH: 'Les deux mots de passe doivent être identiques',
 
 		// common errors
 		MISSING_FIELDS: 'Champs manquants',

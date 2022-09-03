@@ -1,16 +1,10 @@
 import { SERVER_URL } from '../config/environment'
 import HttpError from '../types/HttpError'
 
-type CommonType = string | number | boolean
-
-type Data = CommonType | {
-	[key in string]: Data
-}
-
 /**
  * @throws {HttpError}
  */
-const call = async (service: string, method: string, data?: Data) => {
+const call = async (service: string, method: string, data?: any) => {
 	const url = `${SERVER_URL}/api/${service}/${method}`
 
 	const response = await fetch(url, {
@@ -21,10 +15,19 @@ const call = async (service: string, method: string, data?: Data) => {
 		body: JSON.stringify(data)
 	})
 
-	const result = await response.json()
+	const clonedResponse = response.clone()
+
+	let result
+
+	try {
+		result = await response.json()
+	} catch (e) {
+		result = await clonedResponse.text()
+	}
 
 	if (!isSuccess(response.status)) {
-		throw new HttpError(response.status, result.message)
+		const message = typeof result === 'string' ? result : result.message
+		throw new HttpError(response.status, message)
 	}
 
 	return result
