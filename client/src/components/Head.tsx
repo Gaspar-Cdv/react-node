@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet'
-import { useCurrentTitle } from '../common/routing/hooks'
+import { useRouter } from '../common/routing/hooks'
 import { defineI18n, useTranslate } from '../utils/i18n'
 import { useCurrentLanguage } from '../store/language/hooks'
 
@@ -17,11 +17,11 @@ const i18n = defineI18n({
 function Head () {
 	const translate = useTranslate()
 	const { currentLanguage } = useCurrentLanguage()
-	const pageTitle = useCurrentTitle()
+	const { currentTitle } = useRouter()
 
 	const title = [
 		translate(i18n.title),
-		pageTitle
+		currentTitle
 	].filter(Boolean).join(' - ')
 
 	return (

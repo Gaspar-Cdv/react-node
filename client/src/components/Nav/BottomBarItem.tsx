@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { ReactNode } from 'react'
 import { createUseStyles } from 'react-jss'
-import { useCurrentRoute } from '../../common/routing/hooks'
+import { useRouter } from '../../common/routing/hooks'
 import Link from '../../common/routing/Link'
 import { RouteName } from '../../common/routing/Router'
 
@@ -40,7 +40,7 @@ export interface BottomBarItemProps {
 
 function BottomBarItem ({ icon, route, onClick }: BottomBarItemProps) {
 	const classes = useStyles()
-	const currentRoute = useCurrentRoute()
+	const { currentRoute } = useRouter()
 
 	const isActive = currentRoute.name === route
 
