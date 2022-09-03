@@ -1,10 +1,8 @@
+import classNames from 'classnames'
 import { FieldAttributes, useField } from 'formik'
 import { ChangeEvent, HTMLProps } from 'react'
 import { createUseStyles } from 'react-jss'
-
-interface JSSProps {
-	error: boolean
-}
+import { useErrorMessage } from '../../utils/useErrorMessage'
 
 const useStyles = createUseStyles(theme => ({
 	container: {
@@ -12,14 +10,16 @@ const useStyles = createUseStyles(theme => ({
 		flexDirection: 'column',
 		gap: 5
 	},
-	input: ({ error }: JSSProps) => ({
-		padding: 5,
-		...(error && { border: [1, 'solid', theme.color.danger] })
-	}),
-	error: {
+	errorInput: {
+		border: `1px solid ${theme.color.danger} !important`
+	},
+	errorMessage: {
 		color: theme.color.danger,
 		textAlign: 'right',
-		height: '1rem'
+		marginBottom: 5,
+		minHeight: '0.875rem',
+		lineHeight: '0.875rem',
+		fontSize: '0.875rem'
 	}
 }))
 
@@ -28,9 +28,10 @@ interface InputProps extends HTMLProps<HTMLInputElement> {
 }
 
 function Input<T> ({ label, ...props }: InputProps & FieldAttributes<T>) {
+	const classes = useStyles()
 	const [{ onChange, ...field }, meta, helpers] = useField(props)
 	const showError = meta.touched && meta.error != null
-	const classes = useStyles({ error: showError })
+	const errorMessage = useErrorMessage()
 
 	const handleChange = (e: ChangeEvent) => {
 		helpers.setTouched(false)
@@ -44,14 +45,14 @@ function Input<T> ({ label, ...props }: InputProps & FieldAttributes<T>) {
 			)}
 
 			<input
-				className={classes.input}
+				className={classNames({ [classes.errorInput]: showError })}
 				onChange={handleChange}
 				{...field}
 				{...props}
 			/>
 
-			<span className={classes.error}>
-				{showError && meta.error}
+			<span className={classes.errorMessage}>
+				{showError && errorMessage(meta.error!)}
 			</span>
 		</div>
 	)
