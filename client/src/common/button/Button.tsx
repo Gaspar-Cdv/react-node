@@ -15,10 +15,12 @@ const useStyles = createUseStyles(theme => ({
 		gap: theme.size.xs,
 		backgroundColor: theme.color.cta,
 		border: 'none',
-		padding: [theme.size.xs, theme.size.sm],
+		padding: [theme.size.sm, theme.size.lg],
+		fontSize: '1rem',
 		borderRadius: 1,
 		cursor: 'pointer',
 		transition: 'background-color 0.2s',
+		textTransform: 'uppercase',
 		'&:hover:not($disabled)': {
 			backgroundColor: theme.color.amber[300]
 		}
@@ -41,6 +43,10 @@ const useStyles = createUseStyles(theme => ({
 		cursor: 'auto',
 		opacity: 0.5
 	},
+	small: {
+		padding: [theme.size.xs, theme.size.sm],
+		fontSize: '0.875rem'
+	}
 }))
 
 export interface ButtonProps {
@@ -49,12 +55,14 @@ export interface ButtonProps {
 	disabled?: boolean
 	variant?: 'primary' | 'secondary' | 'danger'
 	type?: 'button' | 'reset' | 'submit'
+	small?: boolean
 	icon?: FunctionComponent<React.SVGProps<SVGSVGElement>>
 }
 
-function Button ({ onClick, variant = 'primary', disabled = false, type = 'button', icon: Icon, children }: ButtonProps) {
+function Button ({ onClick, variant = 'primary', disabled = false, type = 'button', small = false, icon: Icon, children }: ButtonProps) {
 	const classes = useStyles()
 	const className = classNames(classes.button, {
+		[classes.small]: small,
 		[classes.disabled]: disabled,
 		[classes.secondary]: variant === 'secondary',
 		[classes.danger]: variant === 'danger'

@@ -8,7 +8,8 @@ export default {
 	args: {
 		title: 'Button',
 		disabled: false,
-		withIcon: false
+		withIcon: false,
+		small: false
 	},
 	argTypes: {
 		onClick: { action: 'onClick' },
