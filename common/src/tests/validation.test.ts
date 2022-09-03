@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { emailValidator, passwordValidator } from '../src/services/validation'
+import { emailValidator, passwordValidator } from '../services/validation'
 
 describe('validation', () => {
 	it('should verify if email is valid', () => {
