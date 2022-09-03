@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { FunctionComponent, MouseEvent, ReactNode } from 'react'
+import { MouseEvent, ReactNode } from 'react'
 import { createUseStyles } from 'react-jss'
 
 const useStyles = createUseStyles(theme => ({
@@ -12,7 +12,7 @@ const useStyles = createUseStyles(theme => ({
 	button: {
 		display: 'flex',
 		alignItems: 'center',
-		gap: theme.size.xs,
+		gap: theme.size.sm,
 		backgroundColor: theme.color.cta,
 		border: 'none',
 		padding: [theme.size.sm, theme.size.lg],
@@ -23,6 +23,11 @@ const useStyles = createUseStyles(theme => ({
 		textTransform: 'uppercase',
 		'&:hover:not($disabled)': {
 			backgroundColor: theme.color.amber[300]
+		},
+		'& > svg': {
+			transform: 'scale(1.3)',
+			width: '1rem',
+			height: '1rem'
 		}
 	},
 	secondary: {
@@ -45,7 +50,13 @@ const useStyles = createUseStyles(theme => ({
 	},
 	small: {
 		padding: [theme.size.xs, theme.size.sm],
-		fontSize: '0.875rem'
+		fontSize: '0.875rem',
+		gap: theme.size.xs,
+		'& > svg': {
+			transform: 'scale(1.1)',
+			width: '0.875rem',
+			height: '0.875rem'
+		}
 	}
 }))
 
@@ -56,10 +67,10 @@ export interface ButtonProps {
 	variant?: 'primary' | 'secondary' | 'danger'
 	type?: 'button' | 'reset' | 'submit'
 	small?: boolean
-	icon?: FunctionComponent<React.SVGProps<SVGSVGElement>>
+	icon?: ReactNode
 }
 
-function Button ({ onClick, variant = 'primary', disabled = false, type = 'button', small = false, icon: Icon, children }: ButtonProps) {
+function Button ({ onClick, variant = 'primary', disabled = false, type = 'button', small = false, icon, children }: ButtonProps) {
 	const classes = useStyles()
 	const className = classNames(classes.button, {
 		[classes.small]: small,
@@ -71,9 +82,7 @@ function Button ({ onClick, variant = 'primary', disabled = false, type = 'butto
 	return (
 		<div className={classes.container}>
 			<button type={type} className={className} onClick={e => !disabled && onClick?.(e)}>
-				{Icon != null && (
-					<Icon width='1rem' height='1rem' />
-				)}
+				{icon}
 
 				{children}
 			</button>

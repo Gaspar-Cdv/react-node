@@ -24,7 +24,7 @@ interface ButtonWrapperProps extends ButtonProps {
 
 function ButtonWrapper ({ title, withIcon, ...args }: ButtonWrapperProps) {
 	return (
-		<Button {...withIcon && { icon: Info }} {...args}>
+		<Button {...withIcon && { icon: <Info /> }} {...args}>
 			{title}
 		</Button>
 	)
