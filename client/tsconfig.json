@@ -1,5 +1,5 @@
 {
-  "extends": "../tsconfig.json",
+  "extends": "@title/common/tsconfig.json",
 	"compilerOptions": {
 		"lib": ["ES6", "DOM"],
 		"jsx": "preserve"
