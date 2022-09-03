@@ -2,6 +2,8 @@
   "extends": "@title/common/tsconfig.json",
 	"compilerOptions": {
 		"lib": ["ES6", "DOM"],
-		"jsx": "preserve"
+		"jsx": "preserve",
+		"rootDir": "./src",
+		"outDir": "./build"
 	}
 }
