@@ -11,6 +11,7 @@
 		"forceConsistentCasingInFileNames": true,
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
+		"rootDir": "./src",
 		"outDir": "./build",
 		"sourceMap": true,
 		"declaration": true,
