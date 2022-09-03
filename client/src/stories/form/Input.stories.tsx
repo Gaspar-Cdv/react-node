@@ -1,6 +1,6 @@
 import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import Input, { InputProps } from '../common/form/Input'
+import Input, { InputProps } from '../../common/form/Input'
 import { Form, Formik } from 'formik'
 import { ErrorMessage } from '@title/common/build/types/ErrorMessage'
 

@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import Button, { ButtonProps } from '../common/button/Button'
-import { ReactComponent as Info } from '../images/icons/info.svg'
+import Button, { ButtonProps } from '../../common/button/Button'
+import { ReactComponent as Info } from '../../images/icons/info.svg'
 
 export default {
 	title: 'Common/Form/Button',
