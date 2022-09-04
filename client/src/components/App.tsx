@@ -5,7 +5,7 @@ import { useCss } from '../theme/useCss'
 import BottomBar from './Nav/BottomBar'
 import Sidebar from './Nav/Sidebar'
 import Main from './Main'
-import { useInitSession } from '../store/session/hooks'
+import { useInitSession } from '../services/auth'
 
 function App () {
 	useCss()

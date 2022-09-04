@@ -1,9 +1,9 @@
 import { Navigate } from 'react-router-dom'
-import { useSession } from '../../store/session/hooks'
+import { useLogout } from '../../services/auth'
 import { useOnMount } from '../../utils/hooks'
 
 function Logout () {
-	const { logout } = useSession()
+	const logout = useLogout()
 
 	useOnMount(logout)
 

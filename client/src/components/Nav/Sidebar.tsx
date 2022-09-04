@@ -3,7 +3,8 @@ import { createUseStyles } from 'react-jss'
 import Drawer from '../../common/Drawer'
 import { RouteName } from '../../common/routing/Router'
 import { useSidebarVisibility } from '../../store/elementsVisibility/hooks'
-import { useSession } from '../../store/session/hooks'
+import { isLoggedSelector } from '../../store/session/selectors'
+import { useAppSelector } from '../../store/store'
 import { useAppTheme } from '../../theme/theme'
 import { defineI18n, useTranslate } from '../../utils/i18n'
 import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher'
@@ -65,7 +66,7 @@ function Sidebar () {
 	const classes = useStyles()
 	const translate = useTranslate()
 	const theme = useAppTheme()
-	const { isLogged } = useSession()
+	const isLogged = useAppSelector(isLoggedSelector)
 
 	const { isSidebarVisible, setIsSidebarVisible } = useSidebarVisibility()
 

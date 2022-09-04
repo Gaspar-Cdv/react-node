@@ -4,9 +4,10 @@ import { FormikHelpers } from 'formik'
 import { useState } from 'react'
 import { useRouter } from '../common/routing/hooks'
 import authService from '../remote/auth'
-import { useSession } from '../store/session/hooks'
+import { deleteUser, updateSession } from '../store/session/reducer'
+import { useAppDispatch } from '../store/store'
 import HttpError from '../types/HttpError'
-import { useLocalStorage } from '../utils/hooks'
+import { useLocalStorage, useOnMount } from '../utils/hooks'
 
 export const useRegister = (onSuccess?: () => void) => {
 	const [error, setError] = useState('')
@@ -44,7 +45,7 @@ export const useRegister = (onSuccess?: () => void) => {
 export const useLogin = () => {
 	const [, setToken] = useLocalStorage('token')
 	const { navigate } = useRouter()
-	const { setSession } = useSession()
+	const dispatch = useAppDispatch()
 
 	const [error, setError] = useState('')
 	const [pending, setPending] = useState(false)
@@ -55,7 +56,7 @@ export const useLogin = () => {
 		try {
 			setPending(true)
 			const { token, session } = await authService.login(values)
-			setSession(session)
+			dispatch(updateSession(session))
 			setToken(token)
 			resetError()
 			navigate('home')
@@ -77,4 +78,31 @@ export const useLogin = () => {
 		resetError,
 		pending
 	}
+}
+
+export const useLogout = () => {
+	const dispatch = useAppDispatch()
+	const [,, deleteToken] = useLocalStorage('token')
+
+	return () => {
+		dispatch(deleteUser())
+		deleteToken()
+	}
+}
+
+export const useInitSession = () => {
+	const dispatch = useAppDispatch()
+
+	useOnMount(() => {
+		const fn = async () => {
+			try {
+				const session = await authService.findSession()
+				dispatch(updateSession(session))
+			} catch (e) {
+				// TODO
+			}
+		}
+
+		fn()
+	})
 }
