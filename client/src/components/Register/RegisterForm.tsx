@@ -1,14 +1,11 @@
 import { registerValidationSchema } from '@title/common/build/services/validation'
-import { ErrorMessage } from '@title/common/build/types/ErrorMessage'
 import { RegisterRequest } from '@title/common/build/types/requests/auth'
-import { Form, Formik, FormikHelpers } from 'formik'
-import { useState } from 'react'
+import { Form, Formik } from 'formik'
 import { createUseStyles } from 'react-jss'
 import Alert from '../../common/Alert'
 import Button from '../../common/button/Button'
 import Input from '../../common/form/Input'
-import authService from '../../services/auth'
-import HttpError from '../../types/HttpError'
+import { useRegister } from '../../services/auth'
 import { defineI18n, useTranslate } from '../../utils/i18n'
 import { useErrorMessage } from '../../utils/useErrorMessage'
 
@@ -74,37 +71,17 @@ function RegisterForm ({ onSuccess }: RegisterFormProps) {
 	const translate = useTranslate()
 	const errorMessage = useErrorMessage()
 
-	const [serverError, setServerError] = useState('')
-	const [pending, setPending] = useState(false)
-
-	const handleSubmit = async (values: RegisterRequest, formikHelpers: FormikHelpers<RegisterRequest>) => {
-		try {
-			setPending(true)
-			await authService.register(values)
-			formikHelpers.resetForm()
-			setServerError('')
-			onSuccess?.()
-		} catch (e) {
-			if (e instanceof HttpError) {
-				setServerError(e.message)
-			} else {
-				setServerError(ErrorMessage.UNKNOWN_ERROR)
-				console.error(e)
-			}
-		} finally {
-			setPending(false)
-		}
-	}
+	const { register, error, resetError, pending } = useRegister(onSuccess)
 
 	return (
 		<Formik
 			initialValues={initialValues}
 			validationSchema={registerValidationSchema}
-			onSubmit={handleSubmit}
+			onSubmit={register}
 			validateOnChange={false}
 			validateOnBlur={false}
 		>
-			<Form onChange={() => setServerError('')}>
+			<Form onChange={resetError}>
 				<div className={classes.container}>
 					<Input
 						label={translate(i18n.form.username)}
@@ -128,8 +105,8 @@ function RegisterForm ({ onSuccess }: RegisterFormProps) {
 						type='password'
 					/>
 
-					<Alert show={serverError.length > 0}>
-						{translate(i18n.error, { message: errorMessage(serverError) })}
+					<Alert show={error.length > 0}>
+						{translate(i18n.error, { message: errorMessage(error) })}
 					</Alert>
 
 					<div className={classes.buttons}>
