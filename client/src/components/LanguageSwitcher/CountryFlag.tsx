@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import { createUseStyles } from 'react-jss'
 import { ReactComponent as FrenchFlag } from '../../images/flags/fr.svg'
 import { ReactComponent as EnglishFlag } from '../../images/flags/us.svg'
-import { Language } from '../../types/Language'
+import { Language } from '@title/common/build/types/Language'
 
 const useStyles = createUseStyles(theme => ({
 	container: {

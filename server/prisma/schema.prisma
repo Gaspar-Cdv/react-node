@@ -8,9 +8,15 @@ datasource db {
 }
 
 model User {
-  userId    Int      @id @default(autoincrement())
+  userId    Int      @id @default(autoincrement()) @map("id_user")
   username  String
   email     String
   password  String
-  createdAt DateTime @default(now())
+	language 	Language @default(en)
+  createdAt DateTime @default(now()) @map("created_at")
+}
+
+enum Language {
+	fr
+	en
 }

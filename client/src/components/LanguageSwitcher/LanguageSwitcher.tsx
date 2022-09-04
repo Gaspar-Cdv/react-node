@@ -1,5 +1,5 @@
 import { useCurrentLanguage } from '../../store/language/hooks'
-import { Language } from '../../types/Language'
+import { Language } from '@title/common/build/types/Language'
 import { useMemo, useState } from 'react'
 import { DropdownItem } from '../../common/dropdown/Dropdown'
 import { createUseStyles } from 'react-jss'

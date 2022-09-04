@@ -3,7 +3,7 @@ import { CustomFormats, IntlProvider, useIntl } from 'react-intl'
 import memoizeOne from 'memoize-one'
 import { PrimitiveType, FormatXMLElementFn } from 'intl-messageformat'
 import { EventEmitter } from 'events'
-import { Language } from '../types/Language'
+import { Language } from '@title/common/build/types/Language'
 import { useCurrentLanguage } from '../store/language/hooks'
 
 export interface IntlMessages {

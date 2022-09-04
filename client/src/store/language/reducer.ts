@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Language } from '../../types/Language'
+import { Language } from '@title/common/build/types/Language'
 
 const initialState: Language = localStorage.getItem('language') as Language ?? Language.en
 

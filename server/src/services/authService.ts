@@ -12,6 +12,7 @@ import { TokenPayload } from '../types/auth'
 import { ForbiddenError, UnprocessableEntityError } from '../types/errors'
 import { Req, Res } from '../types/requestResponse'
 import AssertionService from './assertionService'
+import { Language } from '@title/common/build/types/Language'
 
 const assertionService = AssertionService.getService()
 
@@ -157,6 +158,7 @@ export default class AuthService {
 		}
 
 		const session: Session = {
+			language: user.language as Language,
 			user: this.createUserDto(user)
 		}
 
