@@ -5,12 +5,14 @@ import { defineI18n } from '../../utils/i18n'
 
 const Home = lazy(() => import(/* webpackChunkName: "home" */ '../../components/Home/Home'))
 const Login = lazy(() => import(/* webpackChunkName: "login" */ '../../components/Login/Login'))
+const Logout = lazy(() => import(/* webpackChunkName: "logout" */ '../../components/Login/Logout'))
 const NotFound = lazy(() => import(/* webpackChunkName: "notFound" */ '../../components/NotFound'))
 
 type RouteNameExtended =
 	| 'home'
 	| 'login'
 	| 'register'
+	| 'logout'
 	| 'notFound'
 
 export type RouteName = Exclude<RouteNameExtended, 'notFound'>
@@ -45,6 +47,11 @@ export const routes: Routes = {
 		path: '/register',
 		element: <Register />
 	},
+	logout: {
+		name: 'logout',
+		path: '/logout',
+		element: <Logout />
+	},
 	notFound: {
 		name: 'notFound',
 		path: '*',
@@ -61,12 +68,14 @@ export const pageTitles = defineI18n<RoutesI18n>({
 		home: 'Home',
 		login: 'Login',
 		register: 'Register',
+		logout: 'Logout',
 		notFound: 'Page not found'
 	},
 	fr: {
 		home: 'Accueil',
 		login: 'Connexion',
 		register: 'Inscription',
+		logout: 'Déconnexion',
 		notFound: 'Page non trouvée'
 	}
 })

@@ -1,31 +1,36 @@
 import { Session, UserDto } from '@title/common/build/types/session'
-import { useEffect } from 'react'
 import authService from '../../remote/auth'
+import { useLocalStorage, useOnMount } from '../../utils/hooks'
 import { useAppDispatch, useAppSelector } from '../store'
-import { deleteSession as _deleteSession, updateSession, updateUser } from './reducer'
+import { deleteSession, updateSession, updateUser } from './reducer'
 
 export const useSession = () => {
 	const dispatch = useAppDispatch()
+	const [,, deleteToken] = useLocalStorage('token')
 
 	const session = useAppSelector(state => state.session)
+	const isLogged = useAppSelector(state => state.session.user != null)
 	const setSession = (session: Session) => dispatch(updateSession(session))
-	const deleteSession = () => dispatch(_deleteSession())
+	const logout = () => {
+		dispatch(deleteSession())
+		deleteToken()
+	}
 
 	return {
 		session,
+		isLogged,
 		setSession,
-		deleteSession
+		logout
 	}
 }
 
 export const useInitSession = () => {
 	const dispatch = useAppDispatch()
 
-	useEffect(() => {
+	useOnMount(() => {
 		const fn = async () => {
 			try {
 				const session = await authService.findSession()
-				console.log(session)
 				dispatch(updateSession(session))
 			} catch (e) {
 				// TODO
@@ -33,7 +38,7 @@ export const useInitSession = () => {
 		}
 
 		fn()
-	}, [dispatch])
+	})
 }
 
 export const useUser = () => {
