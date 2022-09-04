@@ -2,7 +2,7 @@ import { Session, UserDto } from '@title/common/build/types/session'
 import authService from '../../remote/auth'
 import { useLocalStorage, useOnMount } from '../../utils/hooks'
 import { useAppDispatch, useAppSelector } from '../store'
-import { deleteSession, updateSession, updateUser } from './reducer'
+import { deleteUser, updateSession, updateUser } from './reducer'
 
 export const useSession = () => {
 	const dispatch = useAppDispatch()
@@ -12,7 +12,7 @@ export const useSession = () => {
 	const isLogged = useAppSelector(state => state.session.user != null)
 	const setSession = (session: Session) => dispatch(updateSession(session))
 	const logout = () => {
-		dispatch(deleteSession())
+		dispatch(deleteUser())
 		deleteToken()
 	}
 

@@ -1,7 +1,8 @@
 import { Helmet } from 'react-helmet'
 import { useRouter } from '../common/routing/hooks'
 import { defineI18n, useTranslate } from '../utils/i18n'
-import { useCurrentLanguage } from '../store/language/hooks'
+import { useAppSelector } from '../store/store'
+import { languageSelector } from '../store/session/selectors'
 
 const i18n = defineI18n({
 	en: {
@@ -16,7 +17,7 @@ const i18n = defineI18n({
 
 function Head () {
 	const translate = useTranslate()
-	const { currentLanguage } = useCurrentLanguage()
+	const currentLanguage = useAppSelector(languageSelector)
 	const { currentTitle } = useRouter()
 
 	const title = [

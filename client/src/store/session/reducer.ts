@@ -1,32 +1,37 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { Language } from '@title/common/build/types/Language'
 import { Session, UserDto } from '@title/common/build/types/session'
 
-export type SessionState = Partial<Session>
+export interface SessionState {
+	user?: UserDto
+	language: Language
+}
 
 const initialState: SessionState = {
-	user: undefined
+	user: undefined,
+	language: localStorage.getItem('language') as Language ?? Language.en
 }
 
 export const sessionSlice = createSlice({
 	name: 'session',
 	initialState,
 	reducers: {
-		updateSession: (state, action: PayloadAction<Session>): SessionState => {
-			return action.payload
+		updateSession: (state, action: PayloadAction<Session>) => {
+			state = action.payload
 		},
-		deleteSession: (): SessionState => {
-			return {}
+		updateUser: (state, action: PayloadAction<UserDto>) => {
+			state.user = action.payload
 		},
-		updateUser: (state, action: PayloadAction<UserDto>): SessionState => {
-			return {
-				...state,
-				user: action.payload
-			}
+		deleteUser: (state) => {
+			delete state.user
+		},
+		updateLanguage: (state, action: PayloadAction<Language>) => {
+			state.language = action.payload
 		}
 	}
 })
 
 export const {
 	reducer: sessionReducer,
-	actions: { updateSession, deleteSession, updateUser }
+	actions: { updateSession, updateUser, deleteUser, updateLanguage }
 } = sessionSlice

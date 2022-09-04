@@ -1,4 +1,3 @@
-import { useCurrentLanguage } from '../../store/language/hooks'
 import { Language } from '@title/common/build/types/Language'
 import { useMemo, useState } from 'react'
 import { DropdownItem } from '../../common/dropdown/Dropdown'
@@ -8,6 +7,9 @@ import DropdownToggle from '../../common/dropdown/DropdownToggle'
 import CountryFlag from './CountryFlag'
 import classNames from 'classnames'
 import { useAppTheme } from '../../theme/theme'
+import { useAppDispatch, useAppSelector } from '../../store/store'
+import { languageSelector } from '../../store/session/selectors'
+import { updateLanguage } from '../../store/session/reducer'
 
 const i18n = defineI18n({
 	en: {
@@ -43,8 +45,10 @@ function LanguageSwitcher ({ align = 'left' }: LanguageSwitcherProps) {
 	const classes = useStyles()
 	const translate = useTranslate()
 	const theme = useAppTheme()
+	const dispatch = useAppDispatch()
 
-	const { currentLanguage, setCurrentLanguage } = useCurrentLanguage()
+	const currentLanguage = useAppSelector(languageSelector)
+	const setCurrentLanguage = dispatch(updateLanguage)
 	const [isOpen, setIsOpen] = useState(false)
 	const [isFlagVisible, setIsFlagVisible] = useState(true)
 

@@ -4,7 +4,8 @@ import memoizeOne from 'memoize-one'
 import { PrimitiveType, FormatXMLElementFn } from 'intl-messageformat'
 import { EventEmitter } from 'events'
 import { Language } from '@title/common/build/types/Language'
-import { useCurrentLanguage } from '../store/language/hooks'
+import { useAppSelector } from '../store/store'
+import { languageSelector } from '../store/session/selectors'
 
 export interface IntlMessages {
 	[key: string]: string | IntlMessages
@@ -153,7 +154,7 @@ interface I18nProviderProps {
 
 export function I18nProvider ({ children }: I18nProviderProps) {
 	const [newMessages, setNewMessages] = useState(messages)
-	const { currentLanguage } = useCurrentLanguage()
+	const currentLanguage = useAppSelector(languageSelector)
 
 	useEffect(() => {
 		setNewMessages(messages)
