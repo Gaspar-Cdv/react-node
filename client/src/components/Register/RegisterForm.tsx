@@ -1,5 +1,6 @@
 import { registerValidationSchema } from '@title/common/build/services/validation'
 import { ErrorMessage } from '@title/common/build/types/ErrorMessage'
+import { RegisterRequest } from '@title/common/build/types/requests/auth'
 import { Form, Formik, FormikHelpers } from 'formik'
 import { useState } from 'react'
 import { createUseStyles } from 'react-jss'
@@ -57,14 +58,7 @@ const useStyles = createUseStyles({
 	}
 })
 
-export interface RegisterFormValues {
-	username: string
-	email: string
-	password: string
-	passwordConfirmation: string
-}
-
-const initialValues: RegisterFormValues = {
+const initialValues: RegisterRequest = {
 	username: '',
 	email: '',
 	password: '',
@@ -83,7 +77,7 @@ function RegisterForm ({ onSuccess }: RegisterFormProps) {
 	const [serverError, setServerError] = useState('')
 	const [pending, setPending] = useState(false)
 
-	const handleSubmit = async (values: RegisterFormValues, formikHelpers: FormikHelpers<RegisterFormValues>) => {
+	const handleSubmit = async (values: RegisterRequest, formikHelpers: FormikHelpers<RegisterRequest>) => {
 		try {
 			setPending(true)
 			await authService.register(values)

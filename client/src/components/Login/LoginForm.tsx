@@ -1,5 +1,6 @@
 import { loginValidationSchema } from '@title/common/build/services/validation'
 import { ErrorMessage } from '@title/common/build/types/ErrorMessage'
+import { LoginRequest } from '@title/common/build/types/requests/auth'
 import { Form, Formik } from 'formik'
 import { useState } from 'react'
 import { createUseStyles } from 'react-jss'
@@ -55,12 +56,7 @@ const useStyles = createUseStyles({
 	}
 })
 
-export interface LoginFormValues {
-	username: string
-	password: string
-}
-
-const initialValues: LoginFormValues = {
+const initialValues: LoginRequest = {
 	username: '',
 	password: ''
 }
@@ -75,7 +71,7 @@ function LoginForm () {
 	const [serverError, setServerError] = useState('')
 	const [pending, setPending] = useState(false)
 
-	const handleSubmit = async (values: LoginFormValues) => {
+	const handleSubmit = async (values: LoginRequest) => {
 		try {
 			setPending(true)
 			const { token } = await authService.login(values)

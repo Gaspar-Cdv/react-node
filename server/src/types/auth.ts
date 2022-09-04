@@ -5,15 +5,3 @@ export interface TokenPayload extends JwtPayload {
   username: string,
   email: string
 }
-
-export interface RegisterRequest {
-  username: string
-  email: string
-  password: string
-  passwordConfirmation: string
-}
-
-export interface LoginRequest {
-  username: string
-  password: string
-}
