@@ -1,10 +1,11 @@
 import { User } from '@prisma/client'
 import { loginValidationSchema, registerValidationSchema } from '@title/common/build/services/validation'
 import { RegisterRequest, LoginRequest, LoginResponse } from '@title/common/build/types/requests/auth'
+import { Session, UserDto } from '@title/common/build/types/session'
 import { ErrorMessage } from '@title/common/build/types/ErrorMessage'
 import bcrypt from 'bcrypt'
 import { Response } from 'express'
-import jwt from 'jsonwebtoken'
+import jwt, { NotBeforeError, TokenExpiredError } from 'jsonwebtoken'
 import { JWT_EXPIRATION_TIME, JWT_SECRET } from '../config/environment'
 import { prisma } from '../prisma'
 import { TokenPayload } from '../types/auth'
@@ -64,8 +65,22 @@ export default class AuthService {
 		}
 
 		const token = this.generateToken(user!)
+		const session = await this.buildSession(user!.userId)
 
-		res.status(200).json({ token })
+		res.status(200).json({ token, session })
+	}
+
+	findSession = async (req: Req<void>, res: Res<Session>) => {
+		const token = this.getTokenFromHeader(req)
+
+		if (token != null) {
+			const payload = this.extractPayloadFromToken(token!)
+			const session = await this.buildSession(payload.userId)
+
+			res.status(200).json(session)
+		} else {
+			res.sendStatus(204)
+		}
 	}
 
 	/* PRIVATE */
@@ -107,21 +122,57 @@ export default class AuthService {
 	getTokenFromHeader = (req: Req): string | undefined => {
 		const token = req.header('x-access-token') || req.header('authorization')
 
-		return token?.replace('Bearer ', '')
+		return token?.match(/^Bearer "(.+)"$/)?.[1]
 	}
 
-	extractPayloadFromToken = (token: string): TokenPayload | undefined => {
-		return jwt.decode(token) as TokenPayload
+	extractPayloadFromToken = (token = ''): TokenPayload => {
+		try {
+			return jwt.verify(token, JWT_SECRET) as TokenPayload
+		} catch (e) {
+			if (e instanceof TokenExpiredError) {
+				throw new ForbiddenError(ErrorMessage.EXPIRED_TOKEN)
+			} else if (e instanceof NotBeforeError) {
+				throw new ForbiddenError(ErrorMessage.NOT_ACTIVE_TOKEN)
+			} else {
+				throw new ForbiddenError(ErrorMessage.INVALID_TOKEN)
+			}
+		}
 	}
 
 	isTokenValid = (token = ''): boolean => {
 		try {
-			jwt.verify(token, JWT_SECRET)
+			this.extractPayloadFromToken(token)
 
 			return true
 		} catch (e) {
 			return false
 		}
+	}
+
+	buildSession = async (userId: number) => {
+		const user = await this.findById(userId)
+
+		if (user == null) {
+			throw new Error()
+		}
+
+		const session: Session = {
+			user: this.createUserDto(user)
+		}
+
+		return session
+	}
+
+	createUserDto = (user: User): UserDto => {
+		const { userId, username, email } = user
+
+		const userDto: UserDto = {
+			userId,
+			username,
+			email
+		}
+
+		return userDto
 	}
 
 	/* STATIC */

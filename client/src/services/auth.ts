@@ -4,6 +4,7 @@ import { FormikHelpers } from 'formik'
 import { useState } from 'react'
 import { useRouter } from '../common/routing/hooks'
 import authService from '../remote/auth'
+import { useSession } from '../store/session/hooks'
 import HttpError from '../types/HttpError'
 import { useLocalStorage } from '../utils/hooks'
 
@@ -18,7 +19,7 @@ export const useRegister = (onSuccess?: () => void) => {
 			setPending(true)
 			await authService.register(values)
 			formikHelpers.resetForm()
-			setError('')
+			resetError()
 			onSuccess?.()
 		} catch (e) {
 			if (e instanceof HttpError) {
@@ -43,6 +44,7 @@ export const useRegister = (onSuccess?: () => void) => {
 export const useLogin = () => {
 	const [, setToken] = useLocalStorage('token')
 	const { navigate } = useRouter()
+	const { setSession } = useSession()
 
 	const [error, setError] = useState('')
 	const [pending, setPending] = useState(false)
@@ -52,8 +54,10 @@ export const useLogin = () => {
 	const login = async (values: LoginRequest) => {
 		try {
 			setPending(true)
-			const { token } = await authService.login(values)
+			const { token, session } = await authService.login(values)
+			setSession(session)
 			setToken(token)
+			resetError()
 			navigate('home')
 		} catch (e) {
 			if (e instanceof HttpError) {

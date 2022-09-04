@@ -34,4 +34,5 @@ export enum ErrorMessage {
 	// session errors
 	INVALID_TOKEN = 'INVALID_TOKEN',
 	EXPIRED_TOKEN = 'EXPIRED_TOKEN',
+	NOT_ACTIVE_TOKEN = 'NOT_ACTIVE_TOKEN'
 }

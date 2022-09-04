@@ -1,4 +1,5 @@
 import { LoginRequest, LoginResponse, RegisterRequest } from '@title/common/build/types/requests/auth'
+import { Session } from '@title/common/build/types/session'
 import api from './api'
 
 const serviceName = 'auth'
@@ -11,9 +12,14 @@ const login = async (data: LoginRequest): Promise<LoginResponse> => {
 	return await api.call(serviceName, 'login', data)
 }
 
+const findSession = async (): Promise<Session> => {
+	return await api.call(serviceName, 'findSession')
+}
+
 const authService = {
 	register,
-	login
+	login,
+	findSession
 }
 
 export default authService

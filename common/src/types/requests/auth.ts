@@ -1,3 +1,5 @@
+import { Session } from '../session'
+
 export interface RegisterRequest {
 	username: string
 	email: string
@@ -12,4 +14,5 @@ export interface LoginRequest {
 
 export interface LoginResponse {
 	token: string
+	session: Session
 }
