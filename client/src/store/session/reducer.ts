@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Language } from '@title/common/build/types/Language'
-import { Session, UserDto } from '@title/common/build/types/session'
+import { UserDto } from '@title/common/build/types/session'
 
 export interface SessionState {
 	user?: UserDto
@@ -16,10 +16,10 @@ export const sessionSlice = createSlice({
 	name: 'session',
 	initialState,
 	reducers: {
-		updateSession: (state, action: PayloadAction<Session>) => {
-			state = action.payload
+		updateSession: (state, action: PayloadAction<SessionState>) => {
+			return action.payload
 		},
-		updateUser: (state, action: PayloadAction<UserDto>) => {
+		updateUser: (state, action: PayloadAction<UserDto | undefined>) => {
 			state.user = action.payload
 		},
 		deleteUser: (state) => {

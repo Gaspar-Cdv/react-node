@@ -28,7 +28,7 @@ interface SidebarMenuItemProps {
 function SidebarMenuItem ({ route, children }: SidebarMenuItemProps) {
 	const classes = useStyles()
 	const { currentRoute } = useRouter()
-	const { setIsSidebarVisible } = useSidebarVisibility()
+	const [, setIsSidebarVisible] = useSidebarVisibility()
 
 	const isActive = currentRoute.name === route
 

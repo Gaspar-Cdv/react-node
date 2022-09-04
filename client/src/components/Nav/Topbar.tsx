@@ -71,7 +71,7 @@ function Topbar () {
 	const translate = useTranslate()
 	const theme = useAppTheme()
 
-	const { isSidebarVisible, setIsSidebarVisible } = useSidebarVisibility()
+	const [isSidebarVisible, setIsSidebarVisible] = useSidebarVisibility()
 	const [menuIcon, setMenuIcon] = useState(isSidebarVisible ? <CloseIcon /> : <BurgerIcon />)
 	const [isMenuIconVisible, setIsMenuIconVisible] = useState(true)
 

@@ -68,7 +68,7 @@ function Sidebar () {
 	const theme = useAppTheme()
 	const isLogged = useAppSelector(isLoggedSelector)
 
-	const { isSidebarVisible, setIsSidebarVisible } = useSidebarVisibility()
+	const [isSidebarVisible, setIsSidebarVisible] = useSidebarVisibility()
 
 	const handleClose = () => {
 		setIsSidebarVisible(false)
