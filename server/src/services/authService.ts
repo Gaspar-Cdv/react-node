@@ -1,7 +1,7 @@
 import { User } from '@prisma/client'
 import { loginValidationSchema, registerValidationSchema } from '@title/common/build/services/validation'
 import { RegisterRequest, LoginRequest, LoginResponse } from '@title/common/build/types/requests/auth'
-import { Session, UserDto } from '@title/common/build/types/session'
+import { Session } from '@title/common/build/types/session'
 import { ErrorMessage } from '@title/common/build/types/ErrorMessage'
 import bcrypt from 'bcrypt'
 import { Response } from 'express'

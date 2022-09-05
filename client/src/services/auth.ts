@@ -7,7 +7,7 @@ import authService from '../remote/auth'
 import { deleteUser, updateSession } from '../store/session/reducer'
 import { useAppDispatch } from '../store/store'
 import HttpError from '../types/HttpError'
-import { useLocalStorage, useOnMount } from '../utils/hooks'
+import { useLocalStorage } from '../utils/hooks'
 
 export const useRegister = (onSuccess?: () => void) => {
 	const [error, setError] = useState('')
