@@ -8,6 +8,7 @@ import CountryFlag from './CountryFlag'
 import classNames from 'classnames'
 import { useAppTheme } from '../../theme/theme'
 import { useLanguage } from '../../store/session/hooks'
+import userService from '../../remote/user'
 
 const i18n = defineI18n({
 	en: {
@@ -62,7 +63,7 @@ function LanguageSwitcher ({ align = 'left' }: LanguageSwitcherProps) {
 					{translate(i18n[language])}
 				</div>
 			),
-			onClick: () => {
+			onClick: async () => {
 				if (language === currentLanguage) {
 					return
 				}
@@ -73,6 +74,8 @@ function LanguageSwitcher ({ align = 'left' }: LanguageSwitcherProps) {
 					setCurrentLanguage(language)
 					setIsFlagVisible(true)
 				}, theme.duration.crossFadeTransition)
+
+				await userService.changeLanguage(language)
 			}
 		}))
 	}, [classes.option, currentLanguage, languages, setCurrentLanguage, theme.duration.crossFadeTransition, translate])

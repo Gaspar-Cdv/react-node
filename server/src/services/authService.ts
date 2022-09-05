@@ -13,8 +13,10 @@ import { ForbiddenError, UnprocessableEntityError } from '../types/errors'
 import { Req, Res } from '../types/requestResponse'
 import AssertionService from './assertionService'
 import { Language } from '@title/common/build/types/Language'
+import UserService from './userService'
 
 const assertionService = AssertionService.getService()
+const userService = UserService.getService()
 
 export default class AuthService {
 
@@ -31,8 +33,8 @@ export default class AuthService {
 			throw new UnprocessableEntityError(ErrorMessage.INVALID_VALUES)
 		}
 
-		assertionService.assertNull(await this.findByUsername(username), ErrorMessage.USERNAME_ALREADY_USED)
-		assertionService.assertNull(await this.findByEmail(email), ErrorMessage.EMAIL_ALREADY_USED)
+		assertionService.assertNull(await userService.findByUsername(username), ErrorMessage.USERNAME_ALREADY_USED)
+		assertionService.assertNull(await userService.findByEmail(email), ErrorMessage.EMAIL_ALREADY_USED)
 
 		const hashedPassword = await this.hashPassword(password)
 
@@ -56,7 +58,7 @@ export default class AuthService {
 			throw new UnprocessableEntityError(ErrorMessage.INVALID_VALUES)
 		}
 
-		const user = await this.findByUsername(username)
+		const user = await userService.findByUsername(username)
 
 		try {
 			assertionService.assertNotNull(user, ErrorMessage.INVALID_USERNAME)
@@ -75,7 +77,7 @@ export default class AuthService {
 		const token = this.getTokenFromHeader(req)
 
 		if (token != null) {
-			const payload = this.extractPayloadFromToken(token!)
+			const payload = this.extractPayloadFromToken(token)
 			const session = await this.buildSession(payload.userId)
 
 			res.status(200).json(session)
@@ -85,18 +87,6 @@ export default class AuthService {
 	}
 
 	/* PRIVATE */
-
-	findById = async (userId: number): Promise<User | null> => {
-		return prisma.user.findFirst({ where: { userId } })
-	}
-
-	findByUsername = async (username: string): Promise<User | null> => {
-		return prisma.user.findFirst({ where: { username } })
-	}
-
-	findByEmail = async (email: string): Promise<User | null> => {
-		return prisma.user.findFirst({ where: { email } })
-	}
 
 	hashPassword = (password: string): Promise<string> => {
 		return bcrypt.hash(password, 10)
@@ -151,7 +141,7 @@ export default class AuthService {
 	}
 
 	buildSession = async (userId: number) => {
-		const user = await this.findById(userId)
+		const user = await userService.findById(userId)
 
 		if (user == null) {
 			throw new Error()
@@ -159,22 +149,10 @@ export default class AuthService {
 
 		const session: Session = {
 			language: user.language as Language,
-			user: this.createUserDto(user)
+			user: userService.createUserDto(user)
 		}
 
 		return session
-	}
-
-	createUserDto = (user: User): UserDto => {
-		const { userId, username, email } = user
-
-		const userDto: UserDto = {
-			userId,
-			username,
-			email
-		}
-
-		return userDto
 	}
 
 	/* STATIC */
