@@ -15,6 +15,7 @@ const useStyles = createUseStyles(theme => ({
 		position: 'fixed',
 		top: 0,
 		width: width,
+		maxWidth: '100vw',
 		height: '100vh',
 		backgroundColor: theme.color.background,
 		zIndex: zIndex || theme.zIndex.defaultDrawer,

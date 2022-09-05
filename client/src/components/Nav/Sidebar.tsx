@@ -98,6 +98,7 @@ function Sidebar () {
 			onClose={handleClose}
 			className={classes.drawer}
 			zIndex={theme.zIndex.sidebar}
+			width={400}
 			position='right'
 		>
 			<nav className={classes.nav}>
