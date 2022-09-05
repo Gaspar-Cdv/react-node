@@ -114,7 +114,7 @@ export default class AuthService {
 	getTokenFromHeader = (req: Req): string | undefined => {
 		const token = req.header('x-access-token') || req.header('authorization')
 
-		return token?.match(/^Bearer "(.+)"$/)?.[1]
+		return token?.replace('Bearer ', '')
 	}
 
 	extractPayloadFromToken = (token = ''): TokenPayload => {

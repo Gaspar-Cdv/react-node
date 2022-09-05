@@ -42,7 +42,7 @@ const getHeaders = () => {
 
 	const token = localStorage.getItem('token')
 	if (token != null) {
-		headers.set('Authorization', `Bearer ${token}`)
+		headers.set('Authorization', `Bearer ${JSON.parse(token)}`)
 	}
 
 	return headers
