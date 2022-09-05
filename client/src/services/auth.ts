@@ -44,6 +44,7 @@ export const useRegister = (onSuccess?: () => void) => {
 
 export const useLogin = () => {
 	const [, setToken] = useLocalStorage('token')
+	const [, setLanguage] = useLocalStorage('language')
 	const { navigate } = useRouter()
 	const dispatch = useAppDispatch()
 
@@ -58,6 +59,7 @@ export const useLogin = () => {
 			const { token, session } = await authService.login(values)
 			dispatch(updateSession(session))
 			setToken(token)
+			setLanguage(session.language)
 			resetError()
 			navigate('home')
 		} catch (e) {
@@ -92,14 +94,18 @@ export const useLogout = () => {
 
 export const useInitSession = () => {
 	const dispatch = useAppDispatch()
+	const [, setLanguage] = useLocalStorage('language')
+	const logout = useLogout()
 
 	useOnMount(() => {
 		const fn = async () => {
 			try {
 				const session = await authService.findSession()
 				dispatch(updateSession(session))
+				setLanguage(session.language)
 			} catch (e) {
-				// TODO
+				console.error(e)
+				logout()
 			}
 		}
 
