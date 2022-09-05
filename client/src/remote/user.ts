@@ -3,8 +3,8 @@ import api from './api'
 
 const serviceName = 'user'
 
-const changeLanguage = async (data: Language): Promise<void> => {
-	await api.call(serviceName, 'changeLanguage', data)
+const changeLanguage = async (language: Language): Promise<void> => {
+	await api.call(serviceName, 'changeLanguage', { language })
 }
 
 const userService = {

@@ -9,11 +9,11 @@ const register = async (data: RegisterRequest): Promise<void> => {
 }
 
 const login = async (data: LoginRequest): Promise<LoginResponse> => {
-	return await api.call(serviceName, 'login', data)
+	return api.call(serviceName, 'login', data)
 }
 
-const findSession = async (): Promise<Session> => {
-	return await api.call(serviceName, 'findSession')
+const findSession = async (): Promise<Session | null> => {
+	return api.call(serviceName, 'findSession')
 }
 
 const authService = {

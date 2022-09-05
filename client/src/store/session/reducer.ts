@@ -7,9 +7,12 @@ export interface SessionState {
 	language: Language
 }
 
+const localStorageLanguage = localStorage.getItem('language')
+const initialLanguage = localStorageLanguage != null ? JSON.parse(localStorageLanguage) as Language : Language.en
+
 const initialState: SessionState = {
 	user: undefined,
-	language: localStorage.getItem('language') as Language ?? Language.en
+	language: initialLanguage
 }
 
 export const sessionSlice = createSlice({

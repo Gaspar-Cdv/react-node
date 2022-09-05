@@ -100,8 +100,10 @@ export const useFindSession = () => {
 	return async () => {
 		try {
 			const session = await authService.findSession()
-			dispatch(updateSession(session))
-			setLanguage(session.language)
+			if (session != null) {
+				dispatch(updateSession(session))
+				setLanguage(session.language)
+			}
 		} catch (e) {
 			console.error(e)
 			logout()

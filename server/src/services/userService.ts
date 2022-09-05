@@ -10,9 +10,9 @@ export default class UserService {
 
 	/* PUBLIC */
 
-	changeLanguage = async (req: Req<Language>, res: Res<void>) => {
-		const { body: language, userId } = req
-		await this.updateLanguage(language, userId)
+	changeLanguage = async (req: Req<{ language: Language }>, res: Res<void>) => {
+		const { body, userId } = req
+		await this.updateLanguage(body.language, userId)
 		res.sendStatus(200)
 	}
 
