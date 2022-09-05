@@ -114,7 +114,7 @@ function Sidebar () {
 						))}
 				</div>
 
-				<LanguageSwitcher />
+				<LanguageSwitcher onLanguageChange={handleClose} />
 			</nav>
 		</Drawer>
 	)

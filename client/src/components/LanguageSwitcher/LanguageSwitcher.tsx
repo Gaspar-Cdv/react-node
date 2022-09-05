@@ -37,9 +37,10 @@ const useStyles = createUseStyles(theme => ({
 
 interface LanguageSwitcherProps {
 	align?: 'left' | 'right'
+	onLanguageChange?: () => void
 }
 
-function LanguageSwitcher ({ align = 'left' }: LanguageSwitcherProps) {
+function LanguageSwitcher ({ align = 'left', onLanguageChange }: LanguageSwitcherProps) {
 	const classes = useStyles()
 	const translate = useTranslate()
 	const theme = useAppTheme()
@@ -68,6 +69,7 @@ function LanguageSwitcher ({ align = 'left' }: LanguageSwitcherProps) {
 				}
 
 				setIsFlagVisible(false)
+				onLanguageChange?.()
 
 				setTimeout(() => {
 					setCurrentLanguage(language)
@@ -79,6 +81,7 @@ function LanguageSwitcher ({ align = 'left' }: LanguageSwitcherProps) {
 		classes.option,
 		currentLanguage,
 		languages,
+		onLanguageChange,
 		setCurrentLanguage,
 		theme.duration.crossFadeTransition,
 		translate
