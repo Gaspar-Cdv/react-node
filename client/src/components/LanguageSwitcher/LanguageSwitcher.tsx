@@ -8,10 +8,6 @@ import CountryFlag from './CountryFlag'
 import classNames from 'classnames'
 import { useAppTheme } from '../../theme/theme'
 import { useLanguage } from '../../store/session/hooks'
-import userService from '../../remote/user'
-import { useAppSelector } from '../../store/store'
-import { isLoggedSelector } from '../../store/session/selectors'
-import { useLocalStorage } from '../../utils/hooks'
 
 const i18n = defineI18n({
 	en: {
@@ -48,9 +44,7 @@ function LanguageSwitcher ({ align = 'left' }: LanguageSwitcherProps) {
 	const translate = useTranslate()
 	const theme = useAppTheme()
 
-	const [, setLanguage] = useLocalStorage('language')
 	const [currentLanguage, setCurrentLanguage] = useLanguage()
-	const isLogged = useAppSelector(isLoggedSelector)
 	const [isOpen, setIsOpen] = useState(false)
 	const [isFlagVisible, setIsFlagVisible] = useState(true)
 
@@ -68,7 +62,7 @@ function LanguageSwitcher ({ align = 'left' }: LanguageSwitcherProps) {
 					{translate(i18n[language])}
 				</div>
 			),
-			onClick: async () => {
+			onClick: () => {
 				if (language === currentLanguage) {
 					return
 				}
@@ -76,23 +70,16 @@ function LanguageSwitcher ({ align = 'left' }: LanguageSwitcherProps) {
 				setIsFlagVisible(false)
 
 				setTimeout(() => {
-					setLanguage(language)
 					setCurrentLanguage(language)
 					setIsFlagVisible(true)
 				}, theme.duration.crossFadeTransition)
-
-				if (isLogged) {
-					await userService.changeLanguage(language)
-				}
 			}
 		}))
 	}, [
 		classes.option,
 		currentLanguage,
-		isLogged,
 		languages,
 		setCurrentLanguage,
-		setLanguage,
 		theme.duration.crossFadeTransition,
 		translate
 	])
