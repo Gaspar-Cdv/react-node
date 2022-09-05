@@ -1,17 +1,22 @@
 import { User } from '@prisma/client'
-import { registerValidationSchema } from '@title/common/build/services/validation'
+import { loginValidationSchema, registerValidationSchema } from '@title/common/build/services/validation'
+import { RegisterRequest, LoginRequest, LoginResponse } from '@title/common/build/types/requests/auth'
+import { Session } from '@title/common/build/types/session'
 import { ErrorMessage } from '@title/common/build/types/ErrorMessage'
 import bcrypt from 'bcrypt'
 import { Response } from 'express'
-import jwt from 'jsonwebtoken'
+import jwt, { NotBeforeError, TokenExpiredError } from 'jsonwebtoken'
 import { JWT_EXPIRATION_TIME, JWT_SECRET } from '../config/environment'
 import { prisma } from '../prisma'
-import { LoginRequest, RegisterRequest, TokenPayload } from '../types/auth'
-import { UnprocessableEntityError } from '../types/errors'
-import { Req } from '../types/requestResponse'
+import { TokenPayload } from '../types/auth'
+import { ForbiddenError, UnprocessableEntityError } from '../types/errors'
+import { Req, Res } from '../types/requestResponse'
 import AssertionService from './assertionService'
+import { Language } from '@title/common/build/types/Language'
+import UserService from './userService'
 
 const assertionService = AssertionService.getService()
+const userService = UserService.getService()
 
 export default class AuthService {
 
@@ -20,7 +25,7 @@ export default class AuthService {
 	/* PUBLIC */
 
 	register = async (req: Req<RegisterRequest>, res: Response) => {
-		const { username, email, password } = req.body
+		const { username, email, password, language } = req.body
 
 		try {
 			registerValidationSchema.validateSync(req.body)
@@ -28,8 +33,8 @@ export default class AuthService {
 			throw new UnprocessableEntityError(ErrorMessage.INVALID_VALUES)
 		}
 
-		assertionService.assertNull(await this.findByUsername(username), ErrorMessage.USERNAME_ALREADY_USED)
-		assertionService.assertNull(await this.findByEmail(email), ErrorMessage.EMAIL_ALREADY_USED)
+		assertionService.assertNull(await userService.findByUsername(username), ErrorMessage.USERNAME_ALREADY_USED)
+		assertionService.assertNull(await userService.findByEmail(email), ErrorMessage.EMAIL_ALREADY_USED)
 
 		const hashedPassword = await this.hashPassword(password)
 
@@ -37,39 +42,52 @@ export default class AuthService {
 			data: {
 				username,
 				email,
-				password: hashedPassword
+				password: hashedPassword,
+				language
 			}
 		})
 
 		res.sendStatus(201)
 	}
 
-	login = async (req: Req<LoginRequest>, res: Response) => {
+	login = async (req: Req<LoginRequest>, res: Res<LoginResponse>) => {
 		const { username, password } = req.body
 
-		const user = await this.findByUsername(username)
-		assertionService.assertNotNull(user, ErrorMessage.INVALID_USERNAME)
-		assertionService.assertTrue(await this.isPasswordValid(password, user!.password), ErrorMessage.INVALID_PASSWORD)
+		try {
+			loginValidationSchema.validateSync(req.body)
+		} catch (e) {
+			throw new UnprocessableEntityError(ErrorMessage.INVALID_VALUES)
+		}
+
+		const user = await userService.findByUsername(username)
+
+		try {
+			assertionService.assertNotNull(user, ErrorMessage.INVALID_USERNAME)
+			assertionService.assertTrue(await this.isPasswordValid(password, user!.password), ErrorMessage.INVALID_PASSWORD)
+		} catch (e) {
+			throw new ForbiddenError(ErrorMessage.INVALID_CREDENTIALS)
+		}
 
 		const token = this.generateToken(user!)
+		const session = await this.buildSession(user!.userId)
 
-		res.header('Authorization', 'Bearer ' + token)
-		res.sendStatus(200)
+		res.status(200).json({ token, session })
+	}
+
+	findSession = async (req: Req<void>, res: Res<Session>) => {
+		const token = this.getTokenFromHeader(req)
+
+		if (token != null) {
+			const payload = this.extractPayloadFromToken(token)
+			const session = await this.buildSession(payload.userId)
+
+			res.status(200).json(session)
+		} else {
+			res.sendStatus(204)
+		}
 	}
 
 	/* PRIVATE */
-
-	findById = async (userId: number): Promise<User | null> => {
-		return prisma.user.findFirst({ where: { userId } })
-	}
-
-	findByUsername = async (username: string): Promise<User | null> => {
-		return prisma.user.findFirst({ where: { username } })
-	}
-
-	findByEmail = async (email: string): Promise<User | null> => {
-		return prisma.user.findFirst({ where: { email } })
-	}
 
 	hashPassword = (password: string): Promise<string> => {
 		return bcrypt.hash(password, 10)
@@ -99,18 +117,43 @@ export default class AuthService {
 		return token?.replace('Bearer ', '')
 	}
 
-	extractPayloadFromToken = (token: string): TokenPayload | undefined => {
-		return jwt.decode(token) as TokenPayload
+	extractPayloadFromToken = (token = ''): TokenPayload => {
+		try {
+			return jwt.verify(token, JWT_SECRET) as TokenPayload
+		} catch (e) {
+			if (e instanceof TokenExpiredError) {
+				throw new ForbiddenError(ErrorMessage.EXPIRED_TOKEN)
+			} else if (e instanceof NotBeforeError) {
+				throw new ForbiddenError(ErrorMessage.NOT_ACTIVE_TOKEN)
+			} else {
+				throw new ForbiddenError(ErrorMessage.INVALID_TOKEN)
+			}
+		}
 	}
 
 	isTokenValid = (token = ''): boolean => {
 		try {
-			jwt.verify(token, JWT_SECRET)
+			this.extractPayloadFromToken(token)
 
 			return true
 		} catch (e) {
 			return false
 		}
+	}
+
+	buildSession = async (userId: number) => {
+		const user = await userService.findById(userId)
+
+		if (user == null) {
+			throw new Error()
+		}
+
+		const session: Session = {
+			language: user.language as Language,
+			user: userService.createUserDto(user)
+		}
+
+		return session
 	}
 
 	/* STATIC */

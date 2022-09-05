@@ -3,8 +3,8 @@ import { CustomFormats, IntlProvider, useIntl } from 'react-intl'
 import memoizeOne from 'memoize-one'
 import { PrimitiveType, FormatXMLElementFn } from 'intl-messageformat'
 import { EventEmitter } from 'events'
-import { Language } from '../types/Language'
-import { useCurrentLanguage } from '../store/language/hooks'
+import { Language } from '@title/common/build/types/Language'
+import { useLanguage } from '../store/session/hooks'
 
 export interface IntlMessages {
 	[key: string]: string | IntlMessages
@@ -153,7 +153,7 @@ interface I18nProviderProps {
 
 export function I18nProvider ({ children }: I18nProviderProps) {
 	const [newMessages, setNewMessages] = useState(messages)
-	const { currentLanguage } = useCurrentLanguage()
+	const [currentLanguage] = useLanguage()
 
 	useEffect(() => {
 		setNewMessages(messages)

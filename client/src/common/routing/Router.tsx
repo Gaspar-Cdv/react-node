@@ -5,15 +5,21 @@ import { defineI18n } from '../../utils/i18n'
 
 const Home = lazy(() => import(/* webpackChunkName: "home" */ '../../components/Home/Home'))
 const Login = lazy(() => import(/* webpackChunkName: "login" */ '../../components/Login/Login'))
+const Logout = lazy(() => import(/* webpackChunkName: "logout" */ '../../components/Login/Logout'))
 const NotFound = lazy(() => import(/* webpackChunkName: "notFound" */ '../../components/NotFound'))
 
 type RouteNameExtended =
 	| 'home'
 	| 'login'
 	| 'register'
+	| 'logout'
 	| 'notFound'
 
 export type RouteName = Exclude<RouteNameExtended, 'notFound'>
+
+export interface LinkParams {
+	[key: string]: string
+}
 
 export interface Route<T extends RouteNameExtended = RouteNameExtended> {
 	name: T
@@ -41,6 +47,11 @@ export const routes: Routes = {
 		path: '/register',
 		element: <Register />
 	},
+	logout: {
+		name: 'logout',
+		path: '/logout',
+		element: <Logout />
+	},
 	notFound: {
 		name: 'notFound',
 		path: '*',
@@ -57,15 +68,49 @@ export const pageTitles = defineI18n<RoutesI18n>({
 		home: 'Home',
 		login: 'Login',
 		register: 'Register',
+		logout: 'Logout',
 		notFound: 'Page not found'
 	},
 	fr: {
 		home: 'Accueil',
 		login: 'Connexion',
 		register: 'Inscription',
+		logout: 'Déconnexion',
 		notFound: 'Page non trouvée'
 	}
 })
+
+/**
+ * Get the path of a route from its name.
+ */
+export const getPath = (to: RouteName): string => {
+	const url = routes[to]
+
+	return url.path
+}
+
+/**
+ * From a path and an object of params, return an url with params replaced. E.g.:
+ * ```ts
+ * const path = '/:foo/:bar'
+ * const params = { foo: 'foo', bar: 'bar' }
+ * const result = injectParams(path, params) // '/foo/bar'
+ * ```
+ * @throws If the path contains a param that is not in the params object.
+ * @param path The path to replace params in.
+ * @param params The params to replace (optionnal).
+ */
+export const injectParams = (path: string, params: LinkParams = {}) => {
+	return path.replace(/:([^/]+)(?=\/|$)/g, (_, key) => {
+		const param = params[key]
+
+		if (param == null) {
+			throw new Error(`Missing param for the route ${path}`)
+		}
+
+		return param
+	})
+}
 
 function Router () {
 	return useRoutes(Object.values(routes))

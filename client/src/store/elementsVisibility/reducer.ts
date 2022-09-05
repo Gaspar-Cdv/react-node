@@ -16,23 +16,14 @@ export const elementsVisibilitySlice = createSlice({
 	name: 'elementsVisibility',
 	initialState,
 	reducers: {
-		setLoaderVisibility: (state, action: PayloadAction<boolean>): ElementsVisibilityState => {
-			return {
-				...state,
-				loader: action.payload
-			}
+		setLoaderVisibility: (state, action: PayloadAction<boolean>) => {
+			state.loader = action.payload
 		},
-		setPopupVisibility: (state, action: PayloadAction<boolean>): ElementsVisibilityState => {
-			return {
-				...state,
-				popup: action.payload
-			}
+		setPopupVisibility: (state, action: PayloadAction<boolean>) => {
+			state.popup = action.payload
 		},
-		setSidebarVisibility: (state, action: PayloadAction<boolean>): ElementsVisibilityState => {
-			return {
-				...state,
-				sidebar: action.payload
-			}
+		setSidebarVisibility: (state, action: PayloadAction<boolean>) => {
+			state.sidebar = action.payload
 		}
 	}
 })

@@ -1,5 +1,4 @@
-import { useCurrentLanguage } from '../../store/language/hooks'
-import { Language } from '../../types/Language'
+import { Language } from '@title/common/build/types/Language'
 import { useMemo, useState } from 'react'
 import { DropdownItem } from '../../common/dropdown/Dropdown'
 import { createUseStyles } from 'react-jss'
@@ -8,6 +7,7 @@ import DropdownToggle from '../../common/dropdown/DropdownToggle'
 import CountryFlag from './CountryFlag'
 import classNames from 'classnames'
 import { useAppTheme } from '../../theme/theme'
+import { useLanguage } from '../../store/session/hooks'
 
 const i18n = defineI18n({
 	en: {
@@ -44,7 +44,7 @@ function LanguageSwitcher ({ align = 'left' }: LanguageSwitcherProps) {
 	const translate = useTranslate()
 	const theme = useAppTheme()
 
-	const { currentLanguage, setCurrentLanguage } = useCurrentLanguage()
+	const [currentLanguage, setCurrentLanguage] = useLanguage()
 	const [isOpen, setIsOpen] = useState(false)
 	const [isFlagVisible, setIsFlagVisible] = useState(true)
 
@@ -75,7 +75,14 @@ function LanguageSwitcher ({ align = 'left' }: LanguageSwitcherProps) {
 				}, theme.duration.crossFadeTransition)
 			}
 		}))
-	}, [classes.option, currentLanguage, languages, setCurrentLanguage, theme.duration.crossFadeTransition, translate])
+	}, [
+		classes.option,
+		currentLanguage,
+		languages,
+		setCurrentLanguage,
+		theme.duration.crossFadeTransition,
+		translate
+	])
 
 	const handleClick = () => {
 		setIsOpen(isOpen => !isOpen)

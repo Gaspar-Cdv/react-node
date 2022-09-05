@@ -1,29 +1,9 @@
-import { useAppDispatch, useAppSelector } from '../store'
+import { createUseStoreState } from '../store'
 import { setLoaderVisibility, setPopupVisibility, setSidebarVisibility } from './reducer'
+import { isLoaderVisibleSelector, isPopupVisibleSelector, isSidebarVisibleSelector } from './selectors'
 
-export const useLoaderVisibility = () => {
-	const dispatch = useAppDispatch()
+export const useLoaderVisibility = createUseStoreState(isLoaderVisibleSelector, setLoaderVisibility)
 
-	const isLoaderVisible = useAppSelector(state => state.elementsVisibility.loader)
-	const setIsLoaderVisible = (visible: boolean) => dispatch(setLoaderVisibility(visible))
+export const usePopupVisibility = createUseStoreState(isPopupVisibleSelector, setPopupVisibility)
 
-	return { isLoaderVisible, setIsLoaderVisible }
-}
-
-export const usePopupVisibility = () => {
-	const dispatch = useAppDispatch()
-
-	const isPopupVisible = useAppSelector(state => state.elementsVisibility.popup)
-	const setIsPopupVisible = (visible: boolean) => dispatch(setPopupVisibility(visible))
-
-	return { isPopupVisible, setIsPopupVisible }
-}
-
-export const useSidebarVisibility = () => {
-	const dispatch = useAppDispatch()
-
-	const isSidebarVisible = useAppSelector(state => state.elementsVisibility.sidebar)
-	const setIsSidebarVisible = (visible: boolean) => dispatch(setSidebarVisibility(visible))
-
-	return { isSidebarVisible, setIsSidebarVisible }
-}
+export const useSidebarVisibility = createUseStoreState(isSidebarVisibleSelector, setSidebarVisibility)

@@ -4,7 +4,7 @@ import HttpError from '../types/HttpError'
 /**
  * @throws {HttpError}
  */
-const call = async (service: string, method: string, data?: any) => {
+const call = async <T>(service: string, method: string, data?: any): Promise<T> => {
 	const url = `${SERVER_URL}/api/${service}/${method}`
 
 	const response = await fetch(url, {
@@ -23,6 +23,9 @@ const call = async (service: string, method: string, data?: any) => {
 		result = await response.json()
 	} catch (e) {
 		result = await clonedResponse.text()
+		if (result === '') {
+			result = null
+		}
 	}
 
 	if (!isSuccess(response.status)) {
@@ -30,7 +33,7 @@ const call = async (service: string, method: string, data?: any) => {
 		throw new HttpError(response.status, message)
 	}
 
-	return result
+	return result as T
 }
 
 const getHeaders = () => {
@@ -39,7 +42,7 @@ const getHeaders = () => {
 
 	const token = localStorage.getItem('token')
 	if (token != null) {
-		headers.set('Authorization', `Bearer ${token}`)
+		headers.set('Authorization', `Bearer ${JSON.parse(token)}`)
 	}
 
 	return headers

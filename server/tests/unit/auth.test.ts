@@ -1,4 +1,5 @@
 import { User } from '@prisma/client'
+import { Language } from '@title/common/build/types/Language'
 import chai from 'chai'
 import { JWT_EXPIRATION_TIME } from '../../src/config/environment'
 import AuthService from '../../src/services/authService'
@@ -13,7 +14,8 @@ describe('authService', () => {
 			username: 'test',
 			email: 'test@test.com',
 			password: 'password@123',
-			createdAt: new Date()
+			language: Language.en,
+			createdAt: new Date(),
 		}
 
 		const token = authService.generateToken(user)

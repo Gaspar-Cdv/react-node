@@ -1,6 +1,9 @@
 import * as Yup from 'yup'
 import { ErrorMessage } from '../types/ErrorMessage'
 
+const requiredValidator = Yup.string()
+	.required(ErrorMessage.REQUIRED)
+
 const usernameValidator = Yup.string()
 	.min(4, ErrorMessage.MIN_LENGTH_4)
 	.max(255, ErrorMessage.MAX_LENGTH_255)
@@ -75,8 +78,15 @@ const registerValidationSchema = Yup.object({
 	passwordConfirmation: passwordConfirmationValidator('password')
 })
 
+const loginValidationSchema = Yup.object({
+	username: requiredValidator,
+	password: requiredValidator,
+})
+
 export {
+	requiredValidator,
 	emailValidator,
 	passwordValidator,
-	registerValidationSchema
+	registerValidationSchema,
+	loginValidationSchema
 }

@@ -1,4 +1,4 @@
-import { injectParams } from '../common/routing/Link'
+import { injectParams } from '../common/routing/Router'
 
 describe('injectParams', () => {
 	it('should inject params into url', () => {

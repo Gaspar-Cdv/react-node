@@ -11,16 +11,24 @@ const useStyles = createUseStyles({
 		flexDirection: 'column',
 		alignItems: 'center',
 		gap: '2rem'
+	},
+	buttons: {
+		display: 'flex',
+		justifyContent: 'center',
+		flexWrap: 'wrap-reverse',
+		gap: '2rem',
 	}
 })
 
 const i18n = defineI18n({
 	en: {
 		registred: 'You have been successfully registred.',
+		login: 'Login',
 		back: 'Back'
 	},
 	fr: {
 		registred: 'Vous avez été inscrit avec succès.',
+		login: 'Se connecter',
 		back: 'Retour'
 	}
 })
@@ -42,7 +50,11 @@ function Register () {
 	return (
 		<div className={classes.container}>
 			<Alert severity='success'>{translate(i18n.registred)}</Alert>
-			<ButtonLink to='home'>{translate(i18n.back)}</ButtonLink>
+
+			<div className={classes.buttons}>
+				<ButtonLink to='home' variant='secondary'>{translate(i18n.back)}</ButtonLink>
+				<ButtonLink to='login'>{translate(i18n.login)}</ButtonLink>
+			</div>
 		</div>
 	)
 }

@@ -18,7 +18,7 @@ export const useBoolean = (initialValue = false) => {
 /**
  * Calls a function when the component did just mount.
  */
-export const useDidMount = (callback: () => void) => {
+export const useOnMount = (callback: () => void) => {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	useEffect(callback, [])
 }
@@ -26,7 +26,7 @@ export const useDidMount = (callback: () => void) => {
 /**
  * Calls a function just before the component will unmount.
  */
-export const useWillUnmount = (callback: () => void) => {
+export const useOnUnmount = (callback: () => void) => {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	useEffect(() => callback, [])
 }
@@ -74,7 +74,7 @@ export const useFadeTransition = (show: boolean, transitionDuration = 200) => {
 
 	const useStyles = createUseStyles({
 		fadeTransition: ({ visible }: { visible: boolean }) => ({
-			transition: `opacity ${transitionDuration}ms linear`,
+			transition: `opacity ${transitionDuration}ms linear`, // IMPORTANT: this overrides all other transitions...
 			opacity: visible ? 1 : 0
 		})
 	})
@@ -99,7 +99,7 @@ export const useFadeTransition = (show: boolean, transitionDuration = 200) => {
  * @param key - the key of the localStorage
  * @param initialValue - the initial value used if the localStorage doesn't exist yet.
  */
-export const useLocalStorage = <T> (key: string, initialValue?: T) => {
+export const useLocalStorage = <T = string> (key: string, initialValue?: T) => {
 	const [value, setValue] = useState<T | undefined>(() => {
 		const item = window.localStorage.getItem(key)
 		return item != null ? JSON.parse(item) : initialValue

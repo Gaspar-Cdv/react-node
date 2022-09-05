@@ -1,7 +1,10 @@
+import { useMemo } from 'react'
 import { createUseStyles } from 'react-jss'
 import Drawer from '../../common/Drawer'
 import { RouteName } from '../../common/routing/Router'
 import { useSidebarVisibility } from '../../store/elementsVisibility/hooks'
+import { isLoggedSelector } from '../../store/session/selectors'
+import { useAppSelector } from '../../store/store'
 import { useAppTheme } from '../../theme/theme'
 import { defineI18n, useTranslate } from '../../utils/i18n'
 import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher'
@@ -18,6 +21,7 @@ const i18n = defineI18n<SidebarI18n>({
 		route: {
 			home: 'Home',
 			login: 'Login',
+			logout: 'Logout',
 			register: 'Register'
 		}
 	},
@@ -26,6 +30,7 @@ const i18n = defineI18n<SidebarI18n>({
 		route: {
 			home: 'Accueil',
 			login: 'Connexion',
+			logout: 'Se déconnecter',
 			register: 'Inscription'
 		}
 	}
@@ -52,18 +57,40 @@ const useStyles = createUseStyles(theme => ({
 	}
 }))
 
+interface MenuItem {
+	route: RouteName
+	visible?: boolean
+}
+
 function Sidebar () {
 	const classes = useStyles()
 	const translate = useTranslate()
 	const theme = useAppTheme()
+	const isLogged = useAppSelector(isLoggedSelector)
 
-	const { isSidebarVisible, setIsSidebarVisible } = useSidebarVisibility()
+	const [isSidebarVisible, setIsSidebarVisible] = useSidebarVisibility()
 
 	const handleClose = () => {
 		setIsSidebarVisible(false)
 	}
 
-	const menuItems: RouteName[] = ['home', 'login', 'register']
+	const menuItems: MenuItem[] = useMemo(() => [
+		{
+			route: 'home'
+		},
+		{
+			route: 'login',
+			visible: !isLogged
+		},
+		{
+			route: 'register',
+			visible: !isLogged
+		},
+		{
+			route: 'logout',
+			visible: isLogged
+		}
+	], [isLogged])
 
 	return (
 		<Drawer
@@ -77,11 +104,13 @@ function Sidebar () {
 				<h4>{translate(i18n.menu)}</h4>
 
 				<div className={classes.menuItems}>
-					{menuItems.map(route => (
-						<SidebarMenuItem key={route} route={route}>
-							{translate(i18n.route[route])}
-						</SidebarMenuItem>
-					))}
+					{menuItems
+						.filter(({ visible }) => visible ?? true)
+						.map(({ route }) => (
+							<SidebarMenuItem key={route} route={route}>
+								{translate(i18n.route[route])}
+							</SidebarMenuItem>
+						))}
 				</div>
 
 				<LanguageSwitcher />
