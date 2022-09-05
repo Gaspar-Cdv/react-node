@@ -1,3 +1,4 @@
+import { Language } from '../Language'
 import { Session } from '../session'
 
 export interface RegisterRequest {
@@ -5,6 +6,7 @@ export interface RegisterRequest {
 	email: string
 	password: string
 	passwordConfirmation: string
+	language?: Language
 }
 
 export interface LoginRequest {

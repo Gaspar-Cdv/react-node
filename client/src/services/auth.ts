@@ -4,6 +4,7 @@ import { FormikHelpers } from 'formik'
 import { useState } from 'react'
 import { useRouter } from '../common/routing/hooks'
 import authService from '../remote/auth'
+import { useLanguage } from '../store/session/hooks'
 import { deleteUser, updateSession } from '../store/session/reducer'
 import { useAppDispatch } from '../store/store'
 import HttpError from '../types/HttpError'
@@ -12,13 +13,14 @@ import { useLocalStorage } from '../utils/hooks'
 export const useRegister = (onSuccess?: () => void) => {
 	const [error, setError] = useState('')
 	const [pending, setPending] = useState(false)
+	const [language] = useLanguage()
 
 	const resetError = () => setError('')
 
 	const register = async (values: RegisterRequest, formikHelpers: FormikHelpers<RegisterRequest>) => {
 		try {
 			setPending(true)
-			await authService.register(values)
+			await authService.register({ ...values, language })
 			formikHelpers.resetForm()
 			resetError()
 			onSuccess?.()

@@ -25,7 +25,7 @@ export default class AuthService {
 	/* PUBLIC */
 
 	register = async (req: Req<RegisterRequest>, res: Response) => {
-		const { username, email, password } = req.body
+		const { username, email, password, language } = req.body
 
 		try {
 			registerValidationSchema.validateSync(req.body)
@@ -42,7 +42,8 @@ export default class AuthService {
 			data: {
 				username,
 				email,
-				password: hashedPassword
+				password: hashedPassword,
+				language
 			}
 		})
 
