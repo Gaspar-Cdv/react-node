@@ -92,23 +92,19 @@ export const useLogout = () => {
 	}
 }
 
-export const useInitSession = () => {
+export const useFindSession = () => {
 	const dispatch = useAppDispatch()
 	const [, setLanguage] = useLocalStorage('language')
 	const logout = useLogout()
 
-	useOnMount(() => {
-		const fn = async () => {
-			try {
-				const session = await authService.findSession()
-				dispatch(updateSession(session))
-				setLanguage(session.language)
-			} catch (e) {
-				console.error(e)
-				logout()
-			}
+	return async () => {
+		try {
+			const session = await authService.findSession()
+			dispatch(updateSession(session))
+			setLanguage(session.language)
+		} catch (e) {
+			console.error(e)
+			logout()
 		}
-
-		fn()
-	})
+	}
 }

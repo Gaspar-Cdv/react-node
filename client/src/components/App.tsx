@@ -5,11 +5,14 @@ import { useCss } from '../theme/useCss'
 import BottomBar from './Nav/BottomBar'
 import Sidebar from './Nav/Sidebar'
 import Main from './Main'
-import { useInitSession } from '../services/auth'
+import { useFindSession } from '../services/auth'
+import { useOnMount } from '../utils/hooks'
 
 function App () {
 	useCss()
-	useInitSession()
+	const findSession = useFindSession()
+
+	useOnMount(() => void findSession())
 
 	return (
 		<>
