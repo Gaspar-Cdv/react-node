@@ -15,14 +15,14 @@ export const useRegister = (onSuccess?: () => void) => {
 	const [pending, setPending] = useState(false)
 	const [language] = useLanguage()
 
-	const resetError = () => setError('')
+	const onChange = () => setError('')
 
-	const register = async (values: RegisterRequest, formikHelpers: FormikHelpers<RegisterRequest>) => {
+	const onSubmit = async (values: RegisterRequest, formikHelpers: FormikHelpers<RegisterRequest>) => {
 		try {
 			setPending(true)
 			await authService.register({ ...values, language })
 			formikHelpers.resetForm()
-			resetError()
+			onChange()
 			onSuccess?.()
 		} catch (e) {
 			if (e instanceof HttpError) {
@@ -37,9 +37,9 @@ export const useRegister = (onSuccess?: () => void) => {
 	}
 
 	return {
-		register,
+		onSubmit,
 		error,
-		resetError,
+		onChange,
 		pending
 	}
 }
@@ -53,16 +53,16 @@ export const useLogin = () => {
 	const [error, setError] = useState('')
 	const [pending, setPending] = useState(false)
 
-	const resetError = () => setError('')
+	const onChange = () => setError('')
 
-	const login = async (values: LoginRequest) => {
+	const onSubmit = async (values: LoginRequest) => {
 		try {
 			setPending(true)
 			const { token, session } = await authService.login(values)
 			dispatch(updateSession(session))
 			setToken(token)
 			setLanguage(session.language)
-			resetError()
+			onChange()
 			navigate('home')
 		} catch (e) {
 			if (e instanceof HttpError) {
@@ -77,9 +77,9 @@ export const useLogin = () => {
 	}
 
 	return {
-		login,
+		onSubmit,
 		error,
-		resetError,
+		onChange,
 		pending
 	}
 }

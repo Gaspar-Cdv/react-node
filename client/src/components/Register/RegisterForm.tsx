@@ -39,17 +39,14 @@ interface RegisterFormProps {
 
 function RegisterForm ({ onSuccess }: RegisterFormProps) {
 	const translate = useTranslate()
-	const { register, error, resetError, pending } = useRegister(onSuccess)
+	const register = useRegister(onSuccess)
 
 	return (
 		<Form
 			initialValues={initialValues}
 			validationSchema={registerValidationSchema}
-			onSubmit={register}
-			onChange={resetError}
 			submitLabel={translate(i18n.register)}
-			error={error}
-			pending={pending}
+			{...register}
 		>
 			<Input
 				label={translate(i18n.form.username)}

@@ -29,17 +29,14 @@ const initialValues: LoginRequest = {
 
 function LoginForm () {
 	const translate = useTranslate()
-	const { login, error, resetError, pending } = useLogin()
+	const login = useLogin()
 
 	return (
 		<Form
 			initialValues={initialValues}
-			onSubmit={login}
 			validationSchema={loginValidationSchema}
-			onChange={resetError}
 			submitLabel={translate(i18n.login)}
-			error={error}
-			pending={pending}
+			{...login}
 		>
 			<Input
 				name='username'
