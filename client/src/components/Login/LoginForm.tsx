@@ -10,15 +10,13 @@ const i18n = defineI18n({
 		form: {
 			username: 'Username',
 			password: 'Password'
-		},
-		login: 'Login'
+		}
 	},
 	fr: {
 		form: {
 			username: 'Nom d\'utilisateur',
 			password: 'Mot de passe'
-		},
-		login: 'Se connecter'
+		}
 	}
 })
 
@@ -35,7 +33,6 @@ function LoginForm () {
 		<Form
 			initialValues={initialValues}
 			validationSchema={loginValidationSchema}
-			submitLabel={translate(i18n.login)}
 			{...loginForm}
 		>
 			<Input

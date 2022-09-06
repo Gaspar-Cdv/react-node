@@ -12,8 +12,7 @@ const i18n = defineI18n({
 			email: 'Email',
 			password: 'Password',
 			confirmPassword: 'Confirm Password'
-		},
-		register: 'Register'
+		}
 	},
 	fr: {
 		form: {
@@ -21,8 +20,7 @@ const i18n = defineI18n({
 			email: 'Adresse mail',
 			password: 'Mot de passe',
 			confirmPassword: 'Confirmation du mot de passe'
-		},
-		register: 'S\'inscrire'
+		}
 	}
 })
 
@@ -45,7 +43,6 @@ function RegisterForm ({ onSuccess }: RegisterFormProps) {
 		<Form
 			initialValues={initialValues}
 			validationSchema={registerValidationSchema}
-			submitLabel={translate(i18n.register)}
 			{...registerForm}
 		>
 			<Input

@@ -9,12 +9,14 @@ import { useErrorMessage } from '../../utils/useErrorMessage'
 const i18n = defineI18n({
 	en: {
 		buttons: {
+			submit: 'Submit',
 			reset: 'Reset'
 		},
 		error: 'Error: {message}'
 	},
 	fr: {
 		buttons: {
+			submit: 'Envoyer',
 			reset: 'Réinitialiser'
 		},
 		error: 'Erreur : {message}'
@@ -26,8 +28,8 @@ const useStyles = createUseStyles({
 		display: 'flex',
 		flexDirection: 'column',
 		gap: '1.25rem',
-		maxWidth: 400,
-		width: '100%',
+		width: 400,
+		maxWidth: '100%',
 		margin: '0 auto'
 	},
 	buttons: {
@@ -39,17 +41,32 @@ const useStyles = createUseStyles({
 })
 
 interface FormProps<T> {
+	title?: string
 	initialValues: T
 	validationSchema: any
 	onSubmit: (values: T, formikHelpers: FormikHelpers<T>) => void | Promise<any>
+	onCancel?: () => void
 	onChange: () => void
 	submitLabel: string
+	cancelLabel?: string
 	error: string
 	pending: boolean
 	children: ReactNode | ReactNode[]
 }
 
-function Form<T extends FormikValues> ({ initialValues, validationSchema, onSubmit, onChange, submitLabel, error, pending, children }: FormProps<T>) {
+function Form<T extends FormikValues> ({
+	title,
+	initialValues,
+	validationSchema,
+	onSubmit,
+	onCancel,
+	onChange,
+	submitLabel,
+	cancelLabel,
+	error,
+	pending,
+	children
+}: FormProps<T>) {
 	const classes = useStyles()
 	const translate = useTranslate()
 	const errorMessage = useErrorMessage()
@@ -61,9 +78,14 @@ function Form<T extends FormikValues> ({ initialValues, validationSchema, onSubm
 			validationSchema={validationSchema}
 			validateOnChange={false}
 			validateOnBlur={false}
+			enableReinitialize
 		>
 			<FormikForm onChange={onChange}>
 				<div className={classes.container}>
+					{title != null && (
+						<h5>{title}</h5>
+					)}
+
 					{children}
 
 					<Alert show={error.length > 0}>
@@ -71,12 +93,14 @@ function Form<T extends FormikValues> ({ initialValues, validationSchema, onSubm
 					</Alert>
 
 					<div className={classes.buttons}>
-						<Button type='reset' variant='secondary'>
-							{translate(i18n.buttons.reset)}
-						</Button>
+						{onCancel != null && (
+							<Button variant='secondary' onClick={onCancel}>
+								{cancelLabel || translate(i18n.buttons.reset)}
+							</Button>
+						)}
 
 						<Button type='submit' disabled={pending}>
-							{submitLabel}
+							{submitLabel || translate(i18n.buttons.submit)}
 						</Button>
 					</div>
 				</div>

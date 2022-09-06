@@ -9,8 +9,33 @@ import { deleteUser, updateSession } from '../store/session/reducer'
 import { useAppDispatch } from '../store/store'
 import HttpError from '../types/HttpError'
 import { useLocalStorage } from '../utils/hooks'
+import { defineI18n, useTranslate } from '../utils/i18n'
+
+const i18n = defineI18n({
+	en: {
+		register: {
+			title: 'Register',
+			submit: 'Register'
+		},
+		login: {
+			title: 'Login',
+			submit: 'Login'
+		}
+	},
+	fr: {
+		register: {
+			title: 'S\'inscrire',
+			submit: 'S\'inscrire'
+		},
+		login: {
+			title: 'Se connecter',
+			submit: 'Se connecter'
+		}
+	}
+})
 
 export const useRegisterForm = (onSuccess?: () => void) => {
+	const translate = useTranslate()
 	const [error, setError] = useState('')
 	const [pending, setPending] = useState(false)
 	const [language] = useLanguage()
@@ -36,7 +61,12 @@ export const useRegisterForm = (onSuccess?: () => void) => {
 		}
 	}
 
+	const title = translate(i18n.register.title)
+	const submitLabel = translate(i18n.register.submit)
+
 	return {
+		title,
+		submitLabel,
 		onSubmit,
 		error,
 		onChange,
@@ -45,6 +75,7 @@ export const useRegisterForm = (onSuccess?: () => void) => {
 }
 
 export const useLoginForm = () => {
+	const translate = useTranslate()
 	const [, setToken] = useLocalStorage('token')
 	const [, setLanguage] = useLocalStorage('language')
 	const { navigate } = useRouter()
@@ -76,7 +107,12 @@ export const useLoginForm = () => {
 		}
 	}
 
+	const title = translate(i18n.login.title)
+	const submitLabel = translate(i18n.login.submit)
+
 	return {
+		title,
+		submitLabel,
 		onSubmit,
 		error,
 		onChange,

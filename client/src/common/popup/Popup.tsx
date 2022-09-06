@@ -17,8 +17,7 @@ const userStyles = createUseStyles(theme => ({
 	},
 	title: {
 		textAlign: 'center',
-		fontWeight: 700,
-		minHeight: theme.size.md
+		minHeight: theme.size.lg
 	},
 	scrollbars: {
 		flex: '1 1 auto',
@@ -51,7 +50,7 @@ function Popup ({ show, title, children, onCancel }: PopupProps) {
 			<div className={classes.popup}>
 				<CloseIcon className={classes.close} onClick={onCancel} />
 
-				<div className={classes.title}>{title}</div>
+				<h5 className={classes.title}>{title}</h5>
 
 				<Scrollbar maxHeight='20rem' className={classes.content}>
 					<div className={classes.content}>
