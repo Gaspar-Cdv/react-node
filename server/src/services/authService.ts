@@ -5,7 +5,7 @@ import { Session } from '@title/common/build/types/session'
 import { ErrorMessage } from '@title/common/build/types/ErrorMessage'
 import bcrypt from 'bcrypt'
 import { Response } from 'express'
-import jwt, { NotBeforeError, TokenExpiredError } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 import { JWT_EXPIRATION_TIME, JWT_SECRET } from '../config/environment'
 import { prisma } from '../prisma'
 import { TokenPayload } from '../types/auth'
@@ -117,18 +117,11 @@ export default class AuthService {
 		return token?.replace('Bearer ', '')
 	}
 
+	/**
+	 * @throws JsonWebTokenError, TokenExpiredError, NotBeforeError
+	 */
 	extractPayloadFromToken = (token = ''): TokenPayload => {
-		try {
-			return jwt.verify(token, JWT_SECRET) as TokenPayload
-		} catch (e) {
-			if (e instanceof TokenExpiredError) {
-				throw new ForbiddenError(ErrorMessage.EXPIRED_TOKEN)
-			} else if (e instanceof NotBeforeError) {
-				throw new ForbiddenError(ErrorMessage.NOT_ACTIVE_TOKEN)
-			} else {
-				throw new ForbiddenError(ErrorMessage.INVALID_TOKEN)
-			}
-		}
+		return jwt.verify(token, JWT_SECRET) as TokenPayload
 	}
 
 	isTokenValid = (token = ''): boolean => {
