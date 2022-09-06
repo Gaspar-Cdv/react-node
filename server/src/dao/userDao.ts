@@ -2,7 +2,7 @@ import { User } from '@prisma/client'
 import { Language } from '@title/common/build/types/Language'
 import { prisma } from '../prisma'
 
-export default class UserDao {
+class UserDao {
 
 	static dao: UserDao
 
@@ -27,7 +27,7 @@ export default class UserDao {
 
 	/* STATIC */
 
-	static getDao = () => {
+	static getInstance = () => {
 		if (UserDao.dao == null) {
 			UserDao.dao = new UserDao()
 		}
@@ -35,3 +35,5 @@ export default class UserDao {
 		return UserDao.dao
 	}
 }
+
+export default UserDao.getInstance()

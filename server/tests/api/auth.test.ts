@@ -3,12 +3,9 @@ import { Language } from '@title/common/build/types/Language'
 import chai from 'chai'
 import chaiHttp from 'chai-http'
 import app from '../../src'
+import userDao from '../../src/dao/userDao'
 import { prisma } from '../../src/prisma'
-import AuthService from '../../src/services/authService'
-import UserService from '../../src/services/userService'
-
-const authService = AuthService.getService()
-const userService = UserService.getService()
+import authService from '../../src/services/authService'
 
 const { expect } = chai
 chai.use(chaiHttp)
@@ -22,7 +19,7 @@ describe('register', () => {
 	})
 
 	it('should register a new user', async () => {
-		expect(await userService.findByUsername('authTest')).to.be.null
+		expect(await userDao.findByUsername('authTest')).to.be.null
 
 		const res = await chai.request(app)
 			.post('/api/auth/register')
@@ -34,7 +31,7 @@ describe('register', () => {
 			})
 
 		expect(res.status).to.equal(201)
-		expect(await userService.findByUsername('authTest')).not.to.be.null
+		expect(await userDao.findByUsername('authTest')).not.to.be.null
 	})
 
 	it('should not register a new user if one of the fields is missing', async () => {
@@ -57,7 +54,7 @@ describe('register', () => {
 
 			expect(res.status).to.equal(422)
 			expect(res.body.message).to.equal(ErrorMessage.INVALID_VALUES)
-			expect(await userService.findByUsername('authTest2')).to.be.null
+			expect(await userDao.findByUsername('authTest2')).to.be.null
 		}
 	})
 
@@ -73,7 +70,7 @@ describe('register', () => {
 
 		expect(res.status).to.equal(422)
 		expect(res.body.message).to.equal(ErrorMessage.USERNAME_ALREADY_USED)
-		expect(await userService.findByEmail('authTest2@test.com')).to.be.null
+		expect(await userDao.findByEmail('authTest2@test.com')).to.be.null
 	})
 
 	it('should not register a new user with an existing email', async () => {
@@ -88,7 +85,7 @@ describe('register', () => {
 
 		expect(res.status).to.equal(422)
 		expect(res.body.message).to.equal(ErrorMessage.EMAIL_ALREADY_USED)
-		expect(await userService.findByUsername('authTest2')).to.be.null
+		expect(await userDao.findByUsername('authTest2')).to.be.null
 	})
 
 	it('should not register a new user with an invalid email', async () => {
@@ -103,7 +100,7 @@ describe('register', () => {
 
 		expect(res.status).to.equal(422)
 		expect(res.body.message).to.equal(ErrorMessage.INVALID_VALUES)
-		expect(await userService.findByUsername('authTest2')).to.be.null
+		expect(await userDao.findByUsername('authTest2')).to.be.null
 	})
 
 	it('should not register a new user with a weak password', async () => {
@@ -118,7 +115,7 @@ describe('register', () => {
 
 		expect(res.status).to.equal(422)
 		expect(res.body.message).to.equal(ErrorMessage.INVALID_VALUES)
-		expect(await userService.findByUsername('authTest2')).to.be.null
+		expect(await userDao.findByUsername('authTest2')).to.be.null
 	})
 
 	it('should not register a new user with non matching passwords', async () => {
@@ -133,7 +130,7 @@ describe('register', () => {
 
 		expect(res.status).to.equal(422)
 		expect(res.body.message).to.equal(ErrorMessage.INVALID_VALUES)
-		expect(await userService.findByUsername('authTest2')).to.be.null
+		expect(await userDao.findByUsername('authTest2')).to.be.null
 	})
 })
 

@@ -11,18 +11,14 @@ import { prisma } from '../prisma'
 import { TokenPayload } from '../types/auth'
 import { ForbiddenError, UnprocessableEntityError } from '../types/errors'
 import { Req, Res } from '../types/requestResponse'
-import AssertionService from './assertionService'
 import { Language } from '@title/common/build/types/Language'
-import UserService from './userService'
-import UserDao from '../dao/userDao'
+import assertionService from './assertionService'
+import userDao from '../dao/userDao'
+import userService from './userService'
 
-const assertionService = AssertionService.getService()
-const userService = UserService.getService()
-const userDao = UserDao.getDao()
+class AuthService {
 
-export default class AuthService {
-
-	static service: AuthService
+	static instance: AuthService
 
 	/* PUBLIC */
 
@@ -153,11 +149,13 @@ export default class AuthService {
 
 	/* STATIC */
 
-	static getService = () => {
-		if (AuthService.service == null) {
-			AuthService.service = new AuthService()
+	static getInstance = () => {
+		if (AuthService.instance == null) {
+			AuthService.instance = new AuthService()
 		}
 
-		return AuthService.service
+		return AuthService.instance
 	}
 }
+
+export default AuthService.getInstance()

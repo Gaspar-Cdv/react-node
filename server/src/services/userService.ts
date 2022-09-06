@@ -1,14 +1,12 @@
 import { User } from '@prisma/client'
 import { Language } from '@title/common/build/types/Language'
 import { UserDto } from '@title/common/build/types/session'
-import UserDao from '../dao/userDao'
+import userDao from '../dao/userDao'
 import { Req, Res } from '../types/requestResponse'
 
-const userDao = UserDao.getDao()
+class UserService {
 
-export default class UserService {
-
-	static service: UserService
+	static instance: UserService
 
 	/* PUBLIC */
 
@@ -34,11 +32,13 @@ export default class UserService {
 
 	/* STATIC */
 
-	static getService = () => {
-		if (UserService.service == null) {
-			UserService.service = new UserService()
+	static getInstance = () => {
+		if (UserService.instance == null) {
+			UserService.instance = new UserService()
 		}
 
-		return UserService.service
+		return UserService.instance
 	}
 }
+
+export default UserService.getInstance()

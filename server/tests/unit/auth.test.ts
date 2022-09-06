@@ -2,9 +2,8 @@ import { User } from '@prisma/client'
 import { Language } from '@title/common/build/types/Language'
 import chai from 'chai'
 import { JWT_EXPIRATION_TIME } from '../../src/config/environment'
-import AuthService from '../../src/services/authService'
+import authService from '../../src/services/authService'
 
-const authService = AuthService.getService()
 const { expect } = chai
 
 describe('authService', () => {
