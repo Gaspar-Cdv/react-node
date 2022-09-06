@@ -14,9 +14,11 @@ import { Req, Res } from '../types/requestResponse'
 import AssertionService from './assertionService'
 import { Language } from '@title/common/build/types/Language'
 import UserService from './userService'
+import UserDao from '../dao/userDao'
 
 const assertionService = AssertionService.getService()
 const userService = UserService.getService()
+const userDao = UserDao.getDao()
 
 export default class AuthService {
 
@@ -33,8 +35,8 @@ export default class AuthService {
 			throw new UnprocessableEntityError(ErrorMessage.INVALID_VALUES)
 		}
 
-		assertionService.assertNull(await userService.findByUsername(username), ErrorMessage.USERNAME_ALREADY_USED)
-		assertionService.assertNull(await userService.findByEmail(email), ErrorMessage.EMAIL_ALREADY_USED)
+		assertionService.assertNull(await userDao.findByUsername(username), ErrorMessage.USERNAME_ALREADY_USED)
+		assertionService.assertNull(await userDao.findByEmail(email), ErrorMessage.EMAIL_ALREADY_USED)
 
 		const hashedPassword = await this.hashPassword(password)
 
@@ -59,7 +61,7 @@ export default class AuthService {
 			throw new UnprocessableEntityError(ErrorMessage.INVALID_VALUES)
 		}
 
-		const user = await userService.findByUsername(username)
+		const user = await userDao.findByUsername(username)
 
 		try {
 			assertionService.assertNotNull(user, ErrorMessage.INVALID_USERNAME)
@@ -135,7 +137,7 @@ export default class AuthService {
 	}
 
 	buildSession = async (userId: number) => {
-		const user = await userService.findById(userId)
+		const user = await userDao.findById(userId)
 
 		if (user == null) {
 			throw new Error()
