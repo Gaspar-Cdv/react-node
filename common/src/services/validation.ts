@@ -37,9 +37,8 @@ const containsDigitValidator = Yup.string()
 const containsSymbolValidator = Yup.string()
 	.matches(/[!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]/, ErrorMessage.NO_SYMBOL)
 
-const passwordValidator = (hardCheck: boolean) => {
-	return passwordLengthValidator(hardCheck)
-		.max(255, ErrorMessage.MAX_LENGTH_255)
+const passwordComplexityValidator = (hardCheck: boolean) => {
+	return Yup.string()
 		.test({
 			test: (password, ctx) => {
 				const score = [
@@ -62,6 +61,12 @@ const passwordValidator = (hardCheck: boolean) => {
 				return true
 			}
 		})
+}
+
+const passwordValidator = (hardCheck: boolean) => {
+	return passwordLengthValidator(hardCheck)
+		.concat(passwordComplexityValidator(hardCheck))
+		.max(255, ErrorMessage.MAX_LENGTH_255)
 		.required(ErrorMessage.REQUIRED)
 }
 
@@ -83,10 +88,23 @@ const loginValidationSchema = Yup.object({
 	password: requiredValidator,
 })
 
+const updateUserValidationSchema = Yup.object({
+	username: usernameValidator,
+	email: emailValidator
+})
+
+const changePasswordValidationSchema = Yup.object({
+	oldPassword: requiredValidator,
+	password: passwordValidator(true),
+	passwordConfirmation: passwordConfirmationValidator('password')
+})
+
 export {
 	requiredValidator,
 	emailValidator,
 	passwordValidator,
 	registerValidationSchema,
-	loginValidationSchema
+	loginValidationSchema,
+	updateUserValidationSchema,
+	changePasswordValidationSchema
 }

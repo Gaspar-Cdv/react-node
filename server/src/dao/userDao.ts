@@ -18,10 +18,29 @@ class UserDao {
 		return prisma.user.findFirst({ where: { email } })
 	}
 
-	updateLanguage = async (language: Language, userId?: number) => {
+	updateLanguage = async (language: Language, userId: number) => {
 		await prisma.user.update({
 			where: { userId },
 			data: { language }
+		})
+	}
+
+	updatePassword = async (password: string, userId: number) => {
+		await prisma.user.update({
+			where: { userId },
+			data: { password }
+		})
+	}
+
+	updateUser = async (user: User) => {
+		const { userId, username, email } = user
+
+		return prisma.user.update({
+			where: { userId },
+			data: {
+				username,
+				email
+			}
 		})
 	}
 
