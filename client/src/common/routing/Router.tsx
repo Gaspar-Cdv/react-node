@@ -5,6 +5,7 @@ import { defineI18n } from '../../utils/i18n'
 
 const Home = lazy(() => import(/* webpackChunkName: "home" */ '../../components/Home/Home'))
 const Login = lazy(() => import(/* webpackChunkName: "login" */ '../../components/Login/Login'))
+const Settings = lazy(() => import(/* webpackChunkName: "settings" */ '../../components/Settings/Settings'))
 const Logout = lazy(() => import(/* webpackChunkName: "logout" */ '../../components/Login/Logout'))
 const NotFound = lazy(() => import(/* webpackChunkName: "notFound" */ '../../components/NotFound'))
 
@@ -12,6 +13,7 @@ type RouteNameExtended =
 	| 'home'
 	| 'login'
 	| 'register'
+	| 'settings'
 	| 'logout'
 	| 'notFound'
 
@@ -47,6 +49,11 @@ export const routes: Routes = {
 		path: '/register',
 		element: <Register />
 	},
+	settings: {
+		name: 'settings',
+		path: '/settings',
+		element: <Settings />
+	},
 	logout: {
 		name: 'logout',
 		path: '/logout',
@@ -68,6 +75,7 @@ export const pageTitles = defineI18n<RoutesI18n>({
 		home: 'Home',
 		login: 'Login',
 		register: 'Register',
+		settings: 'Settings',
 		logout: 'Logout',
 		notFound: 'Page not found'
 	},
@@ -75,6 +83,7 @@ export const pageTitles = defineI18n<RoutesI18n>({
 		home: 'Accueil',
 		login: 'Connexion',
 		register: 'Inscription',
+		settings: 'Paramètres',
 		logout: 'Déconnexion',
 		notFound: 'Page non trouvée'
 	}

@@ -21,6 +21,7 @@ const i18n = defineI18n<SidebarI18n>({
 		route: {
 			home: 'Home',
 			login: 'Login',
+			settings: 'Settings',
 			logout: 'Logout',
 			register: 'Register'
 		}
@@ -30,6 +31,7 @@ const i18n = defineI18n<SidebarI18n>({
 		route: {
 			home: 'Accueil',
 			login: 'Connexion',
+			settings: 'Paramètres',
 			logout: 'Se déconnecter',
 			register: 'Inscription'
 		}
@@ -85,6 +87,10 @@ function Sidebar () {
 		{
 			route: 'register',
 			visible: !isLogged
+		},
+		{
+			route: 'settings',
+			visible: isLogged
 		},
 		{
 			route: 'logout',
