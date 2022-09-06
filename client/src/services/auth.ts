@@ -10,7 +10,7 @@ import { useAppDispatch } from '../store/store'
 import HttpError from '../types/HttpError'
 import { useLocalStorage } from '../utils/hooks'
 
-export const useRegister = (onSuccess?: () => void) => {
+export const useRegisterForm = (onSuccess?: () => void) => {
 	const [error, setError] = useState('')
 	const [pending, setPending] = useState(false)
 	const [language] = useLanguage()
@@ -44,7 +44,7 @@ export const useRegister = (onSuccess?: () => void) => {
 	}
 }
 
-export const useLogin = () => {
+export const useLoginForm = () => {
 	const [, setToken] = useLocalStorage('token')
 	const [, setLanguage] = useLocalStorage('language')
 	const { navigate } = useRouter()

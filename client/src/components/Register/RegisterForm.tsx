@@ -2,7 +2,7 @@ import { registerValidationSchema } from '@title/common/build/services/validatio
 import { RegisterRequest } from '@title/common/build/types/requests/auth'
 import Form from '../../common/form/Form'
 import Input from '../../common/form/Input'
-import { useRegister } from '../../services/auth'
+import { useRegisterForm } from '../../services/auth'
 import { defineI18n, useTranslate } from '../../utils/i18n'
 
 const i18n = defineI18n({
@@ -39,14 +39,14 @@ interface RegisterFormProps {
 
 function RegisterForm ({ onSuccess }: RegisterFormProps) {
 	const translate = useTranslate()
-	const register = useRegister(onSuccess)
+	const registerForm = useRegisterForm(onSuccess)
 
 	return (
 		<Form
 			initialValues={initialValues}
 			validationSchema={registerValidationSchema}
 			submitLabel={translate(i18n.register)}
-			{...register}
+			{...registerForm}
 		>
 			<Input
 				label={translate(i18n.form.username)}

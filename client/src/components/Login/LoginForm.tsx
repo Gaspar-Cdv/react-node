@@ -2,7 +2,7 @@ import { loginValidationSchema } from '@title/common/build/services/validation'
 import { LoginRequest } from '@title/common/build/types/requests/auth'
 import Form from '../../common/form/Form'
 import Input from '../../common/form/Input'
-import { useLogin } from '../../services/auth'
+import { useLoginForm } from '../../services/auth'
 import { defineI18n, useTranslate } from '../../utils/i18n'
 
 const i18n = defineI18n({
@@ -29,14 +29,14 @@ const initialValues: LoginRequest = {
 
 function LoginForm () {
 	const translate = useTranslate()
-	const login = useLogin()
+	const loginForm = useLoginForm()
 
 	return (
 		<Form
 			initialValues={initialValues}
 			validationSchema={loginValidationSchema}
 			submitLabel={translate(i18n.login)}
-			{...login}
+			{...loginForm}
 		>
 			<Input
 				name='username'
