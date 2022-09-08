@@ -78,7 +78,7 @@ export const useLoginForm = () => {
 	const translate = useTranslate()
 	const [, setToken] = useLocalStorage('token')
 	const [, setLanguage] = useLocalStorage('language')
-	const { navigate } = useRouter()
+	const { currentRoute, navigate } = useRouter()
 	const dispatch = useAppDispatch()
 
 	const [error, setError] = useState('')
@@ -94,7 +94,9 @@ export const useLoginForm = () => {
 			setToken(token)
 			setLanguage(session.language)
 			onChange()
-			navigate('home')
+			if (currentRoute.name === 'login') {
+				navigate('home')
+			}
 		} catch (e) {
 			if (e instanceof HttpError) {
 				setError(e.message)
@@ -135,8 +137,11 @@ export const useFindSession = () => {
 	const [, setLanguage] = useLocalStorage('language')
 	const logout = useLogout()
 
-	return async () => {
+	const [pending, setPending] = useState(true)
+
+	const findSession = async () => {
 		try {
+			setPending(true)
 			const session = await authService.findSession()
 			if (session != null) {
 				dispatch(updateSession(session))
@@ -145,6 +150,10 @@ export const useFindSession = () => {
 		} catch (e) {
 			console.error(e)
 			logout()
+		} finally {
+			setPending(false)
 		}
 	}
+
+	return [findSession, pending] as const
 }

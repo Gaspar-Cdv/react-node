@@ -1,4 +1,6 @@
 import { NavigateOptions, useLocation, useNavigate as useRouterNavigate, useParams } from 'react-router-dom'
+import { isLoggedSelector } from '../../store/session/selectors'
+import { useAppSelector } from '../../store/store'
 import { useTranslate } from '../../utils/i18n'
 import { getPath, injectParams, LinkParams, pageTitles, Route, RouteName, routes } from './Router'
 
@@ -29,9 +31,14 @@ function useRawPath (): string {
  */
 function useCurrentRoute (): Route {
 	const rawPath = useRawPath()
+	const isLogged = useAppSelector(isLoggedSelector)
 	const currentRoute = Object.values(routes).find(({ path }) => path && path === rawPath)
 
-	return currentRoute || routes.notFound
+	if (currentRoute == null || (isLogged && currentRoute.hideWhenLogged)) {
+		return routes.notFound
+	}
+
+	return currentRoute
 }
 
 /**
@@ -61,11 +68,19 @@ function useNavigate () {
 	return navigate
 }
 
+function useIsRouteAccessible () {
+	const currentRoute = useCurrentRoute()
+	const isLogged = useAppSelector(isLoggedSelector)
+
+	return isLogged || !currentRoute.protected
+}
+
 export function useRouter () {
 	const router = {
 		currentRoute: useCurrentRoute(),
 		currentTitle: useCurrentTitle(),
-		navigate: useNavigate()
+		navigate: useNavigate(),
+		isRouteAccessible: useIsRouteAccessible()
 	}
 
 	return router

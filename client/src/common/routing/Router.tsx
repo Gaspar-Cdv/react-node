@@ -27,6 +27,9 @@ export interface Route<T extends RouteNameExtended = RouteNameExtended> {
 	name: T
 	path: string
 	element: ReactNode
+	protected?: boolean
+	hideHeader?: boolean
+	hideWhenLogged?: boolean
 }
 
 type Routes = {
@@ -42,27 +45,32 @@ export const routes: Routes = {
 	login: {
 		name: 'login',
 		path: '/login',
-		element: <Login />
+		element: <Login />,
+		hideWhenLogged: true
 	},
 	register: {
 		name: 'register',
 		path: '/register',
-		element: <Register />
+		element: <Register />,
+		hideWhenLogged: true
 	},
 	settings: {
 		name: 'settings',
 		path: '/settings',
-		element: <Settings />
+		element: <Settings />,
+		protected: true
 	},
 	logout: {
 		name: 'logout',
 		path: '/logout',
-		element: <Logout />
+		element: <Logout />,
+		hideHeader: true
 	},
 	notFound: {
 		name: 'notFound',
 		path: '*',
-		element: <NotFound />
+		element: <NotFound />,
+		hideHeader: true
 	}
 }
 
