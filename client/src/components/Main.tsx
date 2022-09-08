@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import { createUseStyles } from 'react-jss'
 import Loader from '../common/Loader'
-import { useRouter } from '../common/routing/hooks'
+import Header from './Header'
 import Router from '../common/routing/Router'
 
 const useStyles = createUseStyles({
@@ -22,13 +22,12 @@ const useStyles = createUseStyles({
 
 function Main () {
 	const classes = useStyles()
-	const { currentTitle } = useRouter()
 
 	return (
 		<main className={classes.main}>
 			<div className={classes.container}>
-				<h3>{currentTitle}</h3>
-				<hr />
+				<Header />
+
 				<Suspense fallback={<Loader show />}>
 					<Router />
 				</Suspense>
