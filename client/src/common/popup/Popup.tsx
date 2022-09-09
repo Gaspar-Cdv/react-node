@@ -52,7 +52,7 @@ function Popup ({ show, title, children, onCancel }: PopupProps) {
 
 				<h5 className={classes.title}>{title}</h5>
 
-				<Scrollbar maxHeight='20rem' className={classes.content}>
+				<Scrollbar maxHeight='20rem' className={classes.scrollbars}>
 					<div className={classes.content}>
 						{children}
 					</div>
