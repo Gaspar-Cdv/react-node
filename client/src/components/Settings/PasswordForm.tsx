@@ -23,10 +23,10 @@ const i18n = defineI18n({
 })
 
 interface PasswordFormProps {
-	onClose: () => void
+	onSuccess: () => void
 }
 
-function PasswordForm ({ onClose }: PasswordFormProps) {
+function PasswordForm ({ onSuccess }: PasswordFormProps) {
 	const translate = useTranslate()
 
 	const initialValues: ChangePasswordRequest = {
@@ -35,7 +35,7 @@ function PasswordForm ({ onClose }: PasswordFormProps) {
 		passwordConfirmation: ''
 	}
 
-	const changePasswordForm = useChangePasswordForm(onClose)
+	const changePasswordForm = useChangePasswordForm(onSuccess)
 
 	return (
 		<Form
