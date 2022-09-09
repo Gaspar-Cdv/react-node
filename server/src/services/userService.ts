@@ -1,8 +1,7 @@
 import { User } from '@prisma/client'
 import { changePasswordValidationSchema, updateUserValidationSchema } from '@title/common/build/services/validation'
 import { ErrorMessage } from '@title/common/build/types/ErrorMessage'
-import { Language } from '@title/common/build/types/Language'
-import { ChangePasswordRequest, UpdateUserRequest } from '@title/common/build/types/requests/user'
+import { ChangeLanguageRequest, ChangePasswordRequest, UpdateUserRequest } from '@title/common/build/types/requests/user'
 import { UserDto } from '@title/common/build/types/session'
 import userDao from '../dao/userDao'
 import { UnprocessableEntityError } from '../types/errors'
@@ -64,7 +63,7 @@ class UserService {
 		res.sendStatus(200)
 	}
 
-	changeLanguage = async (req: Req<{ language: Language }>, res: Res<void>) => {
+	changeLanguage = async (req: Req<ChangeLanguageRequest>, res: Res<void>) => {
 		const { body, userId } = req
 		await userDao.updateLanguage(body.language, userId!)
 		res.sendStatus(200)
