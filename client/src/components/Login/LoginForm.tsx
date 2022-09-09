@@ -1,5 +1,6 @@
 import { loginValidationSchema } from '@title/common/build/services/validation'
 import { LoginRequest } from '@title/common/build/types/requests/auth'
+import { useState } from 'react'
 import Alert from '../../common/Alert'
 import Form from '../../common/form/Form'
 import Input from '../../common/form/Input'
@@ -33,6 +34,7 @@ function LoginForm () {
 	const translate = useTranslate()
 	const loginForm = useLoginForm()
 	const { currentRoute } = useRouter()
+	const [warningVisible, setWarningVisible] = useState(currentRoute.name !== 'login')
 
 	return (
 		<Form
@@ -41,8 +43,9 @@ function LoginForm () {
 			{...loginForm}
 		>
 			<Alert
-				show={currentRoute.name !== 'login'}
+				show={warningVisible}
 				severity='warning'
+				onClose={() => setWarningVisible(false)}
 			>
 				{translate(i18n.notConnected)}
 			</Alert>

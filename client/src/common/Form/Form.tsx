@@ -54,7 +54,7 @@ function Form<T extends FormikValues> ({
 	validationSchema,
 	onSubmit,
 	onCancel,
-	onChange,
+	resetError,
 	submitLabel,
 	cancelLabel,
 	error,
@@ -74,7 +74,7 @@ function Form<T extends FormikValues> ({
 			validateOnBlur={false}
 			enableReinitialize
 		>
-			<FormikForm onChange={onChange}>
+			<FormikForm onChange={resetError}>
 				<div className={classes.container}>
 					{title != null && (
 						<h5>{title}</h5>
@@ -82,7 +82,10 @@ function Form<T extends FormikValues> ({
 
 					{children}
 
-					<Alert show={error.length > 0}>
+					<Alert
+						show={error.length > 0}
+						onClose={resetError}
+					>
 						{translate(i18n.error, { message: errorMessage(error) })}
 					</Alert>
 

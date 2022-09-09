@@ -14,7 +14,7 @@ interface CreateUseFormProps<T> {
 
 export interface UseFormProps<T> {
 	onSubmit: (values: T, formikHelpers: FormikHelpers<T>) => Promise<void>
-	onChange: () => void
+	resetError: () => void
 	error: string
 	pending: boolean;
 	title?: string
@@ -34,7 +34,7 @@ export const createUseForm = <T> ({
 		const [error, setError] = useState('')
 		const [pending, setPending] = useState(false)
 
-		const onChange = () => setError('')
+		const resetError = () => setError('')
 
 		const onSubmit = async (values: T, formikHelpers: FormikHelpers<T>) => {
 			try {
@@ -43,7 +43,7 @@ export const createUseForm = <T> ({
 				if (resetForm) {
 					formikHelpers.resetForm()
 				}
-				onChange()
+				resetError()
 				onSuccess?.()
 			} catch (e) {
 				if (e instanceof HttpError) {
@@ -59,7 +59,7 @@ export const createUseForm = <T> ({
 
 		return {
 			onSubmit,
-			onChange,
+			resetError,
 			error,
 			pending,
 			...(titleKey != null && { title: translate(titleKey) }),
