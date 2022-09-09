@@ -76,6 +76,12 @@ const passwordConfirmationValidator = (fieldName: string) => {
 		.required(ErrorMessage.REQUIRED)
 }
 
+const notIdenticalValidator = (fieldName: string) => {
+	return Yup.string()
+		.notOneOf([Yup.ref(fieldName)], ErrorMessage.IDENTICAL_PASSWORDS)
+		.required(ErrorMessage.REQUIRED)
+}
+
 const registerValidationSchema = Yup.object({
 	username: usernameValidator,
 	email: emailValidator,
@@ -95,7 +101,7 @@ const updateUserValidationSchema = Yup.object({
 
 const changePasswordValidationSchema = Yup.object({
 	oldPassword: requiredValidator,
-	password: passwordValidator(true),
+	password: passwordValidator(true).concat(notIdenticalValidator('oldPassword')),
 	passwordConfirmation: passwordConfirmationValidator('password')
 })
 
