@@ -1,8 +1,9 @@
-import { Form as FormikForm, Formik, FormikHelpers, FormikValues } from 'formik'
+import { Form as FormikForm, Formik, FormikValues } from 'formik'
 import { ReactNode } from 'react'
 import { createUseStyles } from 'react-jss'
 import Alert from '../../common/Alert'
 import Button from '../../common/button/Button'
+import { UseFormProps } from '../../services/createUseForm'
 import { defineI18n, useTranslate } from '../../utils/i18n'
 import { useErrorMessage } from '../../utils/useErrorMessage'
 
@@ -40,17 +41,10 @@ const useStyles = createUseStyles({
 	}
 })
 
-interface FormProps<T> {
-	title?: string
+interface FormProps<T> extends UseFormProps<T> {
 	initialValues: T
 	validationSchema: any
-	onSubmit: (values: T, formikHelpers: FormikHelpers<T>) => void | Promise<any>
 	onCancel?: () => void
-	onChange: () => void
-	submitLabel: string
-	cancelLabel?: string
-	error: string
-	pending: boolean
 	children: ReactNode | ReactNode[]
 }
 
