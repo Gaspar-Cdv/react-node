@@ -4,13 +4,11 @@ import { RegisterRequest, LoginRequest, LoginResponse } from '@title/common/buil
 import { Session } from '@title/common/build/types/session'
 import { ErrorMessage } from '@title/common/build/types/ErrorMessage'
 import bcrypt from 'bcrypt'
-import { Response } from 'express'
 import jwt from 'jsonwebtoken'
 import { JWT_EXPIRATION_TIME, JWT_SECRET } from '../config/environment'
-import { prisma } from '../prisma'
 import { TokenPayload } from '../types/auth'
 import { ForbiddenError, UnprocessableEntityError } from '../types/errors'
-import { Req, Res } from '../types/requestResponse'
+import { Req } from '../types/requestResponse'
 import { Language } from '@title/common/build/types/Language'
 import assertionService from './assertionService'
 import userDao from '../dao/userDao'
@@ -22,41 +20,36 @@ class AuthService {
 
 	/* PUBLIC */
 
-	register = async (req: Req<RegisterRequest>, res: Response) => {
-		const { username, email, password, language } = req.body
-
+	register = async (body: RegisterRequest): Promise<User> => {
 		try {
-			registerValidationSchema.validateSync(req.body)
+			registerValidationSchema.validateSync(body)
 		} catch (e) {
 			throw new UnprocessableEntityError(ErrorMessage.INVALID_VALUES)
 		}
+
+		const { username, email, password, language } = body
 
 		assertionService.assertNull(await userDao.findByUsername(username), ErrorMessage.USERNAME_ALREADY_USED)
 		assertionService.assertNull(await userDao.findByEmail(email), ErrorMessage.EMAIL_ALREADY_USED)
 
 		const hashedPassword = await this.hashPassword(password)
 
-		await prisma.user.create({
-			data: {
-				username,
-				email,
-				password: hashedPassword,
-				language
-			}
+		return userDao.insert({
+			username,
+			email,
+			password: hashedPassword,
+			language
 		})
-
-		res.sendStatus(201)
 	}
 
-	login = async (req: Req<LoginRequest>, res: Res<LoginResponse>) => {
-		const { username, password } = req.body
-
+	login = async (body: LoginRequest): Promise<LoginResponse> => {
 		try {
-			loginValidationSchema.validateSync(req.body)
+			loginValidationSchema.validateSync(body)
 		} catch (e) {
 			throw new UnprocessableEntityError(ErrorMessage.INVALID_VALUES)
 		}
 
+		const { username, password } = body
 		const user = await userDao.findByUsername(username)
 
 		try {
@@ -69,20 +62,20 @@ class AuthService {
 		const token = this.generateToken(user!)
 		const session = await this.buildSession(user!.userId)
 
-		res.status(200).json({ token, session })
+		return { token, session }
 	}
 
-	findSession = async (req: Req<void>, res: Res<Session>) => {
+	findSession = async (req: Req<void>): Promise<Session | null> => {
 		const token = this.getTokenFromHeader(req)
 
-		if (token != null) {
-			const payload = this.extractPayloadFromToken(token)
-			const session = await this.buildSession(payload.userId)
-
-			res.status(200).json(session)
-		} else {
-			res.sendStatus(204)
+		if (token == null) {
+			return null
 		}
+
+		const payload = this.extractPayloadFromToken(token)
+		const session = await this.buildSession(payload.userId)
+
+		return session
 	}
 
 	/* PRIVATE */

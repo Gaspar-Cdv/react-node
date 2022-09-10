@@ -6,7 +6,7 @@ export interface RegisterRequest {
 	email: string
 	password: string
 	passwordConfirmation: string
-	language?: Language
+	language: Language
 }
 
 export interface LoginRequest {

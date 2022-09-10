@@ -6,6 +6,10 @@ class UserDao {
 
 	static dao: UserDao
 
+	insert = async (data: Omit<User, 'userId' | 'createdAt'>): Promise<User> => {
+		return prisma.user.create({ data })
+	}
+
 	findById = async (userId: number): Promise<User | null> => {
 		return prisma.user.findFirst({ where: { userId } })
 	}

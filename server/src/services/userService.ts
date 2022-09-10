@@ -1,11 +1,11 @@
 import { User } from '@prisma/client'
 import { changePasswordValidationSchema, updateUserValidationSchema } from '@title/common/build/services/validation'
 import { ErrorMessage } from '@title/common/build/types/ErrorMessage'
-import { ChangeLanguageRequest, ChangePasswordRequest, UpdateUserRequest } from '@title/common/build/types/requests/user'
+import { Language } from '@title/common/build/types/Language'
+import { ChangePasswordRequest, UpdateUserRequest } from '@title/common/build/types/requests/user'
 import { UserDto } from '@title/common/build/types/session'
 import userDao from '../dao/userDao'
 import { UnprocessableEntityError } from '../types/errors'
-import { Req, Res } from '../types/requestResponse'
 import assertionService from './assertionService'
 import authService from './authService'
 
@@ -15,9 +15,7 @@ class UserService {
 
 	/* PUBLIC */
 
-	updateUser = async (req: Req<UpdateUserRequest>, res: Res) => {
-		const { body, userId } = req
-
+	updateUser = async (body: UpdateUserRequest, userId?: number) => {
 		try {
 			updateUserValidationSchema.validateSync(body)
 		} catch (e) {
@@ -25,7 +23,6 @@ class UserService {
 		}
 
 		const user = await userDao.findById(userId!)
-
 		const { username, email } = body
 
 		if (user!.username !== username) {
@@ -39,14 +36,9 @@ class UserService {
 		}
 
 		await userDao.updateUser(user!)
-
-		res.sendStatus(200)
 	}
 
-	changePassword = async (req: Req<ChangePasswordRequest>, res: Res) => {
-		const { body, userId } = req
-		const { oldPassword, password } = body
-
+	changePassword = async (body: ChangePasswordRequest, userId?: number) => {
 		try {
 			changePasswordValidationSchema.validateSync(body)
 		} catch (e) {
@@ -54,19 +46,16 @@ class UserService {
 		}
 
 		const user = await userDao.findById(userId!)
+		const { password, oldPassword } = body
 
 		assertionService.assertTrue(await authService.isPasswordValid(oldPassword, user!.password), ErrorMessage.INVALID_PASSWORD)
 		const newPassword = await authService.hashPassword(password)
 
 		await userDao.updatePassword(newPassword, userId!)
-
-		res.sendStatus(200)
 	}
 
-	changeLanguage = async (req: Req<ChangeLanguageRequest>, res: Res<void>) => {
-		const { body, userId } = req
-		await userDao.updateLanguage(body.language, userId!)
-		res.sendStatus(200)
+	changeLanguage = async (language: Language, userId?: number) => {
+		await userDao.updateLanguage(language, userId!)
 	}
 
 	/* PRIVATE */
