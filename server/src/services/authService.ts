@@ -4,7 +4,7 @@ import { RegisterRequest, LoginRequest, LoginResponse } from '@title/common/buil
 import { Session } from '@title/common/build/types/session'
 import { ErrorMessage } from '@title/common/build/types/ErrorMessage'
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
+import jwt, { NotBeforeError, TokenExpiredError } from 'jsonwebtoken'
 import { JWT_EXPIRATION_TIME, JWT_SECRET } from '../config/environment'
 import { TokenPayload } from '../types/auth'
 import { ForbiddenError, UnprocessableEntityError } from '../types/errors'
@@ -108,11 +108,18 @@ class AuthService {
 		return token?.replace('Bearer ', '')
 	}
 
-	/**
-	 * @throws JsonWebTokenError, TokenExpiredError, NotBeforeError
-	 */
 	extractPayloadFromToken = (token = ''): TokenPayload => {
-		return jwt.verify(token, JWT_SECRET) as TokenPayload
+		try {
+			return jwt.verify(token, JWT_SECRET) as TokenPayload
+		} catch (e) {
+			if (e instanceof TokenExpiredError) {
+				throw new ForbiddenError(ErrorMessage.EXPIRED_TOKEN)
+			} else if (e instanceof NotBeforeError) {
+				throw new ForbiddenError(ErrorMessage.NOT_ACTIVE_TOKEN)
+			} else {
+				throw new ForbiddenError(ErrorMessage.INVALID_TOKEN)
+			}
+		}
 	}
 
 	isTokenValid = (token = ''): boolean => {
