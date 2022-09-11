@@ -3,6 +3,7 @@ import { Language } from '@title/common/build/types/Language'
 import { LoginRequest, RegisterRequest } from '@title/common/build/types/requests/auth'
 import chai from 'chai'
 import chaiHttp from 'chai-http'
+import app from '../../src'
 import userDao from '../../src/dao/userDao'
 import { prisma } from '../../src/prisma'
 import testService, { TEST_PASSWORD } from '../../src/services/testService'
@@ -141,5 +142,34 @@ describe('login', () => {
 
 		expect(res.status).to.equal(403)
 		expect(res.body.message).to.equal(ErrorMessage.INVALID_CREDENTIALS)
+	})
+})
+
+describe('Find session', () => {
+	it('should find session', async () => {
+		const { userId, username, email } = await testService.createTestUser({ language: Language.en })
+
+		const { status, body } = await testService.call('/api/auth/findSession', {}, userId)
+		const { user, language } = body
+
+		expect(status).to.equal(200)
+		expect(user).not.to.be.null
+		expect(user).to.deep.equal({ userId, username, email })
+		expect(language).not.to.be.null
+		expect(language).to.equal(Language.en)
+	})
+
+	it('should return null if no token is provided or throw error if an invalid token is provided', async () => {
+		const res1 = await testService.call('/api/auth/findSession', {})
+		expect(res1.status).to.equal(204)
+		expect(res1.body).to.be.empty
+
+		const res2 = await chai.request(app)
+			.post('/api/auth/findSession')
+			.set({ Authorization: 'Bearer "invalid_token"' })
+			.send({})
+
+		expect(res2.status).to.equal(403)
+		expect(res2.body.message).to.equal(ErrorMessage.INVALID_TOKEN)
 	})
 })
