@@ -55,6 +55,10 @@ class UserService {
 	}
 
 	changeLanguage = async (language: Language, userId?: number) => {
+		if (language == null || !Object.keys(Language).includes(language)) {
+			throw new UnprocessableEntityError(ErrorMessage.INVALID_VALUES)
+		}
+
 		await userDao.updateLanguage(language, userId!)
 	}
 

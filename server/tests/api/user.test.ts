@@ -18,7 +18,7 @@ const changePassword = async (userId: number, data: ChangePasswordRequest) => {
 	return testService.call('/api/user/changePassword', data, userId)
 }
 
-const changeLanguage = async (userId: number, language: Language) => {
+const changeLanguage = async (userId: number, language?: Language | 'invalid_value') => {
 	return testService.call('/api/user/changeLanguage', { language }, userId)
 }
 
@@ -152,9 +152,22 @@ describe('Update language', () => {
 		const initialLanguage = (await userDao.findById(userId))!.language
 		expect(initialLanguage).to.equal(Language.en)
 
-		await changeLanguage(userId, Language.fr)
+		const res = await changeLanguage(userId, Language.fr)
 
 		const newLanguage = (await userDao.findById(userId))!.language
+		expect(res.status).to.equal(200)
 		expect(newLanguage).to.equal(Language.fr)
+	})
+
+	it('should throw an error if language is invalid', async () => {
+		const { userId } = await testService.createTestUser({ language: Language.en })
+
+		const res1 = await changeLanguage(userId, 'invalid_value')
+		expect(res1.status).to.equal(422)
+		expect(res1.body.message).to.equal(ErrorMessage.INVALID_VALUES)
+
+		const res2 = await changeLanguage(userId)
+		expect(res2.status).to.equal(422)
+		expect(res2.body.message).to.equal(ErrorMessage.INVALID_VALUES)
 	})
 })
