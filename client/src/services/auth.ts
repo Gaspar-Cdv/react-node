@@ -36,7 +36,7 @@ export const useRegisterForm = (onSuccess?: () => void) => {
 	const [language] = useLanguage()
 
 	const useForm = createUseForm({
-		action: async (values: RegisterRequest) => {
+		action: async (values: Omit<RegisterRequest, 'language'>) => {
 			await authService.register({ ...values, language })
 		},
 		titleKey: i18n.register.title,

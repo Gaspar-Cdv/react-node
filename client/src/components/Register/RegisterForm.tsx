@@ -24,7 +24,7 @@ const i18n = defineI18n({
 	}
 })
 
-const initialValues: RegisterRequest = {
+const initialValues: Omit<RegisterRequest, 'language'> = {
 	username: '',
 	email: '',
 	password: '',
