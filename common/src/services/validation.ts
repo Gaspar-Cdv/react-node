@@ -11,7 +11,7 @@ const usernameValidator = Yup.string()
 
 const emailValidator = Yup.string()
 	.matches(
-		/^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$/i,
+		/^([a-z0-9]+(?:[._\-+][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$/i,
 		ErrorMessage.INVALID_EMAIL
 	) // better than email() because it handles hyphens on start and end
 	.max(255, ErrorMessage.MAX_LENGTH_255)
