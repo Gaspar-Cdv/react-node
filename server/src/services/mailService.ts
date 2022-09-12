@@ -9,8 +9,8 @@ import { JSONValidator, ValidatorTemplate } from '../utils/JSONValidator'
 const TEMPLATES_DIR = path.resolve(__dirname, '../templates')
 const TEMPLATES_EXT = '.hbs'
 
-export default class MailService {
-	static service: MailService
+class MailService {
+	static instance: MailService
 
 	private transporter: HbsTransporter
 
@@ -95,11 +95,13 @@ export default class MailService {
 		}))
 	}
 
-	static getService (): MailService {
-		if (!MailService.service) {
-			MailService.service = new MailService()
+	static getInstance (): MailService {
+		if (!MailService.instance) {
+			MailService.instance = new MailService()
 		}
 
-		return MailService.service
+		return MailService.instance
 	}
 }
+
+export default MailService.getInstance()

@@ -42,7 +42,10 @@ const i18n = defineI18n<ErrorI18n>({
 		// session errors
 		INVALID_TOKEN: 'Invalid token',
 		EXPIRED_TOKEN: 'Expired token',
-		NOT_ACTIVE_TOKEN: 'Token not active'
+		NOT_ACTIVE_TOKEN: 'Token not active',
+
+		// update settings errors
+		IDENTICAL_PASSWORDS: 'You must choose a different password'
 	},
 	fr: {
 		// common form errors
@@ -80,7 +83,10 @@ const i18n = defineI18n<ErrorI18n>({
 		// session errors
 		INVALID_TOKEN: 'Token invalide',
 		EXPIRED_TOKEN: 'Token expiré',
-		NOT_ACTIVE_TOKEN: 'Token non actif'
+		NOT_ACTIVE_TOKEN: 'Token non actif',
+
+		// update settings errors
+		IDENTICAL_PASSWORDS: 'Vous devez choisir un mot de passe différent'
 	}
 })
 

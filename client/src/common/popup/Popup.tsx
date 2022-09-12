@@ -12,17 +12,19 @@ const userStyles = createUseStyles(theme => ({
 		display: 'flex',
 		flexDirection: 'column',
 		gap: theme.size.xs,
-		padding: theme.size.sm,
+		padding: [theme.size.sm, 0],
 		position: 'relative'
 	},
 	title: {
 		textAlign: 'center',
-		fontWeight: 700,
-		minHeight: theme.size.md
+		minHeight: theme.size.lg
 	},
-	content: {
+	scrollbars: {
 		flex: '1 1 auto',
 		maxWidth: '30rem'
+	},
+	content: {
+		padding: [0, theme.size.sm]
 	},
 	close: {
 		position: 'absolute',
@@ -48,10 +50,12 @@ function Popup ({ show, title, children, onCancel }: PopupProps) {
 			<div className={classes.popup}>
 				<CloseIcon className={classes.close} onClick={onCancel} />
 
-				<div className={classes.title}>{title}</div>
+				<h5 className={classes.title}>{title}</h5>
 
-				<Scrollbar maxHeight='20rem' className={classes.content}>
-					{children}
+				<Scrollbar maxHeight='20rem' className={classes.scrollbars}>
+					<div className={classes.content}>
+						{children}
+					</div>
 				</Scrollbar>
 			</div>
 		</Backdrop>

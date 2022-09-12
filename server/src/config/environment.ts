@@ -6,7 +6,7 @@ const HOSTNAME = process.env['HOSTNAME'] || 'localhost'
 const PORT = parseInt(process.env['PORT'] || '3001')
 
 const JWT_SECRET = process.env['JWT_SECRET'] || 'secret'
-const JWT_EXPIRATION_TIME = parseInt(process.env['JWT_EXPIRATION'] || '3600')
+const JWT_EXPIRATION_TIME = parseInt(process.env['JWT_EXPIRATION_TIME'] || '86400')
 
 const MAIL_HOST = process.env['MAIL_HOST'] || 'smtp.gmail.com'
 const MAIL_PORT = parseInt(process.env['MAIL_PORT'] || '587')

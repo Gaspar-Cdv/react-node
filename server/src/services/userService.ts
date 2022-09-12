@@ -1,41 +1,68 @@
 import { User } from '@prisma/client'
+import { changePasswordValidationSchema, updateUserValidationSchema } from '@title/common/build/services/validation'
+import { ErrorMessage } from '@title/common/build/types/ErrorMessage'
 import { Language } from '@title/common/build/types/Language'
+import { ChangePasswordRequest, UpdateUserRequest } from '@title/common/build/types/requests/user'
 import { UserDto } from '@title/common/build/types/session'
-import { prisma } from '../prisma'
-import { Req, Res } from '../types/requestResponse'
+import userDao from '../dao/userDao'
+import { UnprocessableEntityError } from '../types/errors'
+import assertionService from './assertionService'
+import authService from './authService'
 
-export default class UserService {
+class UserService {
 
-	static service: UserService
+	static instance: UserService
 
 	/* PUBLIC */
 
-	changeLanguage = async (req: Req<{ language: Language }>, res: Res<void>) => {
-		const { body, userId } = req
-		await this.updateLanguage(body.language, userId)
-		res.sendStatus(200)
+	updateUser = async (body: UpdateUserRequest, userId?: number) => {
+		try {
+			updateUserValidationSchema.validateSync(body)
+		} catch (e) {
+			throw new UnprocessableEntityError(ErrorMessage.INVALID_VALUES)
+		}
+
+		const user = await userDao.findById(userId!)
+		const { username, email } = body
+
+		if (user!.username !== username) {
+			assertionService.assertNull(await userDao.findByUsername(username), ErrorMessage.USERNAME_ALREADY_USED)
+			user!.username = username
+		}
+
+		if (user!.email !== email) {
+			assertionService.assertNull(await userDao.findByEmail(email), ErrorMessage.EMAIL_ALREADY_USED)
+			user!.email = email
+		}
+
+		await userDao.updateUser(user!)
+	}
+
+	changePassword = async (body: ChangePasswordRequest, userId?: number) => {
+		try {
+			changePasswordValidationSchema.validateSync(body)
+		} catch (e) {
+			throw new UnprocessableEntityError(ErrorMessage.INVALID_VALUES)
+		}
+
+		const user = await userDao.findById(userId!)
+		const { password, oldPassword } = body
+
+		assertionService.assertTrue(await authService.isPasswordValid(oldPassword, user!.password), ErrorMessage.INVALID_PASSWORD)
+		const newPassword = await authService.hashPassword(password)
+
+		await userDao.updatePassword(newPassword, userId!)
+	}
+
+	changeLanguage = async (language: Language, userId?: number) => {
+		if (language == null || !Object.keys(Language).includes(language)) {
+			throw new UnprocessableEntityError(ErrorMessage.INVALID_VALUES)
+		}
+
+		await userDao.updateLanguage(language, userId!)
 	}
 
 	/* PRIVATE */
-
-	findById = async (userId: number): Promise<User | null> => {
-		return prisma.user.findFirst({ where: { userId } })
-	}
-
-	findByUsername = async (username: string): Promise<User | null> => {
-		return prisma.user.findFirst({ where: { username } })
-	}
-
-	findByEmail = async (email: string): Promise<User | null> => {
-		return prisma.user.findFirst({ where: { email } })
-	}
-
-	updateLanguage = async (language: Language, userId?: number) => {
-		await prisma.user.update({
-			where: { userId },
-			data: { language }
-		})
-	}
 
 	createUserDto = (user: User): UserDto => {
 		const { userId, username, email } = user
@@ -51,11 +78,13 @@ export default class UserService {
 
 	/* STATIC */
 
-	static getService = () => {
-		if (UserService.service == null) {
-			UserService.service = new UserService()
+	static getInstance = () => {
+		if (UserService.instance == null) {
+			UserService.instance = new UserService()
 		}
 
-		return UserService.service
+		return UserService.instance
 	}
 }
+
+export default UserService.getInstance()

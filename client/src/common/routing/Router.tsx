@@ -5,6 +5,7 @@ import { defineI18n } from '../../utils/i18n'
 
 const Home = lazy(() => import(/* webpackChunkName: "home" */ '../../components/Home/Home'))
 const Login = lazy(() => import(/* webpackChunkName: "login" */ '../../components/Login/Login'))
+const Settings = lazy(() => import(/* webpackChunkName: "settings" */ '../../components/Settings/Settings'))
 const Logout = lazy(() => import(/* webpackChunkName: "logout" */ '../../components/Login/Logout'))
 const NotFound = lazy(() => import(/* webpackChunkName: "notFound" */ '../../components/NotFound'))
 
@@ -12,6 +13,7 @@ type RouteNameExtended =
 	| 'home'
 	| 'login'
 	| 'register'
+	| 'settings'
 	| 'logout'
 	| 'notFound'
 
@@ -25,6 +27,9 @@ export interface Route<T extends RouteNameExtended = RouteNameExtended> {
 	name: T
 	path: string
 	element: ReactNode
+	protected?: boolean
+	hideHeader?: boolean
+	hideWhenLogged?: boolean
 }
 
 type Routes = {
@@ -40,22 +45,32 @@ export const routes: Routes = {
 	login: {
 		name: 'login',
 		path: '/login',
-		element: <Login />
+		element: <Login />,
+		hideWhenLogged: true
 	},
 	register: {
 		name: 'register',
 		path: '/register',
-		element: <Register />
+		element: <Register />,
+		hideWhenLogged: true
+	},
+	settings: {
+		name: 'settings',
+		path: '/settings',
+		element: <Settings />,
+		protected: true
 	},
 	logout: {
 		name: 'logout',
 		path: '/logout',
-		element: <Logout />
+		element: <Logout />,
+		hideHeader: true
 	},
 	notFound: {
 		name: 'notFound',
 		path: '*',
-		element: <NotFound />
+		element: <NotFound />,
+		hideHeader: true
 	}
 }
 
@@ -68,6 +83,7 @@ export const pageTitles = defineI18n<RoutesI18n>({
 		home: 'Home',
 		login: 'Login',
 		register: 'Register',
+		settings: 'Settings',
 		logout: 'Logout',
 		notFound: 'Page not found'
 	},
@@ -75,6 +91,7 @@ export const pageTitles = defineI18n<RoutesI18n>({
 		home: 'Accueil',
 		login: 'Connexion',
 		register: 'Inscription',
+		settings: 'Paramètres',
 		logout: 'Déconnexion',
 		notFound: 'Page non trouvée'
 	}

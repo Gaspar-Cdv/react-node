@@ -11,7 +11,7 @@ const usernameValidator = Yup.string()
 
 const emailValidator = Yup.string()
 	.matches(
-		/^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$/i,
+		/^([a-z0-9]+(?:[._\-+][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$/i,
 		ErrorMessage.INVALID_EMAIL
 	) // better than email() because it handles hyphens on start and end
 	.max(255, ErrorMessage.MAX_LENGTH_255)
@@ -37,9 +37,8 @@ const containsDigitValidator = Yup.string()
 const containsSymbolValidator = Yup.string()
 	.matches(/[!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]/, ErrorMessage.NO_SYMBOL)
 
-const passwordValidator = (hardCheck: boolean) => {
-	return passwordLengthValidator(hardCheck)
-		.max(255, ErrorMessage.MAX_LENGTH_255)
+const passwordComplexityValidator = (hardCheck: boolean) => {
+	return Yup.string()
 		.test({
 			test: (password, ctx) => {
 				const score = [
@@ -62,12 +61,24 @@ const passwordValidator = (hardCheck: boolean) => {
 				return true
 			}
 		})
+}
+
+const passwordValidator = (hardCheck: boolean) => {
+	return passwordLengthValidator(hardCheck)
+		.concat(passwordComplexityValidator(hardCheck))
+		.max(255, ErrorMessage.MAX_LENGTH_255)
 		.required(ErrorMessage.REQUIRED)
 }
 
 const passwordConfirmationValidator = (fieldName: string) => {
 	return Yup.string()
 		.oneOf([Yup.ref(fieldName), null], ErrorMessage.PASSWORDS_DO_NOT_MATCH)
+		.required(ErrorMessage.REQUIRED)
+}
+
+const notIdenticalValidator = (fieldName: string) => {
+	return Yup.string()
+		.notOneOf([Yup.ref(fieldName)], ErrorMessage.IDENTICAL_PASSWORDS)
 		.required(ErrorMessage.REQUIRED)
 }
 
@@ -83,10 +94,23 @@ const loginValidationSchema = Yup.object({
 	password: requiredValidator,
 })
 
+const updateUserValidationSchema = Yup.object({
+	username: usernameValidator,
+	email: emailValidator
+})
+
+const changePasswordValidationSchema = Yup.object({
+	oldPassword: requiredValidator,
+	password: passwordValidator(true).concat(notIdenticalValidator('oldPassword')),
+	passwordConfirmation: passwordConfirmationValidator('password')
+})
+
 export {
 	requiredValidator,
 	emailValidator,
 	passwordValidator,
 	registerValidationSchema,
-	loginValidationSchema
+	loginValidationSchema,
+	updateUserValidationSchema,
+	changePasswordValidationSchema
 }

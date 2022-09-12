@@ -2,11 +2,10 @@ import chai from 'chai'
 import chaiAsPromised from 'chai-as-promised'
 import { MAIL_FROM } from '../../src/config/environment'
 import { MailParams, MailTemplate } from '../../src/types/mailTemplates'
-import MailService from '../../src/services/mailService'
+import mailService from '../../src/services/mailService'
 
 chai.use(chaiAsPromised)
 const { expect } = chai
-const mailService = MailService.getService()
 
 describe('mailService', () => {
 	it('should send an email', async () => {

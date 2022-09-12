@@ -1,92 +1,78 @@
-import { ErrorMessage } from '@title/common/build/types/ErrorMessage'
 import { LoginRequest, RegisterRequest } from '@title/common/build/types/requests/auth'
-import { FormikHelpers } from 'formik'
 import { useState } from 'react'
 import { useRouter } from '../common/routing/hooks'
 import authService from '../remote/auth'
 import { useLanguage } from '../store/session/hooks'
 import { deleteUser, updateSession } from '../store/session/reducer'
 import { useAppDispatch } from '../store/store'
-import HttpError from '../types/HttpError'
 import { useLocalStorage } from '../utils/hooks'
+import { defineI18n } from '../utils/i18n'
+import { createUseForm } from './createUseForm'
 
-export const useRegister = (onSuccess?: () => void) => {
-	const [error, setError] = useState('')
-	const [pending, setPending] = useState(false)
-	const [language] = useLanguage()
-
-	const resetError = () => setError('')
-
-	const register = async (values: RegisterRequest, formikHelpers: FormikHelpers<RegisterRequest>) => {
-		try {
-			setPending(true)
-			await authService.register({ ...values, language })
-			formikHelpers.resetForm()
-			resetError()
-			onSuccess?.()
-		} catch (e) {
-			if (e instanceof HttpError) {
-				setError(e.message)
-			} else {
-				setError(ErrorMessage.UNKNOWN_ERROR)
-				console.error(e)
-			}
-		} finally {
-			setPending(false)
+const i18n = defineI18n({
+	en: {
+		register: {
+			title: 'Register',
+			submit: 'Register'
+		},
+		login: {
+			title: 'Login',
+			submit: 'Login'
+		}
+	},
+	fr: {
+		register: {
+			title: 'S\'inscrire',
+			submit: 'S\'inscrire'
+		},
+		login: {
+			title: 'Se connecter',
+			submit: 'Se connecter'
 		}
 	}
+})
 
-	return {
-		register,
-		error,
-		resetError,
-		pending
-	}
+export const useRegisterForm = (onSuccess?: () => void) => {
+	const [language] = useLanguage()
+
+	const useForm = createUseForm({
+		action: async (values: Omit<RegisterRequest, 'language'>) => {
+			await authService.register({ ...values, language })
+		},
+		titleKey: i18n.register.title,
+		submitKey: i18n.register.submit
+	})
+
+	return useForm(onSuccess)
 }
 
-export const useLogin = () => {
+export const useLoginForm = () => {
 	const [, setToken] = useLocalStorage('token')
 	const [, setLanguage] = useLocalStorage('language')
-	const { navigate } = useRouter()
+	const { currentRoute, navigate } = useRouter()
 	const dispatch = useAppDispatch()
 
-	const [error, setError] = useState('')
-	const [pending, setPending] = useState(false)
-
-	const resetError = () => setError('')
-
-	const login = async (values: LoginRequest) => {
-		try {
-			setPending(true)
+	const useForm = createUseForm({
+		action: async (values: LoginRequest) => {
 			const { token, session } = await authService.login(values)
 			dispatch(updateSession(session))
 			setToken(token)
 			setLanguage(session.language)
-			resetError()
-			navigate('home')
-		} catch (e) {
-			if (e instanceof HttpError) {
-				setError(e.message)
-			} else {
-				setError(ErrorMessage.UNKNOWN_ERROR)
-				console.error(e)
-			}
-		} finally {
-			setPending(false)
-		}
-	}
+		},
+		titleKey: i18n.login.title,
+		submitKey: i18n.login.submit
+	})
 
-	return {
-		login,
-		error,
-		resetError,
-		pending
-	}
+	return useForm(() => {
+		if (currentRoute.name === 'login') {
+			navigate('home')
+		}
+	})
 }
 
 export const useLogout = () => {
 	const dispatch = useAppDispatch()
-	const [,, deleteToken] = useLocalStorage('token')
+	const [, , deleteToken] = useLocalStorage('token')
 
 	return () => {
 		dispatch(deleteUser())
@@ -99,8 +85,11 @@ export const useFindSession = () => {
 	const [, setLanguage] = useLocalStorage('language')
 	const logout = useLogout()
 
-	return async () => {
+	const [pending, setPending] = useState(true)
+
+	const findSession = async () => {
 		try {
+			setPending(true)
 			const session = await authService.findSession()
 			if (session != null) {
 				dispatch(updateSession(session))
@@ -109,6 +98,10 @@ export const useFindSession = () => {
 		} catch (e) {
 			console.error(e)
 			logout()
+		} finally {
+			setPending(false)
 		}
 	}
+
+	return [findSession, pending] as const
 }

@@ -1,53 +1,27 @@
 import { loginValidationSchema } from '@title/common/build/services/validation'
 import { LoginRequest } from '@title/common/build/types/requests/auth'
-import { Form, Formik } from 'formik'
-import { createUseStyles } from 'react-jss'
+import { useState } from 'react'
 import Alert from '../../common/Alert'
-import Button from '../../common/button/Button'
+import Form from '../../common/form/Form'
 import Input from '../../common/form/Input'
-import { useLogin } from '../../services/auth'
+import { useRouter } from '../../common/routing/hooks'
+import { useLoginForm } from '../../services/auth'
 import { defineI18n, useTranslate } from '../../utils/i18n'
-import { useErrorMessage } from '../../utils/useErrorMessage'
 
 const i18n = defineI18n({
 	en: {
+		notConnected: 'You must be connected to access to this page.',
 		form: {
 			username: 'Username',
 			password: 'Password'
-		},
-		buttons: {
-			login: 'Login',
-			reset: 'Reset'
-		},
-		error: 'Error: {message}'
+		}
 	},
 	fr: {
+		notConnected: 'Vous devez être connecté pour accéder à cette page.',
 		form: {
 			username: 'Nom d\'utilisateur',
 			password: 'Mot de passe'
-		},
-		buttons: {
-			login: 'Se connecter',
-			reset: 'Réinitialiser'
-		},
-		error: 'Erreur : {message}'
-	}
-})
-
-const useStyles = createUseStyles({
-	container: {
-		display: 'flex',
-		flexDirection: 'column',
-		gap: '1.25rem',
-		maxWidth: 400,
-		width: '100%',
-		margin: '0 auto'
-	},
-	buttons: {
-		display: 'flex',
-		justifyContent: 'center',
-		flexWrap: 'wrap-reverse',
-		gap: '2rem',
+		}
 	}
 })
 
@@ -57,49 +31,36 @@ const initialValues: LoginRequest = {
 }
 
 function LoginForm () {
-	const classes = useStyles()
 	const translate = useTranslate()
-	const errorMessage = useErrorMessage()
-
-	const { login, error, resetError, pending } = useLogin()
+	const loginForm = useLoginForm()
+	const { currentRoute } = useRouter()
+	const [warningVisible, setWarningVisible] = useState(currentRoute.name !== 'login')
 
 	return (
-		<Formik
+		<Form
 			initialValues={initialValues}
-			onSubmit={login}
 			validationSchema={loginValidationSchema}
-			validateOnChange={false}
-			validateOnBlur={false}
+			{...loginForm}
 		>
-			<Form onChange={resetError}>
-				<div className={classes.container}>
-					<Input
-						name='username'
-						label={translate(i18n.form.username)}
-					/>
+			<Alert
+				show={warningVisible}
+				severity='warning'
+				onClose={() => setWarningVisible(false)}
+			>
+				{translate(i18n.notConnected)}
+			</Alert>
 
-					<Input
-						name='password'
-						type='password'
-						label={translate(i18n.form.password)}
-					/>
+			<Input
+				name='username'
+				label={translate(i18n.form.username)}
+			/>
 
-					<Alert show={error.length > 0}>
-						{translate(i18n.error, { message: errorMessage(error) })}
-					</Alert>
-
-					<div className={classes.buttons}>
-						<Button type='reset' variant='secondary'>
-							{translate(i18n.buttons.reset)}
-						</Button>
-
-						<Button type='submit' disabled={pending}>
-							{translate(i18n.buttons.login)}
-						</Button>
-					</div>
-				</div>
-			</Form>
-		</Formik>
+			<Input
+				name='password'
+				type='password'
+				label={translate(i18n.form.password)}
+			/>
+		</Form>
 	)
 }
 

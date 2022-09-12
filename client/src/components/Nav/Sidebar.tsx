@@ -21,6 +21,7 @@ const i18n = defineI18n<SidebarI18n>({
 		route: {
 			home: 'Home',
 			login: 'Login',
+			settings: 'Settings',
 			logout: 'Logout',
 			register: 'Register'
 		}
@@ -30,6 +31,7 @@ const i18n = defineI18n<SidebarI18n>({
 		route: {
 			home: 'Accueil',
 			login: 'Connexion',
+			settings: 'Paramètres',
 			logout: 'Se déconnecter',
 			register: 'Inscription'
 		}
@@ -87,6 +89,10 @@ function Sidebar () {
 			visible: !isLogged
 		},
 		{
+			route: 'settings',
+			visible: isLogged
+		},
+		{
 			route: 'logout',
 			visible: isLogged
 		}
@@ -98,6 +104,7 @@ function Sidebar () {
 			onClose={handleClose}
 			className={classes.drawer}
 			zIndex={theme.zIndex.sidebar}
+			width={400}
 			position='right'
 		>
 			<nav className={classes.nav}>
@@ -113,7 +120,7 @@ function Sidebar () {
 						))}
 				</div>
 
-				<LanguageSwitcher />
+				<LanguageSwitcher onLanguageChange={handleClose} />
 			</nav>
 		</Drawer>
 	)

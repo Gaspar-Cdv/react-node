@@ -3,13 +3,14 @@ import { createUseStyles } from 'react-jss'
 import Loader from '../common/Loader'
 import { useRouter } from '../common/routing/hooks'
 import Router from '../common/routing/Router'
+import Header from './Header'
+import Login from './Login/Login'
+import NotFound from './NotFound'
 
 const useStyles = createUseStyles({
 	main: {
 		flex: 1,
-		overflow: 'auto'
-	},
-	container: {
+		overflow: 'auto',
 		display: 'flex',
 		flexDirection: 'column',
 		gap: '2rem',
@@ -22,17 +23,21 @@ const useStyles = createUseStyles({
 
 function Main () {
 	const classes = useStyles()
-	const { currentTitle } = useRouter()
+	const { isRouteAccessible, currentRoute } = useRouter()
 
 	return (
 		<main className={classes.main}>
-			<div className={classes.container}>
-				<h3>{currentTitle}</h3>
-				<hr />
-				<Suspense fallback={<Loader show />}>
-					<Router />
-				</Suspense>
-			</div>
+			{currentRoute.hideHeader !== true && (
+				<Header />
+			)}
+
+			<Suspense fallback={<Loader show />}>
+				{currentRoute.name === 'notFound'
+					? <NotFound />
+					: isRouteAccessible
+						? <Router />
+						: <Login />}
+			</Suspense>
 		</main>
 	)
 }

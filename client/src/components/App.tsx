@@ -7,12 +7,17 @@ import Sidebar from './Nav/Sidebar'
 import Main from './Main'
 import { useFindSession } from '../services/auth'
 import { useOnMount } from '../utils/hooks'
+import Loader from '../common/Loader'
 
 function App () {
 	useCss()
-	const findSession = useFindSession()
+	const [findSession, pending] = useFindSession()
 
 	useOnMount(() => void findSession())
+
+	if (pending) {
+		return <Loader show />
+	}
 
 	return (
 		<>

@@ -49,7 +49,9 @@ function Register () {
 
 	return (
 		<div className={classes.container}>
-			<Alert severity='success'>{translate(i18n.registred)}</Alert>
+			<Alert severity='success'>
+				{translate(i18n.registred)}
+			</Alert>
 
 			<div className={classes.buttons}>
 				<ButtonLink to='home' variant='secondary'>{translate(i18n.back)}</ButtonLink>

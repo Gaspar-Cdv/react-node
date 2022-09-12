@@ -10,7 +10,7 @@ const useStyles = createUseStyles({
 		alignItems: 'center',
 		textAlign: 'center',
 		gap: '2rem',
-		minHeight: '100%'
+		flex: 1
 	}
 })
 

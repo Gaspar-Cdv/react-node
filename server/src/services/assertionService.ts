@@ -1,7 +1,7 @@
 import { UnprocessableEntityError } from '../types/errors'
 
-export default class AssertionService {
-	static service: AssertionService
+class AssertionService {
+	static instance: AssertionService
 
 	assertTrue (condition: boolean, message: string): condition is true {
 		if (!condition) {
@@ -26,11 +26,13 @@ export default class AssertionService {
 		return this.assertTrue(value === expected, message)
 	}
 
-	static getService () {
-		if (AssertionService.service == null) {
-			AssertionService.service = new AssertionService()
+	static getInstance () {
+		if (AssertionService.instance == null) {
+			AssertionService.instance = new AssertionService()
 		}
 
-		return AssertionService.service
+		return AssertionService.instance
 	}
 }
+
+export default AssertionService.getInstance()
