@@ -8,15 +8,27 @@ datasource db {
 }
 
 model User {
-  userId    Int      @id @default(autoincrement()) @map("id_user")
-  username  String
-  email     String
-  password  String
-	language 	Language @default(en)
-  createdAt DateTime @default(now()) @map("created_at")
+  userId              Int                  @id @default(autoincrement()) @map("id_user")
+  username            String
+  email               String
+  password            String
+  language            Language             @default(en)
+  createdAt           DateTime             @default(now()) @map("created_at")
+  resetPasswordTokens ResetPasswordToken[]
 }
 
 enum Language {
-	fr
-	en
+  fr
+  en
+}
+
+model ResetPasswordToken {
+  tokenId        Int      @id @default(autoincrement()) @map("id_token")
+  token          String
+  expirationTime DateTime @map("expiration_time")
+  isActive       Boolean  @default(true) @map("is_active")
+  user           User     @relation(fields: [userId], references: [userId])
+  userId         Int      @map("id_user")
+
+  @@map("reset_password_token")
 }
