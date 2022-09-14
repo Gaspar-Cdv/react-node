@@ -18,3 +18,17 @@ export interface LoginResponse {
 	token: string
 	session: Session
 }
+
+export interface ForgotPasswordRequest {
+	email: string
+}
+
+export interface TokenRequest {
+	token: string
+}
+
+export interface ResetPasswordRequest {
+	token: string
+	password: string
+	passwordConfirmation: string
+}

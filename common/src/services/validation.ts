@@ -105,6 +105,15 @@ const changePasswordValidationSchema = Yup.object({
 	passwordConfirmation: passwordConfirmationValidator('password')
 })
 
+const forgotPasswordValidationSchema = Yup.object({
+	email: emailValidator
+})
+
+const resetPasswordValidationSchema = Yup.object({
+	password: passwordValidator(true),
+	passwordConfirmation: passwordConfirmationValidator('password')
+})
+
 export {
 	requiredValidator,
 	emailValidator,
@@ -112,5 +121,7 @@ export {
 	registerValidationSchema,
 	loginValidationSchema,
 	updateUserValidationSchema,
-	changePasswordValidationSchema
+	changePasswordValidationSchema,
+	forgotPasswordValidationSchema,
+	resetPasswordValidationSchema
 }
