@@ -8,6 +8,7 @@ import Main from './Main'
 import { useFindSession } from '../services/auth'
 import { useOnMount } from '../utils/hooks'
 import Loader from '../common/Loader'
+import Router from '../common/routing/Router'
 
 function App () {
 	useCss()
@@ -27,7 +28,7 @@ function App () {
 
 			<Sidebar />
 
-			<Main />
+			<Router />
 
 			<BottomBar />
 		</>

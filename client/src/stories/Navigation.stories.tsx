@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import Main from '../components/Main'
+import Router from '../common/routing/Router'
 import BottomBar from '../components/Nav/BottomBar'
 import Sidebar from '../components/Nav/Sidebar'
 import Topbar from '../components/Nav/Topbar'
@@ -19,7 +19,7 @@ function NavigationWrapper () {
 
 			<Sidebar />
 
-			<Main />
+			<Router />
 
 			<BottomBar />
 		</div>

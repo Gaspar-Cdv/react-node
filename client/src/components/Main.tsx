@@ -1,8 +1,7 @@
-import { Suspense } from 'react'
+import { ReactNode, Suspense } from 'react'
 import { createUseStyles } from 'react-jss'
 import Loader from '../common/Loader'
 import { useRouter } from '../common/routing/hooks'
-import Router from '../common/routing/Router'
 import Header from './Header'
 import Login from './Login/Login'
 import NotFound from './NotFound'
@@ -21,7 +20,11 @@ const useStyles = createUseStyles({
 	}
 })
 
-function Main () {
+interface MainProps {
+	children: ReactNode
+}
+
+function Main ({ children }: MainProps) {
 	const classes = useStyles()
 	const { isRouteAccessible, currentRoute } = useRouter()
 
@@ -35,7 +38,7 @@ function Main () {
 				{currentRoute.name === 'notFound'
 					? <NotFound />
 					: isRouteAccessible
-						? <Router />
+						? children
 						: <Login />}
 			</Suspense>
 		</main>

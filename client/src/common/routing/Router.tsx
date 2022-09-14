@@ -1,5 +1,6 @@
 import { lazy, ReactNode } from 'react'
-import { useRoutes } from 'react-router-dom'
+import { RouteObject, useRoutes } from 'react-router-dom'
+import Main from '../../components/Main'
 import Register from '../../components/Register/Register'
 import { defineI18n } from '../../utils/i18n'
 
@@ -130,7 +131,12 @@ export const injectParams = (path: string, params: LinkParams = {}) => {
 }
 
 function Router () {
-	return useRoutes(Object.values(routes))
+	const formatedRouteObject: RouteObject[] = Object.values(routes).map(({ element, ...route }) => ({
+		...route,
+		element: <Main>{element}</Main>
+	}))
+
+	return useRoutes(formatedRouteObject)
 }
 
 export default Router
