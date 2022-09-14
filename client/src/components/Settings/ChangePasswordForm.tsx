@@ -22,11 +22,11 @@ const i18n = defineI18n({
 	}
 })
 
-interface PasswordFormProps {
+interface ChangePasswordFormProps {
 	onSuccess: () => void
 }
 
-function PasswordForm ({ onSuccess }: PasswordFormProps) {
+function ChangePasswordForm ({ onSuccess }: ChangePasswordFormProps) {
 	const translate = useTranslate()
 
 	const initialValues: ChangePasswordRequest = {
@@ -64,4 +64,4 @@ function PasswordForm ({ onSuccess }: PasswordFormProps) {
 	)
 }
 
-export default PasswordForm
+export default ChangePasswordForm

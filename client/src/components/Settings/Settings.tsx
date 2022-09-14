@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Popup from '../../common/popup/Popup'
 import { defineI18n, useTranslate } from '../../utils/i18n'
-import PasswordForm from './PasswordForm'
+import ChangePasswordForm from './ChangePasswordForm'
 import SettingsForm, { SuccessMessage } from './SettingsForm'
 
 const i18n = defineI18n({
@@ -35,7 +35,7 @@ function Settings () {
 				show={isPasswordPopupOpen}
 				onCancel={closePasswordPopup}
 			>
-				<PasswordForm onSuccess={handleChangePasswordSuccess} />
+				<ChangePasswordForm onSuccess={handleChangePasswordSuccess} />
 			</Popup>
 
 			<SettingsForm
