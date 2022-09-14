@@ -1,48 +1,79 @@
 import { useState } from 'react'
 import Popup from '../../common/popup/Popup'
 import { defineI18n, useTranslate } from '../../utils/i18n'
+import ForgotPassword from '../ForgotPassword/ForgotPassword'
 import ChangePasswordForm from './ChangePasswordForm'
 import SettingsForm, { SuccessMessage } from './SettingsForm'
 
 const i18n = defineI18n({
 	en: {
-		changePassword: 'Change Password'
+		changePassword: 'Change Password',
+		forgotPassword: 'Forgot Password'
 	},
 	fr: {
-		changePassword: 'Modifier le mot de passe'
+		changePassword: 'Modifier le mot de passe',
+		forgotPassword: 'Mot de passe oublié'
 	}
 })
 
 function Settings () {
 	const translate = useTranslate()
-	const [isPasswordPopupOpen, setIsPasswordPopupOpen] = useState(false)
+	const [isChangePasswordPopupOpen, setIsChangePasswordPopupOpen] = useState(false)
+	const [isForgotPasswordPopupOpen, setIsForgotPasswordPopupOpen] = useState(false)
 	const [successMessage, setSuccessMessage] = useState<SuccessMessage>(null)
 
-	const closePasswordPopup = () => {
-		setIsPasswordPopupOpen(false)
+	const handleChangePasswordClick = () => {
+		setIsForgotPasswordPopupOpen(false)
+		setIsChangePasswordPopupOpen(true)
+	}
+
+	const handleForgotPasswordClick = () => {
+		setIsChangePasswordPopupOpen(false)
+		setIsForgotPasswordPopupOpen(true)
+	}
+
+	const handleChangePasswordPopupClose = () => {
+		setIsChangePasswordPopupOpen(false)
+	}
+
+	const handleForgotPasswordPopupClose = () => {
+		setIsForgotPasswordPopupOpen(false)
 	}
 
 	const handleChangePasswordSuccess = () => {
-		closePasswordPopup()
+		handleChangePasswordPopupClose()
 		setSuccessMessage('password')
 	}
-
 
 	return (
 		<>
 			<Popup
 				title={translate(i18n.changePassword)}
-				show={isPasswordPopupOpen}
-				onCancel={closePasswordPopup}
+				show={isChangePasswordPopupOpen && !isForgotPasswordPopupOpen}
+				onCancel={handleChangePasswordPopupClose}
 			>
-				<ChangePasswordForm onSuccess={handleChangePasswordSuccess} />
+				<ChangePasswordForm
+					onSuccess={handleChangePasswordSuccess}
+					onForgotPasswordClick={handleForgotPasswordClick}
+				/>
+			</Popup>
+
+			<Popup
+				title={translate(i18n.forgotPassword)}
+				show={isForgotPasswordPopupOpen}
+				onCancel={handleForgotPasswordPopupClose}
+			>
+				<ForgotPassword
+					onClose={handleForgotPasswordPopupClose}
+					onCancel={handleChangePasswordClick}
+				/>
 			</Popup>
 
 			<SettingsForm
 				onSuccess={() => setSuccessMessage('settings')}
 				successMessage={successMessage}
 				onSuccessMessageClose={() => setSuccessMessage(null)}
-				onChangePasswordClick={() => setIsPasswordPopupOpen(true)}
+				onChangePasswordClick={handleChangePasswordClick}
 			/>
 		</>
 	)
