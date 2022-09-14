@@ -1,16 +1,14 @@
 import { updateUserValidationSchema } from '@title/common/build/services/validation'
 import { UpdateUserRequest } from '@title/common/build/types/requests/user'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import Alert from '../../common/Alert'
 import A from '../../common/button/A'
 import Form from '../../common/form/Form'
 import Input from '../../common/form/Input'
-import Popup from '../../common/popup/Popup'
 import { useUpdateUserForm } from '../../services/user'
 import { userSelector } from '../../store/session/selectors'
 import { useAppSelector } from '../../store/store'
 import { defineI18n, useTranslate } from '../../utils/i18n'
-import PasswordForm from './PasswordForm'
 
 const i18n = defineI18n({
 	en: {
@@ -37,70 +35,56 @@ const i18n = defineI18n({
 	}
 })
 
-function SettingsForm () {
+export type SuccessMessage = 'settings' | 'password' | null
+
+interface SettingsFormProps {
+	onSuccess: () => void
+	successMessage: SuccessMessage
+	onSuccessMessageClose: () => void
+	onChangePasswordClick: () => void
+}
+
+function SettingsForm ({ onSuccess, successMessage, onSuccessMessageClose, onChangePasswordClick }: SettingsFormProps) {
 	const translate = useTranslate()
 	const user = useAppSelector(userSelector)
-	const [isPasswordPopupOpen, setIsPasswordPopupOpen] = useState(false)
-	const [successMessage, setSuccessMessage] = useState<'settings' | 'password' | null>(null)
 
 	const initialValues: UpdateUserRequest = useMemo(() => ({
 		username: user?.username || '',
 		email: user?.email || ''
 	}), [user])
 
-	const updateUserForm = useUpdateUserForm(() => {
-		setSuccessMessage('settings')
-	})
-
-	const closePasswordPopup = () => {
-		setIsPasswordPopupOpen(false)
-	}
-
-	const handleChangePassword = () => {
-		closePasswordPopup()
-		setSuccessMessage('password')
-	}
+	const updateUserForm = useUpdateUserForm(onSuccess)
 
 	return (
-		<>
-			<Popup
-				title={translate(i18n.changePassword)}
-				show={isPasswordPopupOpen}
-				onCancel={closePasswordPopup}
+		<Form
+			initialValues={initialValues}
+			validationSchema={updateUserValidationSchema}
+			{...updateUserForm}
+		>
+			<Alert
+				severity='success'
+				show={successMessage != null}
+				onClose={onSuccessMessageClose}
 			>
-				<PasswordForm onSuccess={handleChangePassword} />
-			</Popup>
+				{translate(successMessage === 'settings'
+					? i18n.success.settings
+					: i18n.success.password)}
+			</Alert>
 
-			<Form
-				initialValues={initialValues}
-				validationSchema={updateUserValidationSchema}
-				{...updateUserForm}
-			>
-				<Alert
-					severity='success'
-					show={successMessage != null}
-					onClose={() => setSuccessMessage(null)}
-				>
-					{translate(successMessage === 'settings'
-						? i18n.success.settings
-						: i18n.success.password)}
-				</Alert>
+			<Input
+				label={translate(i18n.form.username)}
+				name='username'
+			/>
 
-				<Input
-					label={translate(i18n.form.username)}
-					name='username'
-				/>
+			<Input
+				label={translate(i18n.form.email)}
+				name='email'
+			/>
 
-				<Input
-					label={translate(i18n.form.email)}
-					name='email'
-				/>
-
-				<div>
-					<A onClick={() => setIsPasswordPopupOpen(true)}>{translate(i18n.changePassword)}</A>
-				</div>
-			</Form>
-		</>
+			<div>
+				<A onClick={onChangePasswordClick}>{translate(i18n.changePassword)}</A>
+			</div>
+		</Form>
 	)
 }
 
