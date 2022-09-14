@@ -6,7 +6,8 @@ import { createUseForm } from './createUseForm'
 const i18n = defineI18n({
 	en: {
 		forgotPassword: {
-			submit: 'Send email'
+			submit: 'Send email',
+			cancel: 'Cancel'
 		},
 		resetPassword: {
 			title: 'Reset Password',
@@ -15,7 +16,8 @@ const i18n = defineI18n({
 	},
 	fr: {
 		forgotPassword: {
-			submit: 'Envoyer l\'email'
+			submit: 'Envoyer l\'email',
+			cancel: 'Annuler'
 		},
 		resetPassword: {
 			title: 'Réinitialiser le mot de passe',
@@ -28,7 +30,8 @@ export const useForgotPasswordForm = createUseForm({
 	action: async (values: ForgotPasswordRequest) => {
 		await tokenService.forgotPassword(values.email)
 	},
-	submitKey: i18n.forgotPassword.submit
+	submitKey: i18n.forgotPassword.submit,
+	cancelKey: i18n.forgotPassword.cancel
 })
 
 export const useResetPasswordForm = createUseForm({

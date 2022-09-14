@@ -6,9 +6,10 @@ import { useForgotPasswordForm } from '../../services/token'
 
 interface ForgotPasswordFormProps {
 	onSuccess: () => void
+	onCancel?: () => void
 }
 
-function ForgotPasswordForm ({ onSuccess }: ForgotPasswordFormProps) {
+function ForgotPasswordForm ({ onSuccess, onCancel }: ForgotPasswordFormProps) {
 	const forgotPasswordForm = useForgotPasswordForm(onSuccess)
 
 	const initialValues: ForgotPasswordRequest = {
@@ -20,6 +21,7 @@ function ForgotPasswordForm ({ onSuccess }: ForgotPasswordFormProps) {
 			{...forgotPasswordForm}
 			initialValues={initialValues}
 			validationSchema={forgotPasswordValidationSchema}
+			onCancel={onCancel}
 		>
 			<Input
 				name='email'

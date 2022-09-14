@@ -19,9 +19,10 @@ const i18n = defineI18n({
 
 interface ForgotPasswordProps {
 	onClose?: () => void
+	onCancel?: () => void
 }
 
-function ForgotPassword ({ onClose }: ForgotPasswordProps) {
+function ForgotPassword ({ onClose, onCancel }: ForgotPasswordProps) {
 	const translate = useTranslate()
 	const [emailSent, setEmailSent] = useState(false)
 
@@ -38,7 +39,10 @@ function ForgotPassword ({ onClose }: ForgotPasswordProps) {
 		<Flex direction='column' gap='1rem'>
 			<span>{translate(i18n.description)}</span>
 
-			<ForgotPasswordForm onSuccess={() => setEmailSent(true)} />
+			<ForgotPasswordForm
+				onSuccess={() => setEmailSent(true)}
+				onCancel={onCancel}
+			/>
 		</Flex>
 	)
 }
