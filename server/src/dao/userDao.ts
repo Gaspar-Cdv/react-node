@@ -4,7 +4,7 @@ import { prisma } from '../prisma'
 
 class UserDao {
 
-	static dao: UserDao
+	static instance: UserDao
 
 	insert = async (data: Omit<User, 'userId' | 'createdAt'>): Promise<User> => {
 		return prisma.user.create({ data })
@@ -51,11 +51,11 @@ class UserDao {
 	/* STATIC */
 
 	static getInstance = () => {
-		if (UserDao.dao == null) {
-			UserDao.dao = new UserDao()
+		if (UserDao.instance == null) {
+			UserDao.instance = new UserDao()
 		}
 
-		return UserDao.dao
+		return UserDao.instance
 	}
 }
 
