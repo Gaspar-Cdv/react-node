@@ -36,19 +36,19 @@ const userStyles = createUseStyles(theme => ({
 
 export interface PopupProps {
 	show: boolean
-	onCancel: () => void
+	onClose: () => void
 	title?: string
 	children: ReactNode | ReactNode[]
 }
 
-function Popup ({ show, title, children, onCancel }: PopupProps) {
+function Popup ({ show, title, children, onClose }: PopupProps) {
 	const classes = userStyles()
 	const theme = useAppTheme()
 
 	return (
-		<Backdrop show={show} close={onCancel} zIndex={theme.zIndex.popup}>
+		<Backdrop show={show} close={onClose} zIndex={theme.zIndex.popup}>
 			<div className={classes.popup}>
-				<CloseIcon className={classes.close} onClick={onCancel} />
+				<CloseIcon className={classes.close} onClick={onClose} />
 
 				<h5 className={classes.title}>{title}</h5>
 

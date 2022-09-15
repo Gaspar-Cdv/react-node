@@ -50,7 +50,7 @@ function Settings () {
 			<Popup
 				title={translate(i18n.changePassword)}
 				show={isChangePasswordPopupOpen && !isForgotPasswordPopupOpen}
-				onCancel={handleChangePasswordPopupClose}
+				onClose={handleChangePasswordPopupClose}
 			>
 				<ChangePasswordForm
 					onSuccess={handleChangePasswordSuccess}
@@ -61,7 +61,7 @@ function Settings () {
 			<Popup
 				title={translate(i18n.forgotPassword)}
 				show={isForgotPasswordPopupOpen}
-				onCancel={handleForgotPasswordPopupClose}
+				onClose={handleForgotPasswordPopupClose}
 			>
 				<ForgotPassword
 					onClose={handleForgotPasswordPopupClose}

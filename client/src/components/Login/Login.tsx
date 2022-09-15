@@ -23,7 +23,7 @@ function Login () {
 			<Popup
 				title={translate(i18n.forgotPassword)}
 				show={forgotPasswordPopupVisible}
-				onCancel={closeForgotPasswordPopup}
+				onClose={closeForgotPasswordPopup}
 			>
 				<ForgotPassword onClose={closeForgotPasswordPopup} />
 			</Popup>
