@@ -68,7 +68,6 @@ class TokenService {
 		try {
 			resetPasswordValidationSchema.validateSync({ password, passwordConfirmation })
 		} catch (e) {
-			console.log(e)
 			throw new UnprocessableEntityError(ErrorMessage.INVALID_VALUES)
 		}
 
