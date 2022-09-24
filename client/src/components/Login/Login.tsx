@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Popup from '../../common/popup/Popup'
+import { useBoolean } from '../../utils/hooks'
 import { defineI18n, useTranslate } from '../../utils/i18n'
 import ForgotPassword from '../ForgotPassword/ForgotPassword'
 import LoginForm from './LoginForm'
@@ -15,20 +16,19 @@ const i18n = defineI18n({
 
 function Login () {
 	const translate = useTranslate()
-	const [forgotPasswordPopupVisible, setForgotPasswordPopupVisible] = useState(false)
-	const closeForgotPasswordPopup = () => setForgotPasswordPopupVisible(false)
+	const [isPopupVisible, openPopup, closePopup] = useBoolean(false)
 
 	return (
 		<>
 			<Popup
 				title={translate(i18n.forgotPassword)}
-				show={forgotPasswordPopupVisible}
-				onClose={closeForgotPasswordPopup}
+				show={isPopupVisible}
+				onClose={closePopup}
 			>
-				<ForgotPassword onClose={closeForgotPasswordPopup} />
+				<ForgotPassword onClose={closePopup} />
 			</Popup>
 
-			<LoginForm onForgotPasswordClick={() => setForgotPasswordPopupVisible(true)} />
+			<LoginForm onForgotPasswordClick={openPopup} />
 		</>
 	)
 }
