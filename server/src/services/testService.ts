@@ -11,6 +11,7 @@ import authService from './authService'
 chai.use(chaiHttp)
 
 export const TEST_PASSWORD = 'Password@123'
+export const NEW_PASSWORD = 'newPassword@123'
 
 class TestService {
 	static instance: TestService
