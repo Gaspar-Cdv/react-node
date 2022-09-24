@@ -10,9 +10,11 @@ import { defineI18n, useTranslate } from '../../utils/i18n'
 import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher'
 import SidebarMenuItem from './SidebarMenuItem'
 
+type SidebarRoute = Exclude<RouteName, 'resetPassword'>
+
 type SidebarI18n = {
 	menu: string
-	route: { [key in RouteName]: string }
+	route: { [key in SidebarRoute]: string }
 }
 
 const i18n = defineI18n<SidebarI18n>({
@@ -60,7 +62,7 @@ const useStyles = createUseStyles(theme => ({
 }))
 
 interface MenuItem {
-	route: RouteName
+	route: SidebarRoute
 	visible?: boolean
 }
 

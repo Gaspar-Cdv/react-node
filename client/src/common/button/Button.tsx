@@ -34,7 +34,7 @@ const useStyles = createUseStyles(theme => ({
 		color: theme.color.gray[50],
 		backgroundColor: theme.color.secondary,
 		'&:hover:not($disabled)': {
-			backgroundColor: theme.color.gray[600]
+			backgroundColor: theme.color.gray[400]
 		}
 	},
 	danger: {

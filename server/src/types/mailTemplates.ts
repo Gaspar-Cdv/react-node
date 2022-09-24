@@ -1,8 +1,8 @@
 import { ValidatorTemplate } from '../utils/JSONValidator'
 
 export enum MailTemplate {
-	CONFIRM_EMAIL,
-	RESET_PASSWORD
+	CONFIRM_EMAIL = 'CONFIRM_EMAIL',
+	RESET_PASSWORD = 'RESET_PASSWORD'
 }
 
 export interface MailParams {

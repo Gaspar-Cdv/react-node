@@ -3,16 +3,16 @@ import { createUseStyles } from 'react-jss'
 
 /**
  * A hook similar to useState, but with boolean values.\
- * It returns the boolean value, a function to toggle it, a function to set it to true, and a function to set it to false.
+ * It returns the boolean value, a function to set it to true, a function to set it to false, and a function to toggle it.
  */
 export const useBoolean = (initialValue = false) => {
 	const [value, setValue] = useState(initialValue)
 
-	const toggle = useCallback(() => setValue(v => !v), [])
 	const setTrue = useCallback(() => setValue(true), [])
 	const setFalse = useCallback(() => setValue(false), [])
+	const toggle = useCallback(() => setValue(v => !v), [])
 
-	return { value, toggle, setTrue, setFalse }
+	return [value, setTrue, setFalse, toggle] as const
 }
 
 /**

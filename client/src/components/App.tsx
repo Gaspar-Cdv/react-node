@@ -1,13 +1,11 @@
-import React from 'react'
-import Head from './Head'
-import Topbar from './Nav/Topbar'
+import Loader from '../common/Loader'
+import Router from '../common/routing/Router'
+import { useFindSession } from '../services/auth'
 import { useCss } from '../theme/useCss'
+import { useOnMount } from '../utils/hooks'
 import BottomBar from './Nav/BottomBar'
 import Sidebar from './Nav/Sidebar'
-import Main from './Main'
-import { useFindSession } from '../services/auth'
-import { useOnMount } from '../utils/hooks'
-import Loader from '../common/Loader'
+import Topbar from './Nav/Topbar'
 
 function App () {
 	useCss()
@@ -21,13 +19,11 @@ function App () {
 
 	return (
 		<>
-			<Head />
-
 			<Topbar />
 
 			<Sidebar />
 
-			<Main />
+			<Router />
 
 			<BottomBar />
 		</>

@@ -4,6 +4,7 @@ import { useAppTheme } from '../../theme/theme'
 import Backdrop from '../Backdrop'
 import Scrollbar from '../Scrollbar'
 import { ReactComponent as CloseIcon } from '../../images/icons/close.svg'
+import Portal from './Portal'
 
 const userStyles = createUseStyles(theme => ({
 	popup: {
@@ -36,29 +37,31 @@ const userStyles = createUseStyles(theme => ({
 
 export interface PopupProps {
 	show: boolean
-	onCancel: () => void
+	onClose: () => void
 	title?: string
 	children: ReactNode | ReactNode[]
 }
 
-function Popup ({ show, title, children, onCancel }: PopupProps) {
+function Popup ({ show, title, children, onClose }: PopupProps) {
 	const classes = userStyles()
 	const theme = useAppTheme()
 
 	return (
-		<Backdrop show={show} close={onCancel} zIndex={theme.zIndex.popup}>
-			<div className={classes.popup}>
-				<CloseIcon className={classes.close} onClick={onCancel} />
+		<Portal>
+			<Backdrop show={show} close={onClose} zIndex={theme.zIndex.popup}>
+				<div className={classes.popup}>
+					<CloseIcon className={classes.close} onClick={onClose} />
 
-				<h5 className={classes.title}>{title}</h5>
+					<h5 className={classes.title}>{title}</h5>
 
-				<Scrollbar maxHeight='20rem' className={classes.scrollbars}>
-					<div className={classes.content}>
-						{children}
-					</div>
-				</Scrollbar>
-			</div>
-		</Backdrop>
+					<Scrollbar maxHeight='20rem' className={classes.scrollbars}>
+						<div className={classes.content}>
+							{children}
+						</div>
+					</Scrollbar>
+				</div>
+			</Backdrop>
+		</Portal>
 	)
 }
 

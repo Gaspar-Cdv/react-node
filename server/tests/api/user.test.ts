@@ -5,7 +5,7 @@ import chai from 'chai'
 import chaiHttp from 'chai-http'
 import userDao from '../../src/dao/userDao'
 import authService from '../../src/services/authService'
-import testService, { TEST_PASSWORD } from '../../src/services/testService'
+import testService, { NEW_PASSWORD, TEST_PASSWORD } from '../../src/services/testService'
 
 const { expect } = chai
 chai.use(chaiHttp)
@@ -90,30 +90,26 @@ describe('Change password', () => {
 	it('should change password', async () => {
 		const { userId } = await testService.createTestUser()
 
-		const newPassword = 'newPassword@123'
-
 		const res = await changePassword(userId, {
 			oldPassword: TEST_PASSWORD,
-			password: newPassword,
-			passwordConfirmation: newPassword
+			password: NEW_PASSWORD,
+			passwordConfirmation: NEW_PASSWORD
 		})
 
 		const user = await userDao.findById(userId)
 
 		expect(res.status).to.equal(200)
-		expect(await authService.isPasswordValid(newPassword, user!.password)).to.be.true
+		expect(await authService.isPasswordValid(NEW_PASSWORD, user!.password)).to.be.true
 	})
 
 	it('should throw errors if invalid values', async () => {
 		const { userId } = await testService.createTestUser()
 
-		const newPassword = 'newPassword@123'
-
 		// wrong password
 		const res1 = await changePassword(userId, {
 			oldPassword: 'wrong_password',
-			password: newPassword,
-			passwordConfirmation: newPassword
+			password: NEW_PASSWORD,
+			passwordConfirmation: NEW_PASSWORD
 		})
 
 		expect(res1.status).to.equal(422)
@@ -132,7 +128,7 @@ describe('Change password', () => {
 		// different password
 		const res3 = await changePassword(userId, {
 			oldPassword: TEST_PASSWORD,
-			password: newPassword,
+			password: NEW_PASSWORD,
 			passwordConfirmation: 'different_password'
 		})
 

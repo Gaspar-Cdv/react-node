@@ -2,6 +2,8 @@ import 'dotenv/config'
 
 const ENV = process.env['ENV'] || 'dev' as 'dev' | 'test' | 'prod'
 
+const CLIENT_URL = process.env['CLIENT_URL'] || 'http://localhost:3000'
+
 const HOSTNAME = process.env['HOSTNAME'] || 'localhost'
 const PORT = parseInt(process.env['PORT'] || '3001')
 
@@ -17,6 +19,8 @@ const MAIL_FROM = process.env['MAIL_FROM'] || ''
 
 export {
 	ENV,
+
+	CLIENT_URL,
 
 	HOSTNAME,
 	PORT,

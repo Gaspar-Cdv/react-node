@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { NavigateOptions, useLocation, useNavigate as useRouterNavigate, useParams } from 'react-router-dom'
 import { isLoggedSelector } from '../../store/session/selectors'
 import { useAppSelector } from '../../store/store'
@@ -13,15 +14,17 @@ function useRawPath (): string {
 	const location = useLocation()
 	const params = useParams()
 
-	const pathname = location.pathname.replace(/(?<=.+)\/$/, '') // remove trailing slash
+	const rawPath = useMemo(() => {
+		const pathname = location.pathname.replace(/(?<=.+)\/$/, '') // remove trailing slash
 
-	const rawPath = Object.keys(params).reduce((path, key) => {
-		if (params[key] === undefined) {
-			return path
-		}
+		return Object.keys(params).reduce((path, key) => {
+			if (params[key] === undefined) {
+				return path
+			}
 
-		return path.replace(new RegExp(`(?<=/)${params[key]}(?=/|$)`), `:${key}`) // replace params with :key
-	}, pathname)
+			return path.replace(new RegExp(`(?<=/)${params[key]}(?=/|$)`), `:${key}`) // replace params with :key
+		}, pathname)
+	}, [location.pathname, params])
 
 	return rawPath
 }
@@ -32,7 +35,10 @@ function useRawPath (): string {
 function useCurrentRoute (): Route {
 	const rawPath = useRawPath()
 	const isLogged = useAppSelector(isLoggedSelector)
-	const currentRoute = Object.values(routes).find(({ path }) => path && path === rawPath)
+
+	const currentRoute = useMemo(() => {
+		return Object.values(routes).find(({ path }) => path && path === rawPath)
+	}, [rawPath])
 
 	if (currentRoute == null || (isLogged && currentRoute.hideWhenLogged)) {
 		return routes.notFound

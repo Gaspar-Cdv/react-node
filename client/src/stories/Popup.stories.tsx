@@ -7,7 +7,7 @@ export default {
 	title: 'Common',
 	component: PopupWrapper,
 	argTypes: {
-		onCancel: { action: 'onCancel' }
+		onClose: { action: 'onClose' }
 	}
 } as ComponentMeta<typeof PopupWrapper>
 

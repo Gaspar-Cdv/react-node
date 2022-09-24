@@ -1,11 +1,13 @@
 import { lazy, ReactNode } from 'react'
-import { useRoutes } from 'react-router-dom'
+import { RouteObject, useRoutes } from 'react-router-dom'
+import Main from '../../components/Main'
 import Register from '../../components/Register/Register'
 import { defineI18n } from '../../utils/i18n'
 
 const Home = lazy(() => import(/* webpackChunkName: "home" */ '../../components/Home/Home'))
 const Login = lazy(() => import(/* webpackChunkName: "login" */ '../../components/Login/Login'))
 const Settings = lazy(() => import(/* webpackChunkName: "settings" */ '../../components/Settings/Settings'))
+const ResetPassword = lazy(() => import(/* webpackChunkName: "resetPassword" */ '../../components/ResetPassword/ResetPassword'))
 const Logout = lazy(() => import(/* webpackChunkName: "logout" */ '../../components/Login/Logout'))
 const NotFound = lazy(() => import(/* webpackChunkName: "notFound" */ '../../components/NotFound'))
 
@@ -14,6 +16,7 @@ type RouteNameExtended =
 	| 'login'
 	| 'register'
 	| 'settings'
+	| 'resetPassword'
 	| 'logout'
 	| 'notFound'
 
@@ -60,11 +63,17 @@ export const routes: Routes = {
 		element: <Settings />,
 		protected: true
 	},
+	resetPassword: {
+		name: 'resetPassword',
+		path: '/reset-password/:token',
+		element: <ResetPassword />
+	},
 	logout: {
 		name: 'logout',
 		path: '/logout',
 		element: <Logout />,
-		hideHeader: true
+		hideHeader: true,
+		protected: true
 	},
 	notFound: {
 		name: 'notFound',
@@ -84,6 +93,7 @@ export const pageTitles = defineI18n<RoutesI18n>({
 		login: 'Login',
 		register: 'Register',
 		settings: 'Settings',
+		resetPassword: 'Reset Password',
 		logout: 'Logout',
 		notFound: 'Page not found'
 	},
@@ -92,6 +102,7 @@ export const pageTitles = defineI18n<RoutesI18n>({
 		login: 'Connexion',
 		register: 'Inscription',
 		settings: 'Paramètres',
+		resetPassword: 'Réinitialiser le mot de passe',
 		logout: 'Déconnexion',
 		notFound: 'Page non trouvée'
 	}
@@ -130,7 +141,12 @@ export const injectParams = (path: string, params: LinkParams = {}) => {
 }
 
 function Router () {
-	return useRoutes(Object.values(routes))
+	const formatedRouteObject: RouteObject[] = Object.values(routes).map(({ element, ...route }) => ({
+		...route,
+		element: <Main>{element}</Main>
+	}))
+
+	return useRoutes(formatedRouteObject)
 }
 
 export default Router
