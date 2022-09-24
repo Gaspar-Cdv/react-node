@@ -1,5 +1,9 @@
 # React / Node boilerplate
 
+## Description
+
+This is a React / Node boilerplate with basic front-end components and authentification system. Still work in progress.
+
 ## Client
 
 ### Start
