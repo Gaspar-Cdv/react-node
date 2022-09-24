@@ -5,6 +5,7 @@ import hbs, { HbsTransporter } from 'nodemailer-express-handlebars'
 import { extractMailProperties, MailParams, MailTemplate, TEMPLATES } from '../types/mailTemplates'
 import { SentMessageInfo } from 'nodemailer/lib/smtp-transport'
 import { JSONValidator, ValidatorTemplate } from '../utils/JSONValidator'
+import emailDao from '../dao/emailDao'
 
 const TEMPLATES_DIR = path.resolve(__dirname, '../templates')
 const TEMPLATES_EXT = '.hbs'
@@ -27,16 +28,24 @@ class MailService {
 		const context = this.createContext(params, title)
 
 		try {
-			return await this.transporter.sendMail({
+			const mail = await this.transporter.sendMail({
 				from: MAIL_FROM,
 				to,
 				subject,
 				template,
 				context
 			})
+
+			await emailDao.insert({
+				recipient: to,
+				template: mailTemplate,
+				params
+			})
+
+			return mail
 		} catch (e) {
 			if (e instanceof Error) {
-				throw new Error(e.message) // TODO probably invalid recipient
+				throw new Error(e.message) // TODO probably invalid recipient (or emailDao.insert() ??)
 			}
 			return null
 		}

@@ -32,3 +32,16 @@ model ResetPasswordToken {
 
   @@map("reset_password_token")
 }
+
+enum MailTemplate {
+	CONFIRM_EMAIL
+	RESET_PASSWORD
+}
+
+model Email {
+  emailId   Int      @id @default(autoincrement()) @map("id_email")
+  recipient String
+  template  MailTemplate
+  params    Json
+  date      DateTime @default(now())
+}
