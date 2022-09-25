@@ -13,7 +13,9 @@ import { Language } from '@title/common/build/types/Language'
 import assertionService from './assertionService'
 import userDao from '../dao/userDao'
 import userService from './userService'
+import tokenService from './tokenService'
 import logger from '../logger'
+import { prisma } from '../prisma'
 
 class AuthService {
 
@@ -35,12 +37,18 @@ class AuthService {
 
 		const hashedPassword = await this.hashPassword(password)
 
-		return userDao.insert({
-			username,
-			email,
-			password: hashedPassword,
-			language,
-			emailVerified
+		return prisma.$transaction(async (tx) => {
+			const user = await userDao.insert({
+				username,
+				email,
+				password: hashedPassword,
+				language,
+				emailVerified
+			}, tx)
+
+			await tokenService.sendVerificationMail(user, tx)
+
+			return user
 		})
 	}
 
