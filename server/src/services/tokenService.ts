@@ -29,22 +29,24 @@ class TokenService {
 		const hashedToken = this.hashToken(token)
 		const expirationTime = new Date(Date.now() + 86400000) // 86400000ms = 1 day
 
-		await resetPasswordTokenDao.disableActiveTokens(userId)
+		return prisma.$transaction(async (tx) => {
+			await resetPasswordTokenDao.disableActiveTokens(userId, tx)
 
-		await resetPasswordTokenDao.insert({
-			token: hashedToken,
-			expirationTime,
-			userId
+			await resetPasswordTokenDao.insert({
+				token: hashedToken,
+				expirationTime,
+				userId
+			}, tx)
+
+			const resetLink = `${CLIENT_URL}/reset-password/${token}`
+
+			const mail = await mailService.sendMail(email, MailTemplate.RESET_PASSWORD, {
+				username,
+				resetLink
+			}, tx)
+
+			return mail
 		})
-
-		const resetLink = `${CLIENT_URL}/reset-password/${token}`
-
-		const mail = await mailService.sendMail(email, MailTemplate.RESET_PASSWORD, {
-			username,
-			resetLink
-		})
-
-		return mail
 	}
 
 	findResetPasswordToken = async (token: string): Promise<ResetPasswordToken> => {
