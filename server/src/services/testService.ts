@@ -22,7 +22,7 @@ class TestService {
 	 */
 	generateRegisterRequest = (registerRequest?: Partial<RegisterRequest>): RegisterRequest => {
 		const username = `test+${Date.now()}`
-		const email = `${username}@test.com`
+		const email = `${username}@gasparchefdeville.com`
 		const password = TEST_PASSWORD
 
 		return {

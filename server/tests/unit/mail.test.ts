@@ -10,7 +10,7 @@ const { expect } = chai
 
 describe('mailService', () => {
 	it('should send an email', async () => {
-		const recipient = 'gaspar.chefdeville@gmail.com'
+		const recipient = 'test@gasparchefdeville.com'
 		const mailTemplate = MailTemplate.VERIFY_EMAIL
 		const mailParams: MailParams = {
 			username: 'Gaspar',
@@ -40,7 +40,7 @@ describe('mailService', () => {
 	})
 
 	it('should throw an error if one of the params is missing', async () => {
-		const recipient = 'gaspar.chefdeville@gmail.com'
+		const recipient = 'test@gasparchefdeville.com'
 		const mailTemplate = MailTemplate.VERIFY_EMAIL
 		const username = 'Gaspar'
 		const verificationLink = 'http://localhost:3000/verify-email'
