@@ -17,5 +17,5 @@ export const isLoggedSelector = (state: RootState) => {
 }
 
 export const isEmailVerifiedSelector = (state: RootState) => {
-	return state.session.user?.emailVerified
+	return state.session.user?.emailVerified ?? false
 }
