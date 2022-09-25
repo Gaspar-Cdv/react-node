@@ -5,6 +5,7 @@ import ButtonLink from '../../common/button/ButtonLink'
 import Flex from '../../common/Flex'
 import Loader from '../../common/Loader'
 import tokenService from '../../remote/token'
+import { useFindSession } from '../../services/auth'
 import HttpError from '../../types/HttpError'
 import { defineI18n, useTranslate } from '../../utils/i18n'
 
@@ -26,11 +27,13 @@ function VerifyEmail () {
 	const { token } = useParams()
 	const [pending, setPending] = useState(true)
 	const [error, setError] = useState(false)
+	const [findSession] = useFindSession()
 
 	useEffect(() => {
 		const fn = async () => {
 			try {
 				await tokenService.verifyEmail(token)
+				await findSession()
 			} catch (e) {
 				if (e instanceof HttpError) {
 					setError(true)
@@ -41,6 +44,7 @@ function VerifyEmail () {
 		}
 
 		fn()
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [token])
 
 	if (pending) {
