@@ -65,12 +65,13 @@ class UserService {
 	/* PRIVATE */
 
 	createUserDto = (user: User): UserDto => {
-		const { userId, username, email } = user
+		const { userId, username, email, emailVerified } = user
 
 		const userDto: UserDto = {
 			userId,
 			username,
-			email
+			email,
+			emailVerified
 		}
 
 		return userDto

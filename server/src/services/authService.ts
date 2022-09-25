@@ -20,7 +20,7 @@ class AuthService {
 
 	/* PUBLIC */
 
-	register = async (body: RegisterRequest): Promise<User> => {
+	register = async (body: RegisterRequest, emailVerified = false): Promise<User> => {
 		try {
 			registerValidationSchema.validateSync(body)
 		} catch (e) {
@@ -38,7 +38,8 @@ class AuthService {
 			username,
 			email,
 			password: hashedPassword,
-			language
+			language,
+			emailVerified
 		})
 	}
 

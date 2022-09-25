@@ -13,8 +13,10 @@ model User {
   email               String
   password            String
   language            Language             @default(en)
+	emailVerified				Boolean              @default(false)
   createdAt           DateTime             @default(now()) @map("created_at")
   resetPasswordTokens ResetPasswordToken[]
+  verifyEmailTokens   VerifyEmailToken[]
 }
 
 enum Language {
@@ -33,15 +35,26 @@ model ResetPasswordToken {
   @@map("reset_password_token")
 }
 
+model VerifyEmailToken {
+  tokenId        Int      @id @default(autoincrement()) @map("id_token")
+  token          String
+  expirationTime DateTime @map("expiration_time")
+  isActive       Boolean  @default(true) @map("is_active")
+  user           User     @relation(fields: [userId], references: [userId])
+  userId         Int      @map("id_user")
+
+  @@map("verify_email_token")
+}
+
 enum MailTemplate {
-	CONFIRM_EMAIL
-	RESET_PASSWORD
+  CONFIRM_EMAIL
+  RESET_PASSWORD
 }
 
 model Email {
-  emailId   Int      @id @default(autoincrement()) @map("id_email")
+  emailId   Int          @id @default(autoincrement()) @map("id_email")
   recipient String
   template  MailTemplate
   params    Json
-  date      DateTime @default(now())
+  date      DateTime     @default(now())
 }

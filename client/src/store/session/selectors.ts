@@ -15,3 +15,7 @@ export const languageSelector = (state: RootState) => {
 export const isLoggedSelector = (state: RootState) => {
 	return userSelector(state) != null
 }
+
+export const isEmailVerifiedSelector = (state: RootState) => {
+	return state.session.user?.emailVerified
+}
