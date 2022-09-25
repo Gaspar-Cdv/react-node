@@ -39,4 +39,7 @@ export enum ErrorMessage {
 
 	// change settings errors
 	IDENTICAL_PASSWORDS = 'IDENTICAL_PASSWORDS',
+
+	// misc
+	INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR'
 }

@@ -46,7 +46,10 @@ const i18n = defineI18n<ErrorI18n>({
 		TOKEN_NOT_FOUND: 'Token not found',
 
 		// update settings errors
-		IDENTICAL_PASSWORDS: 'You must choose a different password'
+		IDENTICAL_PASSWORDS: 'You must choose a different password',
+
+		// misc
+		INTERNAL_SERVER_ERROR: 'Internal server error'
 	},
 	fr: {
 		// common form errors
@@ -88,7 +91,10 @@ const i18n = defineI18n<ErrorI18n>({
 		TOKEN_NOT_FOUND: 'Token non trouvé',
 
 		// update settings errors
-		IDENTICAL_PASSWORDS: 'Vous devez choisir un mot de passe différent'
+		IDENTICAL_PASSWORDS: 'Vous devez choisir un mot de passe différent',
+
+		// misc
+		INTERNAL_SERVER_ERROR: 'Erreur interne du serveur.'
 	}
 })
 

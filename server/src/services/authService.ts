@@ -7,12 +7,13 @@ import bcrypt from 'bcrypt'
 import jwt, { NotBeforeError, TokenExpiredError } from 'jsonwebtoken'
 import { JWT_EXPIRATION_TIME, JWT_SECRET } from '../config/environment'
 import { TokenPayload } from '../types/auth'
-import { ForbiddenError, UnprocessableEntityError } from '../types/errors'
+import { ForbiddenError, InternalServerError, UnprocessableEntityError } from '../types/errors'
 import { Req } from '../types/requestResponse'
 import { Language } from '@title/common/build/types/Language'
 import assertionService from './assertionService'
 import userDao from '../dao/userDao'
 import userService from './userService'
+import logger from '../logger'
 
 class AuthService {
 
@@ -137,7 +138,8 @@ class AuthService {
 		const user = await userDao.findById(userId)
 
 		if (user == null) {
-			throw new Error()
+			logger.error('User not found in authService::buildSession')
+			throw new InternalServerError()
 		}
 
 		const session: Session = {

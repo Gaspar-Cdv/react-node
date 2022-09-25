@@ -3,6 +3,7 @@ import chaiAsPromised from 'chai-as-promised'
 import { MAIL_FROM } from '../../src/config/environment'
 import { MailParams, MailTemplate } from '../../src/types/mailTemplates'
 import mailService from '../../src/services/mailService'
+import { InternalServerError } from '../../src/types/errors'
 
 chai.use(chaiAsPromised)
 const { expect } = chai
@@ -44,9 +45,9 @@ describe('mailService', () => {
 		const username = 'Gaspar'
 		const verificationLink = 'http://localhost:3000/verify-email'
 
-		expect(mailService.sendMail(recipient, mailTemplate)).to.be.rejectedWith(Error, 'Missing parameters in template: username, verificationLink')
-		expect(mailService.sendMail(recipient, mailTemplate, {})).to.be.rejectedWith(Error, 'Missing parameters in template: username, verificationLink')
-		expect(mailService.sendMail(recipient, mailTemplate, { username })).to.be.rejectedWith(Error, 'Missing parameters in template: verificationLink')
-		expect(mailService.sendMail(recipient, mailTemplate, { verificationLink })).to.be.rejectedWith(Error, 'Missing parameters in template: username')
+		expect(mailService.sendMail(recipient, mailTemplate)).to.be.rejectedWith(InternalServerError)
+		expect(mailService.sendMail(recipient, mailTemplate, {})).to.be.rejectedWith(InternalServerError)
+		expect(mailService.sendMail(recipient, mailTemplate, { username })).to.be.rejectedWith(InternalServerError)
+		expect(mailService.sendMail(recipient, mailTemplate, { verificationLink })).to.be.rejectedWith(InternalServerError)
 	})
 })
