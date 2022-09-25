@@ -47,7 +47,7 @@ model VerifyEmailToken {
 }
 
 enum MailTemplate {
-  CONFIRM_EMAIL
+  VERIFY_EMAIL
   RESET_PASSWORD
 }
 
