@@ -15,10 +15,20 @@ const resetPassword = async (data: ResetPasswordRequest): Promise<void> => {
 	return api.call(serviceName, 'resetPassword', data)
 }
 
+const verifyEmail = async (token?: string): Promise<void> => {
+	return api.call(serviceName, 'verifyEmail', { token })
+}
+
+const resendVerificationMail = async (): Promise<void> => {
+	return api.call(serviceName, 'resendVerificationMail')
+}
+
 const tokenService = {
 	forgotPassword,
 	findResetPasswordToken,
-	resetPassword
+	resetPassword,
+	verifyEmail,
+	resendVerificationMail
 }
 
 export default tokenService

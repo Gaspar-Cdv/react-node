@@ -1,12 +1,12 @@
-import { ResetPasswordToken } from '@prisma/client'
+import { Prisma, ResetPasswordToken } from '@prisma/client'
 import { prisma } from '../prisma'
 
 class ResetPasswordTokenDao {
 
 	static instance: ResetPasswordTokenDao
 
-	insert = async (data: Omit<ResetPasswordToken, 'tokenId' | 'isActive'>): Promise<ResetPasswordToken> => {
-		return prisma.resetPasswordToken.create({ data })
+	insert = async (data: Omit<ResetPasswordToken, 'tokenId' | 'isActive'>, tx: Prisma.TransactionClient = prisma): Promise<ResetPasswordToken> => {
+		return tx.resetPasswordToken.create({ data })
 	}
 
 	findById = async (tokenId: number): Promise<ResetPasswordToken | null> => {
@@ -24,8 +24,8 @@ class ResetPasswordTokenDao {
 		})
 	}
 
-	disableActiveTokens = async (userId: number) => {
-		await prisma.resetPasswordToken.updateMany({
+	disableActiveTokens = async (userId: number, tx: Prisma.TransactionClient = prisma) => {
+		await tx.resetPasswordToken.updateMany({
 			where: {
 				userId,
 				isActive: true

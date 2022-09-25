@@ -8,6 +8,7 @@ const Home = lazy(() => import(/* webpackChunkName: "home" */ '../../components/
 const Login = lazy(() => import(/* webpackChunkName: "login" */ '../../components/Login/Login'))
 const Settings = lazy(() => import(/* webpackChunkName: "settings" */ '../../components/Settings/Settings'))
 const ResetPassword = lazy(() => import(/* webpackChunkName: "resetPassword" */ '../../components/ResetPassword/ResetPassword'))
+const VerifyEmail = lazy(() => import(/* webpackChunkName: "verifyEmail" */ '../../components/VerifyEmail/VerifyEmail'))
 const Logout = lazy(() => import(/* webpackChunkName: "logout" */ '../../components/Login/Logout'))
 const NotFound = lazy(() => import(/* webpackChunkName: "notFound" */ '../../components/NotFound'))
 
@@ -17,6 +18,7 @@ type RouteNameExtended =
 	| 'register'
 	| 'settings'
 	| 'resetPassword'
+	| 'verifyEmail'
 	| 'logout'
 	| 'notFound'
 
@@ -68,6 +70,11 @@ export const routes: Routes = {
 		path: '/reset-password/:token',
 		element: <ResetPassword />
 	},
+	verifyEmail: {
+		name: 'verifyEmail',
+		path: '/verify-email/:token',
+		element: <VerifyEmail />
+	},
 	logout: {
 		name: 'logout',
 		path: '/logout',
@@ -94,6 +101,7 @@ export const pageTitles = defineI18n<RoutesI18n>({
 		register: 'Register',
 		settings: 'Settings',
 		resetPassword: 'Reset Password',
+		verifyEmail: 'Email verification',
 		logout: 'Logout',
 		notFound: 'Page not found'
 	},
@@ -103,6 +111,7 @@ export const pageTitles = defineI18n<RoutesI18n>({
 		register: 'Inscription',
 		settings: 'Paramètres',
 		resetPassword: 'Réinitialiser le mot de passe',
+		verifyEmail: 'Vérification de l\'email',
 		logout: 'Déconnexion',
 		notFound: 'Page non trouvée'
 	}

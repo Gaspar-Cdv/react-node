@@ -7,12 +7,15 @@ import bcrypt from 'bcrypt'
 import jwt, { NotBeforeError, TokenExpiredError } from 'jsonwebtoken'
 import { JWT_EXPIRATION_TIME, JWT_SECRET } from '../config/environment'
 import { TokenPayload } from '../types/auth'
-import { ForbiddenError, UnprocessableEntityError } from '../types/errors'
+import { ForbiddenError, InternalServerError, UnprocessableEntityError } from '../types/errors'
 import { Req } from '../types/requestResponse'
 import { Language } from '@title/common/build/types/Language'
 import assertionService from './assertionService'
 import userDao from '../dao/userDao'
 import userService from './userService'
+import tokenService from './tokenService'
+import logger from '../logger'
+import { prisma } from '../prisma'
 
 class AuthService {
 
@@ -20,7 +23,7 @@ class AuthService {
 
 	/* PUBLIC */
 
-	register = async (body: RegisterRequest): Promise<User> => {
+	register = async (body: RegisterRequest, emailVerified = false): Promise<User> => {
 		try {
 			registerValidationSchema.validateSync(body)
 		} catch (e) {
@@ -34,11 +37,20 @@ class AuthService {
 
 		const hashedPassword = await this.hashPassword(password)
 
-		return userDao.insert({
-			username,
-			email,
-			password: hashedPassword,
-			language
+		return prisma.$transaction(async (tx) => {
+			const user = await userDao.insert({
+				username,
+				email,
+				password: hashedPassword,
+				language,
+				emailVerified
+			}, tx)
+
+			if (!emailVerified) {
+				await tokenService.sendVerificationMail(user, tx)
+			}
+
+			return user
 		})
 	}
 
@@ -136,7 +148,8 @@ class AuthService {
 		const user = await userDao.findById(userId)
 
 		if (user == null) {
-			throw new Error()
+			logger.error('User not found in authService::buildSession')
+			throw new InternalServerError()
 		}
 
 		const session: Session = {

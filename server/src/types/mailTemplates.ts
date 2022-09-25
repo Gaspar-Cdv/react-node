@@ -1,7 +1,7 @@
 import { ValidatorTemplate } from '../utils/JSONValidator'
 
 export enum MailTemplate {
-	CONFIRM_EMAIL = 'CONFIRM_EMAIL',
+	VERIFY_EMAIL = 'VERIFY_EMAIL',
 	RESET_PASSWORD = 'RESET_PASSWORD'
 }
 
@@ -27,15 +27,15 @@ interface TemplatesParams {
 }
 
 export const TEMPLATES: TemplatesParams = {
-	[MailTemplate.CONFIRM_EMAIL]: {
-		template: 'confirm-email',
+	[MailTemplate.VERIFY_EMAIL]: {
+		template: 'verify-email',
 		properties: {
-			subject: 'Confirm your email',
-			title: ({ username }) => `Confirm you email ${username}`,
+			subject: 'Verify your email',
+			title: ({ username }) => `Verify your email ${username}`,
 		},
 		requiredParams: {
 			username: 'string',
-			confirmationLink: 'string'
+			verificationLink: 'string'
 		}
 	},
 	[MailTemplate.RESET_PASSWORD]: {

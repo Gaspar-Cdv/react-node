@@ -1,4 +1,4 @@
-import { Email } from '@prisma/client'
+import { Email, Prisma } from '@prisma/client'
 import { prisma } from '../prisma'
 import { MailParams, MailTemplate } from '../types/mailTemplates'
 
@@ -12,8 +12,8 @@ class EmailDao {
 
 	static instance: EmailDao
 
-	insert = async (data: InsertEmail): Promise<Email> => {
-		return prisma.email.create({ data })
+	insert = async (data: InsertEmail, tx: Prisma.TransactionClient = prisma): Promise<Email> => {
+		return tx.email.create({ data })
 	}
 
 	findLastByEmail = async (recipient: string): Promise<Email | null> => {

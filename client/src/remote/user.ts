@@ -1,11 +1,12 @@
 import { Language } from '@title/common/build/types/Language'
 import { ChangeLanguageRequest, ChangePasswordRequest, UpdateUserRequest } from '@title/common/build/types/requests/user'
+import { UserDto } from '@title/common/build/types/session'
 import api from './api'
 
 const serviceName = 'user'
 
-const updateUser = async (data: UpdateUserRequest): Promise<void> => {
-	await api.call(serviceName, 'updateUser', data)
+const updateUser = async (data: UpdateUserRequest): Promise<UserDto> => {
+	return api.call(serviceName, 'updateUser', data)
 }
 
 const changePassword = async (data: ChangePasswordRequest): Promise<void> => {

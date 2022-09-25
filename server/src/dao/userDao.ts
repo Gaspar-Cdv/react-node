@@ -1,4 +1,4 @@
-import { User } from '@prisma/client'
+import { Prisma, User } from '@prisma/client'
 import { Language } from '@title/common/build/types/Language'
 import { prisma } from '../prisma'
 
@@ -6,8 +6,8 @@ class UserDao {
 
 	static instance: UserDao
 
-	insert = async (data: Omit<User, 'userId' | 'createdAt'>): Promise<User> => {
-		return prisma.user.create({ data })
+	insert = async (data: Omit<User, 'userId' | 'createdAt'>, tx: Prisma.TransactionClient = prisma): Promise<User> => {
+		return tx.user.create({ data })
 	}
 
 	findById = async (userId: number): Promise<User | null> => {
@@ -36,15 +36,23 @@ class UserDao {
 		})
 	}
 
-	updateUser = async (user: User) => {
-		const { userId, username, email } = user
+	updateUser = async (user: User, tx: Prisma.TransactionClient = prisma) => {
+		const { userId, username, email, emailVerified } = user
 
-		return prisma.user.update({
+		return tx.user.update({
 			where: { userId },
 			data: {
 				username,
-				email
+				email,
+				emailVerified
 			}
+		})
+	}
+
+	setEmailVerified = async (userId: number, emailVerified: boolean) => {
+		await prisma.user.update({
+			where: { userId },
+			data: { emailVerified }
 		})
 	}
 

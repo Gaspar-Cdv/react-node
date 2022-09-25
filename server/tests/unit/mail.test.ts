@@ -3,17 +3,18 @@ import chaiAsPromised from 'chai-as-promised'
 import { MAIL_FROM } from '../../src/config/environment'
 import { MailParams, MailTemplate } from '../../src/types/mailTemplates'
 import mailService from '../../src/services/mailService'
+import { InternalServerError } from '../../src/types/errors'
 
 chai.use(chaiAsPromised)
 const { expect } = chai
 
 describe('mailService', () => {
 	it('should send an email', async () => {
-		const recipient = 'gaspar.chefdeville@gmail.com'
-		const mailTemplate = MailTemplate.CONFIRM_EMAIL
+		const recipient = 'test@gasparchefdeville.com'
+		const mailTemplate = MailTemplate.VERIFY_EMAIL
 		const mailParams: MailParams = {
 			username: 'Gaspar',
-			confirmationLink: 'http://localhost:3000/confirm-email'
+			verificationLink: 'http://localhost:3000/verify-email'
 		}
 
 		const messageInfo = await mailService.sendMail(recipient, mailTemplate, mailParams)
@@ -29,24 +30,24 @@ describe('mailService', () => {
 
 	it('should throw an error if the recipient is not valid', async () => {
 		const recipient = 'invalid recipent'
-		const mailTemplate = MailTemplate.CONFIRM_EMAIL
+		const mailTemplate = MailTemplate.VERIFY_EMAIL
 		const mailParams: MailParams = {
 			username: 'Gaspar',
-			confirmationLink: 'http://localhost:3000/confirm-email'
+			verificationLink: 'http://localhost:3000/verify-email'
 		}
 
 		expect(mailService.sendMail(recipient, mailTemplate, mailParams)).to.be.rejectedWith(Error, 'No recipients defined')
 	})
 
 	it('should throw an error if one of the params is missing', async () => {
-		const recipient = 'gaspar.chefdeville@gmail.com'
-		const mailTemplate = MailTemplate.CONFIRM_EMAIL
+		const recipient = 'test@gasparchefdeville.com'
+		const mailTemplate = MailTemplate.VERIFY_EMAIL
 		const username = 'Gaspar'
-		const confirmationLink = 'http://localhost:3000/confirm-email'
+		const verificationLink = 'http://localhost:3000/verify-email'
 
-		expect(mailService.sendMail(recipient, mailTemplate)).to.be.rejectedWith(Error, 'Missing parameters in template: username, confirmationLink')
-		expect(mailService.sendMail(recipient, mailTemplate, {})).to.be.rejectedWith(Error, 'Missing parameters in template: username, confirmationLink')
-		expect(mailService.sendMail(recipient, mailTemplate, { username })).to.be.rejectedWith(Error, 'Missing parameters in template: confirmationLink')
-		expect(mailService.sendMail(recipient, mailTemplate, { confirmationLink })).to.be.rejectedWith(Error, 'Missing parameters in template: username')
+		expect(mailService.sendMail(recipient, mailTemplate)).to.be.rejectedWith(InternalServerError)
+		expect(mailService.sendMail(recipient, mailTemplate, {})).to.be.rejectedWith(InternalServerError)
+		expect(mailService.sendMail(recipient, mailTemplate, { username })).to.be.rejectedWith(InternalServerError)
+		expect(mailService.sendMail(recipient, mailTemplate, { verificationLink })).to.be.rejectedWith(InternalServerError)
 	})
 })

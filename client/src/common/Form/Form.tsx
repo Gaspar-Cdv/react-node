@@ -29,8 +29,8 @@ const useStyles = createUseStyles({
 		display: 'flex',
 		flexDirection: 'column',
 		gap: '1.25rem',
-		width: 400,
-		maxWidth: '100%',
+		width: '100%',
+		maxWidth: 400,
 		margin: '0 auto'
 	},
 	buttons: {

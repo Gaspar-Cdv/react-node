@@ -1,3 +1,4 @@
+import { ErrorMessage } from '@title/common/build/types/ErrorMessage'
 import { HttpResponse, HttpStatus } from './http'
 
 export class HttpError extends Error {
@@ -30,6 +31,14 @@ export class UnprocessableEntityError extends HttpError {
 	constructor (message: string) {
 		super(message, HttpStatus.UNPROCESSABLE_ENTITY)
 		this.name = HttpResponse.UNPROCESSABLE_ENTITY
+		Object.setPrototypeOf(this, UnprocessableEntityError.prototype)
+	}
+}
+
+export class InternalServerError extends HttpError {
+	constructor (message = ErrorMessage.INTERNAL_SERVER_ERROR) {
+		super(message, HttpStatus.INTERNAL_SERVER_ERROR)
+		this.name = HttpResponse.INTERNAL_SERVER_ERROR
 		Object.setPrototypeOf(this, UnprocessableEntityError.prototype)
 	}
 }
