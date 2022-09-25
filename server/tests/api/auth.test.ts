@@ -5,14 +5,10 @@ import chai from 'chai'
 import chaiHttp from 'chai-http'
 import app from '../../src'
 import userDao from '../../src/dao/userDao'
-import { prisma } from '../../src/prisma'
 import testService, { TEST_PASSWORD } from '../../src/services/testService'
 
 const { expect } = chai
 chai.use(chaiHttp)
-
-const USERNAME = 'authTest'
-const EMAIL = 'authTest@test.com'
 
 const register = async (registerRequest: Partial<RegisterRequest>) => {
 	const request = testService.generateRegisterRequest(registerRequest)
@@ -24,9 +20,10 @@ const login = async (loginRequest: LoginRequest) => {
 }
 
 describe('register', () => {
-	after(async () => {
-		await prisma.user.deleteMany({ where: { username: USERNAME } })
-	})
+	const {
+		username: USERNAME,
+		email: EMAIL
+	} = testService.generateRegisterRequest()
 
 	it('should register a new user', async () => {
 		expect(await userDao.findByUsername(USERNAME)).to.be.null
@@ -104,12 +101,13 @@ describe('register', () => {
 })
 
 describe('login', () => {
+	const {
+		username: USERNAME,
+		email: EMAIL
+	} = testService.generateRegisterRequest()
+
 	before(async () => {
 		await testService.createTestUser({ username: USERNAME, email: EMAIL })
-	})
-
-	after(async () => {
-		await prisma.user.deleteMany({ where: { username: USERNAME } })
 	})
 
 	it('should login a user', async () => {
@@ -147,14 +145,14 @@ describe('login', () => {
 
 describe('Find session', () => {
 	it('should find session', async () => {
-		const { userId, username, email } = await testService.createTestUser({ language: Language.en })
+		const { userId, username, email, emailVerified } = await testService.createTestUser({ language: Language.en })
 
 		const { status, body } = await testService.call('/api/auth/findSession', {}, userId)
 		const { user, language } = body
 
 		expect(status).to.equal(200)
 		expect(user).not.to.be.null
-		expect(user).to.deep.equal({ userId, username, email })
+		expect(user).to.deep.equal({ userId, username, email, emailVerified })
 		expect(language).not.to.be.null
 		expect(language).to.equal(Language.en)
 	})
