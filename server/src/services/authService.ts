@@ -46,7 +46,9 @@ class AuthService {
 				emailVerified
 			}, tx)
 
-			await tokenService.sendVerificationMail(user, tx)
+			if (!emailVerified) {
+				await tokenService.sendVerificationMail(user, tx)
+			}
 
 			return user
 		})

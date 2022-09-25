@@ -14,6 +14,7 @@ describe('authService', () => {
 			email: 'test@test.com',
 			password: 'password@123',
 			language: Language.en,
+			emailVerified: true,
 			createdAt: new Date(),
 		}
 

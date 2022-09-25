@@ -39,10 +39,10 @@ class TestService {
 	 * Register a test user with random and unique username and email.\
 	 * The values can be overwritten in the registerRequest argument.
 	 */
-	createTestUser = async (registerRequest?: Partial<RegisterRequest>): Promise<User> => {
+	createTestUser = async (registerRequest?: Partial<RegisterRequest>, emailVerified = true): Promise<User> => {
 		const data = this.generateRegisterRequest(registerRequest)
 
-		return authService.register(data)
+		return authService.register(data, emailVerified)
 	}
 
 	/**
