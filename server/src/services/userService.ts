@@ -5,9 +5,11 @@ import { Language } from '@title/common/build/types/Language'
 import { ChangePasswordRequest, UpdateUserRequest } from '@title/common/build/types/requests/user'
 import { UserDto } from '@title/common/build/types/session'
 import userDao from '../dao/userDao'
+import { prisma } from '../prisma'
 import { UnprocessableEntityError } from '../types/errors'
 import assertionService from './assertionService'
 import authService from './authService'
+import tokenService from './tokenService'
 
 class UserService {
 
@@ -24,18 +26,27 @@ class UserService {
 
 		const user = await userDao.findById(userId!)
 		const { username, email } = body
+		const usernameHasChanged = user!.username !== username
+		const emailHasChanged = user!.email !== email
 
-		if (user!.username !== username) {
+		if (usernameHasChanged) {
 			assertionService.assertNull(await userDao.findByUsername(username), ErrorMessage.USERNAME_ALREADY_USED)
 			user!.username = username
 		}
 
-		if (user!.email !== email) {
+		if (emailHasChanged) {
 			assertionService.assertNull(await userDao.findByEmail(email), ErrorMessage.EMAIL_ALREADY_USED)
 			user!.email = email
+			user!.emailVerified = false
 		}
 
-		await userDao.updateUser(user!)
+		await prisma.$transaction(async (tx) => {
+			await userDao.updateUser(user!, tx)
+
+			if (emailHasChanged) {
+				await tokenService.sendVerificationMail(user!, tx)
+			}
+		})
 	}
 
 	changePassword = async (body: ChangePasswordRequest, userId?: number) => {
