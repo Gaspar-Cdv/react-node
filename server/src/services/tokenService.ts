@@ -89,6 +89,16 @@ class TokenService {
 		await verifyEmailTokenDao.setActive(tokenId, false)
 	}
 
+	resendVerificationMail = async (userId?: number) => {
+		const user = await userDao.findById(userId!)
+
+		if (user!.emailVerified) {
+			throw new UnprocessableEntityError(ErrorMessage.EMAIL_ALREADY_VERIFIED)
+		}
+
+		await this.sendVerificationMail(user!)
+	}
+
 	/* PRIVATE */
 
 	sendVerificationMail = async (user: User, tx: Prisma.TransactionClient = prisma) => {

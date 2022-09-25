@@ -48,6 +48,9 @@ const i18n = defineI18n<ErrorI18n>({
 		// update settings errors
 		IDENTICAL_PASSWORDS: 'You must choose a different password',
 
+		// email verification
+		EMAIL_ALREADY_VERIFIED: 'Email is already verified',
+
 		// misc
 		INTERNAL_SERVER_ERROR: 'Internal server error'
 	},
@@ -92,6 +95,9 @@ const i18n = defineI18n<ErrorI18n>({
 
 		// update settings errors
 		IDENTICAL_PASSWORDS: 'Vous devez choisir un mot de passe différent',
+
+		// email verification
+		EMAIL_ALREADY_VERIFIED: 'L\'email est déjà vérifié',
 
 		// misc
 		INTERNAL_SERVER_ERROR: 'Erreur interne du serveur.'

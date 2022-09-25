@@ -40,6 +40,9 @@ export enum ErrorMessage {
 	// change settings errors
 	IDENTICAL_PASSWORDS = 'IDENTICAL_PASSWORDS',
 
+	// email verification
+	EMAIL_ALREADY_VERIFIED = 'EMAIL_ALREADY_VERIFIED',
+
 	// misc
 	INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR'
 }
