@@ -1,6 +1,7 @@
 import { MailTemplate } from '@prisma/client'
 import { ErrorMessage } from '@title/common/build/types/ErrorMessage'
 import { LoginRequest, ResetPasswordRequest } from '@title/common/build/types/requests/auth'
+import { UpdateUserRequest } from '@title/common/build/types/requests/user'
 import chai from 'chai'
 import chaiDateTime from 'chai-datetime'
 import chaiHttp from 'chai-http'
@@ -31,6 +32,10 @@ const login = async (loginRequest: LoginRequest) => {
 
 const verifyEmail = async (token: string) => {
 	return testService.call('/api/token/verifyEmail', { token })
+}
+
+const updateUser = async (userId: number, data: UpdateUserRequest) => {
+	return testService.call('/api/user/updateUser', data, userId)
 }
 
 const findResetPasswordTokenByUserId = async (userId: number) => {
@@ -197,5 +202,56 @@ describe('verify email', () => {
 		const { body, status } = await verifyEmail('invalid_token')
 		expect(status).to.equal(403)
 		expect(body.message).to.equal(ErrorMessage.TOKEN_NOT_FOUND)
+	})
+
+	it('should send verification mail when email has changed', async () => {
+		const { userId, username, email, emailVerified } = await testService.createTestUser()
+
+		// email is already verified
+		expect(emailVerified).to.be.true
+
+		// no token has been generated
+		const verifyEmailToken1 = await findVerifyEmailTokenByUserId(userId)
+		expect(verifyEmailToken1).to.be.null
+
+		// no mail has been sent
+		const verificationEmail1 = await emailDao.findLastByEmail(email)
+		expect(verificationEmail1).to.be.null
+
+		// change email
+		const { email: newEmail } = testService.generateRegisterRequest()
+		await updateUser(userId, {
+			username,
+			email: newEmail
+		})
+
+		// email is now not verified
+		const user1 = await userDao.findById(userId)
+		expect(user1!.emailVerified).to.be.false
+
+		// token has been generated
+		const verifyEmailToken2 = await findVerifyEmailTokenByUserId(userId)
+		expect(verifyEmailToken2).not.to.be.null
+
+		// email has been sent
+		const verificationEmail2 = await emailDao.findLastByEmail(newEmail)
+		expect(verificationEmail2).not.to.be.null
+		expect(verificationEmail2!.template).to.equal(MailTemplate.VERIFY_EMAIL)
+		expect(verificationEmail2!.date).to.closeToTime(new Date(), 10)
+
+		const { verificationLink } = verificationEmail2?.params as { verificationLink?: string }
+		const token = getTokenFromUrl(verificationLink)
+
+		// visit verification link
+		const res = await verifyEmail(token)
+		expect(res.status).to.equal(200)
+
+		// email is now verified
+		const user2 = await userDao.findById(userId)
+		expect(user2?.emailVerified).to.equal(true)
+
+		// token doesn't exist anymore
+		const verifyEmailToken3 = await findVerifyEmailTokenByUserId(userId)
+		expect(verifyEmailToken3).to.be.null
 	})
 })

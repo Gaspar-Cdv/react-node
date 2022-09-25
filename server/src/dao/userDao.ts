@@ -37,13 +37,14 @@ class UserDao {
 	}
 
 	updateUser = async (user: User, tx: Prisma.TransactionClient = prisma) => {
-		const { userId, username, email } = user
+		const { userId, username, email, emailVerified } = user
 
 		return tx.user.update({
 			where: { userId },
 			data: {
 				username,
-				email
+				email,
+				emailVerified
 			}
 		})
 	}
