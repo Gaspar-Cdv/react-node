@@ -1,4 +1,4 @@
-import { ResetPasswordToken } from '@prisma/client'
+import { Prisma, ResetPasswordToken, User } from '@prisma/client'
 import { resetPasswordValidationSchema } from '@title/common/build/services/validation'
 import { ErrorMessage } from '@title/common/build/types/ErrorMessage'
 import { ResetPasswordRequest } from '@title/common/build/types/requests/auth'
@@ -6,6 +6,8 @@ import crypto from 'crypto'
 import { CLIENT_URL } from '../config/environment'
 import resetPasswordTokenDao from '../dao/resetPasswordTokenDao'
 import userDao from '../dao/userDao'
+import verifyEmailTokenDao from '../dao/verifyEmailTokenDao'
+import { prisma } from '../prisma'
 import { ForbiddenError, UnprocessableEntityError } from '../types/errors'
 import { MailTemplate } from '../types/mailTemplates'
 import authService from './authService'
@@ -79,6 +81,31 @@ class TokenService {
 	}
 
 	/* PRIVATE */
+
+	sendVerificationMail = async (user: User, tx: Prisma.TransactionClient = prisma) => {
+		const { userId, username, email } = user
+
+		const token = this.generateToken()
+		const hashedToken = this.hashToken(token)
+		const expirationTime = new Date(Date.now() + 86400000) // 86400000ms = 1 day
+
+		await verifyEmailTokenDao.disableActiveTokens(userId, tx)
+
+		await verifyEmailTokenDao.insert({
+			token: hashedToken,
+			expirationTime,
+			userId
+		}, tx)
+
+		const verificationLink = `${CLIENT_URL}/verify-email/${token}`
+
+		const mail = await mailService.sendMail(email, MailTemplate.VERIFY_EMAIL, {
+			username,
+			verificationLink
+		}, tx)
+
+		return mail
+	}
 
 	hashToken = (token: string): string => {
 		return crypto.createHash('sha256').update(token).digest('hex')
