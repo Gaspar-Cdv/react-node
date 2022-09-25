@@ -7,6 +7,7 @@ const useStyles = createUseStyles(theme => ({
 		display: 'inline-flex',
 		justifyContent: 'strech',
 		alignItems: 'strech',
+		borderRadius: theme.borderRadius.xs,
 		backgroundColor: 'white' // to handle background opacity safely
 	},
 	button: {
