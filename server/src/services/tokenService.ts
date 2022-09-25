@@ -1,4 +1,4 @@
-import { Prisma, ResetPasswordToken, User } from '@prisma/client'
+import { Prisma, ResetPasswordToken, User, VerifyEmailToken } from '@prisma/client'
 import { resetPasswordValidationSchema } from '@title/common/build/services/validation'
 import { ErrorMessage } from '@title/common/build/types/ErrorMessage'
 import { ResetPasswordRequest } from '@title/common/build/types/requests/auth'
@@ -82,6 +82,13 @@ class TokenService {
 		await resetPasswordTokenDao.setActive(tokenId, false)
 	}
 
+	verifyEmail = async (token: string): Promise<void> => {
+		const { tokenId, userId } = await this.findVerifyEmailToken(token)
+
+		await userDao.setEmailVerified(userId, true)
+		await verifyEmailTokenDao.setActive(tokenId, false)
+	}
+
 	/* PRIVATE */
 
 	sendVerificationMail = async (user: User, tx: Prisma.TransactionClient = prisma) => {
@@ -107,6 +114,25 @@ class TokenService {
 		}, tx)
 
 		return mail
+	}
+
+	findVerifyEmailToken = async (token: string): Promise<VerifyEmailToken> => {
+		const hashedToken = this.hashToken(token)
+		const verifyEmailToken = await verifyEmailTokenDao.findByToken(hashedToken)
+
+		if (verifyEmailToken == null) {
+			throw new ForbiddenError(ErrorMessage.TOKEN_NOT_FOUND)
+		}
+
+		if (!verifyEmailToken.isActive) {
+			throw new ForbiddenError(ErrorMessage.NOT_ACTIVE_TOKEN)
+		}
+
+		if (verifyEmailToken.expirationTime < new Date()) {
+			throw new ForbiddenError(ErrorMessage.EXPIRED_TOKEN)
+		}
+
+		return verifyEmailToken
 	}
 
 	hashToken = (token: string): string => {

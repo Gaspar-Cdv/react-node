@@ -48,6 +48,13 @@ class UserDao {
 		})
 	}
 
+	setEmailVerified = async (userId: number, emailVerified: boolean) => {
+		await prisma.user.update({
+			where: { userId },
+			data: { emailVerified }
+		})
+	}
+
 	/* STATIC */
 
 	static getInstance = () => {

@@ -21,4 +21,9 @@ router.post('/resetPassword', async ({ body }: Req<ResetPasswordRequest>, res: R
 	res.sendStatus(200)
 })
 
+router.post('/verifyEmail', async ({ body }: Req<TokenRequest>, res: Response) => {
+	await tokenService.verifyEmail(body.token)
+	res.sendStatus(200)
+})
+
 export default router
