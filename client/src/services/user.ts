@@ -1,5 +1,7 @@
 import { ChangePasswordRequest, UpdateUserRequest } from '@title/common/build/types/requests/user'
 import userService from '../remote/user'
+import { updateUser } from '../store/session/reducer'
+import { useAppDispatch } from '../store/store'
 import { defineI18n } from '../utils/i18n'
 import { createUseForm } from './createUseForm'
 
@@ -24,15 +26,21 @@ const i18n = defineI18n({
 	}
 })
 
-export const useUpdateUserForm = createUseForm({
-	action: async (values: UpdateUserRequest) => {
-		await userService.updateUser(values)
-		// dispatch(updateSession(session)) // TODO
-	},
-	titleKey: i18n.userSettings.title,
-	submitKey: i18n.userSettings.submit,
-	resetForm: false
-})
+export const useUpdateUserForm = (onSuccess?: () => void) => {
+	const dispatch = useAppDispatch()
+
+	const useForm = createUseForm({
+		action: async (values: UpdateUserRequest) => {
+			const user = await userService.updateUser(values)
+			dispatch(updateUser(user))
+		},
+		titleKey: i18n.userSettings.title,
+		submitKey: i18n.userSettings.submit,
+		resetForm: false
+	})
+
+	return useForm(onSuccess)
+}
 
 export const useChangePasswordForm = createUseForm({
 	action: async (values: ChangePasswordRequest) => {

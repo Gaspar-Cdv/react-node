@@ -17,7 +17,7 @@ class UserService {
 
 	/* PUBLIC */
 
-	updateUser = async (body: UpdateUserRequest, userId?: number) => {
+	updateUser = async (body: UpdateUserRequest, userId?: number): Promise<UserDto> => {
 		try {
 			updateUserValidationSchema.validateSync(body)
 		} catch (e) {
@@ -40,12 +40,14 @@ class UserService {
 			user!.emailVerified = false
 		}
 
-		await prisma.$transaction(async (tx) => {
-			await userDao.updateUser(user!, tx)
+		return prisma.$transaction(async (tx) => {
+			const updatedUser = await userDao.updateUser(user!, tx)
 
 			if (emailHasChanged) {
 				await tokenService.sendVerificationMail(user!, tx)
 			}
+
+			return this.createUserDto(updatedUser)
 		})
 	}
 
