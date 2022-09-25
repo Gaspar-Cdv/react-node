@@ -8,6 +8,8 @@ import { JSONValidator, ValidatorTemplate } from '../utils/JSONValidator'
 import emailDao from '../dao/emailDao'
 import logger from '../logger'
 import { InternalServerError } from '../types/errors'
+import { Prisma } from '@prisma/client'
+import { prisma } from '../prisma'
 
 const TEMPLATES_DIR = path.resolve(__dirname, '../templates')
 const TEMPLATES_EXT = '.hbs'
@@ -22,7 +24,12 @@ class MailService {
 		this.initializeTemplateEngine()
 	}
 
-	async sendMail (to: string, mailTemplate: MailTemplate, params: MailParams = {}): Promise<SentMessageInfo | null> {
+	async sendMail (
+		to: string,
+		mailTemplate: MailTemplate,
+		params: MailParams = {},
+		tx: Prisma.TransactionClient = prisma
+	): Promise<SentMessageInfo | null> {
 		const { template, properties, requiredParams } = TEMPLATES[mailTemplate]
 		this.checkRequiredParams(requiredParams, params)
 
@@ -42,7 +49,7 @@ class MailService {
 				recipient: to,
 				template: mailTemplate,
 				params
-			})
+			}, tx)
 
 			return mail
 		} catch (e) {

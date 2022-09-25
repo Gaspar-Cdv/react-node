@@ -1,4 +1,4 @@
-import { User } from '@prisma/client'
+import { Prisma, User } from '@prisma/client'
 import { Language } from '@title/common/build/types/Language'
 import { prisma } from '../prisma'
 
@@ -6,8 +6,8 @@ class UserDao {
 
 	static instance: UserDao
 
-	insert = async (data: Omit<User, 'userId' | 'createdAt'>): Promise<User> => {
-		return prisma.user.create({ data })
+	insert = async (data: Omit<User, 'userId' | 'createdAt'>, tx: Prisma.TransactionClient = prisma): Promise<User> => {
+		return tx.user.create({ data })
 	}
 
 	findById = async (userId: number): Promise<User | null> => {
