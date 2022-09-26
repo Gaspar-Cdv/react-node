@@ -1,4 +1,4 @@
-import { Form as FormikForm, Formik, FormikValues } from 'formik'
+import { Form as FormikForm, Formik, FormikProps, FormikValues } from 'formik'
 import { ReactNode } from 'react'
 import { createUseStyles } from 'react-jss'
 import Alert from '../../common/Alert'
@@ -43,9 +43,9 @@ const useStyles = createUseStyles({
 
 interface FormProps<T> extends UseFormProps<T> {
 	initialValues: T
-	validationSchema: any
+	validationSchema?: any
 	onCancel?: () => void
-	children: ReactNode | ReactNode[]
+	children: ReactNode | ReactNode[] | ((formikProps: FormikProps<T>) => ReactNode)
 }
 
 function Form<T extends FormikValues> ({
@@ -74,34 +74,36 @@ function Form<T extends FormikValues> ({
 			validateOnBlur={false}
 			enableReinitialize
 		>
-			<FormikForm onChange={resetError}>
-				<div className={classes.container}>
-					{title != null && (
-						<h5>{title}</h5>
-					)}
-
-					{children}
-
-					<Alert
-						show={error.length > 0}
-						onClose={resetError}
-					>
-						{translate(i18n.error, { message: errorMessage(error) })}
-					</Alert>
-
-					<div className={classes.buttons}>
-						{onCancel != null && (
-							<Button variant='secondary' onClick={onCancel}>
-								{cancelLabel || translate(i18n.buttons.reset)}
-							</Button>
+			{formikProps => (
+				<FormikForm onChange={resetError}>
+					<div className={classes.container}>
+						{title != null && (
+							<h5>{title}</h5>
 						)}
 
-						<Button type='submit' disabled={pending}>
-							{submitLabel || translate(i18n.buttons.submit)}
-						</Button>
+						{typeof children === 'function' ? children(formikProps) : children}
+
+						<Alert
+							show={error.length > 0}
+							onClose={resetError}
+						>
+							{translate(i18n.error, { message: errorMessage(error) })}
+						</Alert>
+
+						<div className={classes.buttons}>
+							{onCancel != null && (
+								<Button variant='secondary' onClick={onCancel}>
+									{cancelLabel || translate(i18n.buttons.reset)}
+								</Button>
+							)}
+
+							<Button type='submit' disabled={pending}>
+								{submitLabel || translate(i18n.buttons.submit)}
+							</Button>
+						</div>
 					</div>
-				</div>
-			</FormikForm>
+				</FormikForm>
+			)}
 		</Formik>
 	)
 }
