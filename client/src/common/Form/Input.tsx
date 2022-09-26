@@ -4,14 +4,18 @@ import { ChangeEvent, HTMLProps, useRef } from 'react'
 import { createUseStyles } from 'react-jss'
 import { useErrorMessage } from '../../utils/useErrorMessage'
 
+interface JssProps {
+	hasLabel: boolean
+}
+
 const useStyles = createUseStyles(theme => ({
 	container: {
 		display: 'flex',
 		flexDirection: 'column',
 		gap: 5
 	},
-	fieldSet: {
-		padding: [7, 12, 12, 12],
+	fieldSet: ({ hasLabel }: JssProps) => ({
+		padding: hasLabel ? [7, 12, 12, 12] : 12,
 		backgroundColor: 'white',
 		borderRadius: theme.borderRadius.xs,
 		border: [1, 'solid', theme.color.lightBorder],
@@ -19,7 +23,7 @@ const useStyles = createUseStyles(theme => ({
 		'&:focus-within': {
 			border: [1, 'solid', theme.color.info],
 		}
-	},
+	}),
 	legend: {
 		cursor: 'default',
 		lineHeight: '0.75rem',
@@ -49,7 +53,8 @@ export interface InputProps extends HTMLProps<HTMLInputElement> {
 }
 
 function Input<T> ({ label, ...props }: InputProps & FieldAttributes<T>) {
-	const classes = useStyles()
+	const hasLabel = label != null && label.length > 0
+	const classes = useStyles({ hasLabel })
 	const [{ onChange, ...field }, meta, helpers] = useField(props)
 	const showError = meta.touched && meta.error != null
 	const errorMessage = useErrorMessage()
@@ -67,9 +72,11 @@ function Input<T> ({ label, ...props }: InputProps & FieldAttributes<T>) {
 				onClick={() => ref.current?.focus()}
 				className={classNames(classes.fieldSet, { [classes.errorInput]: showError })}
 			>
-				<legend className={classes.legend}>
-					{label}
-				</legend>
+				{hasLabel && (
+					<legend className={classes.legend}>
+						{label}
+					</legend>
+				)}
 
 				<input
 					className={classes.input}
