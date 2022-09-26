@@ -1,6 +1,6 @@
 import classNames from 'classnames'
-import { FieldAttributes, useField } from 'formik'
-import { ChangeEvent, HTMLProps, useRef } from 'react'
+import { FieldHookConfig, useField } from 'formik'
+import { ChangeEvent, ClassAttributes, InputHTMLAttributes, useRef } from 'react'
 import { createUseStyles } from 'react-jss'
 import { useErrorMessage } from '../../utils/useErrorMessage'
 
@@ -37,9 +37,9 @@ const useStyles = createUseStyles(theme => ({
 		outline: 'none',
 		fontSize: '1rem'
 	},
-	errorInput: {
+	errorInput: () => ({ // hack to increase specificity
 		border: [1, 'solid', theme.color.danger]
-	},
+	}),
 	errorMessage: {
 		color: theme.color.danger,
 		textAlign: 'right',
@@ -48,17 +48,17 @@ const useStyles = createUseStyles(theme => ({
 	}
 }))
 
-export interface InputProps extends HTMLProps<HTMLInputElement> {
+export type InputProps = InputHTMLAttributes<HTMLInputElement> & ClassAttributes<HTMLInputElement> & FieldHookConfig<string> & {
 	label?: string
 }
 
-function Input<T> ({ label, ...props }: InputProps & FieldAttributes<T>) {
+function Input ({ label, ...props }: InputProps) {
 	const hasLabel = label != null && label.length > 0
 	const classes = useStyles({ hasLabel })
 	const [{ onChange, ...field }, meta, helpers] = useField(props)
 	const showError = meta.touched && meta.error != null
 	const errorMessage = useErrorMessage()
-	const ref = useRef<HTMLInputElement>()
+	const ref = useRef<HTMLInputElement>(null)
 
 	const handleChange = (e: ChangeEvent) => {
 		helpers.setError(undefined)
