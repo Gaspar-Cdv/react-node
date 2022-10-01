@@ -38,6 +38,7 @@ export enum ErrorMessage {
 	TOKEN_NOT_FOUND = 'TOKEN_NOT_FOUND',
 
 	// change settings errors
+	IDENTICAL_VALUES = 'IDENTICAL_VALUES',
 	IDENTICAL_PASSWORDS = 'IDENTICAL_PASSWORDS',
 
 	// email verification

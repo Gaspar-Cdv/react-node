@@ -29,6 +29,10 @@ class UserService {
 		const usernameHasChanged = user!.username !== username
 		const emailHasChanged = user!.email !== email
 
+		if (!usernameHasChanged && !emailHasChanged) {
+			throw new UnprocessableEntityError(ErrorMessage.IDENTICAL_VALUES)
+		}
+
 		if (usernameHasChanged) {
 			assertionService.assertNull(await userDao.findByUsername(username), ErrorMessage.USERNAME_ALREADY_USED)
 			user!.username = username

@@ -46,6 +46,7 @@ const i18n = defineI18n<ErrorI18n>({
 		TOKEN_NOT_FOUND: 'Token not found',
 
 		// update settings errors
+		IDENTICAL_VALUES: 'Values are identical',
 		IDENTICAL_PASSWORDS: 'You must choose a different password',
 
 		// email verification
@@ -94,6 +95,7 @@ const i18n = defineI18n<ErrorI18n>({
 		TOKEN_NOT_FOUND: 'Token non trouvé',
 
 		// update settings errors
+		IDENTICAL_VALUES: 'Les valeurs sont identiques',
 		IDENTICAL_PASSWORDS: 'Vous devez choisir un mot de passe différent',
 
 		// email verification
