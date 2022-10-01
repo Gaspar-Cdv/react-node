@@ -1,11 +1,22 @@
 import { NextFunction, Request, Response } from 'express'
-import { HttpError } from '../types/errors'
+import logger from '../logger'
+import { HttpError, InternalServerError } from '../types/errors'
 
-export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
-	const status = err instanceof HttpError ? err.status : 500
-	res.status(status).json({
-		status,
-		name: err.name,
-		message: err.message,
-	})
+export const errorHandler = (error: Error, req: Request, res: Response, next: NextFunction) => {
+	try {
+		if (error instanceof HttpError) {
+			throw error
+		} else {
+			logger.error(error.message)
+			throw new InternalServerError()
+		}
+	} catch (e) {
+		if (e instanceof HttpError) {
+			res.status(e.status).json({
+				status: e.status,
+				name: e.name,
+				message: e.message,
+			})
+		}
+	}
 }
