@@ -1,5 +1,5 @@
 import { ForgotPasswordRequest, ResetPasswordRequest } from '@title/common/build/types/requests/auth'
-import tokenService from '../remote/token'
+import * as tokenService from '../remote/token'
 import { defineI18n } from '../utils/i18n'
 import { createUseForm } from './createUseForm'
 

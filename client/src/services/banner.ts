@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { BannerProps } from '../common/banner/Banner'
-import tokenService from '../remote/token'
+import * as tokenService from '../remote/token'
 import { isEmailVerifiedSelector, isLoggedSelector } from '../store/session/selectors'
 import { useAppSelector } from '../store/store'
 import { defineI18n, useTranslate } from '../utils/i18n'

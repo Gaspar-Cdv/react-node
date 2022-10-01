@@ -1,5 +1,5 @@
 import { ChangePasswordRequest, UpdateUserRequest } from '@title/common/build/types/requests/user'
-import userService from '../remote/user'
+import * as userService from '../remote/user'
 import { updateUser } from '../store/session/reducer'
 import { useAppDispatch } from '../store/store'
 import { defineI18n } from '../utils/i18n'

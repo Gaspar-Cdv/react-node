@@ -1,34 +1,24 @@
 import { ForgotPasswordRequest, ResetPasswordRequest, TokenRequest } from '@title/common/build/types/requests/auth'
-import api from './api'
+import { call } from './api'
 
 const serviceName = 'token'
 
-const forgotPassword = async (email: string): Promise<void> => {
-	return api.call(serviceName, 'forgotPassword', { email } as ForgotPasswordRequest)
+export const forgotPassword = async (email: string): Promise<void> => {
+	return call(serviceName, 'forgotPassword', { email } as ForgotPasswordRequest)
 }
 
-const findResetPasswordToken = async (token?: string): Promise<void> => {
-	return api.call(serviceName, 'findResetPasswordToken', { token } as TokenRequest)
+export const findResetPasswordToken = async (token?: string): Promise<void> => {
+	return call(serviceName, 'findResetPasswordToken', { token } as TokenRequest)
 }
 
-const resetPassword = async (data: ResetPasswordRequest): Promise<void> => {
-	return api.call(serviceName, 'resetPassword', data)
+export const resetPassword = async (data: ResetPasswordRequest): Promise<void> => {
+	return call(serviceName, 'resetPassword', data)
 }
 
-const verifyEmail = async (token?: string): Promise<void> => {
-	return api.call(serviceName, 'verifyEmail', { token })
+export const verifyEmail = async (token?: string): Promise<void> => {
+	return call(serviceName, 'verifyEmail', { token })
 }
 
-const resendVerificationMail = async (): Promise<void> => {
-	return api.call(serviceName, 'resendVerificationMail')
+export const resendVerificationMail = async (): Promise<void> => {
+	return call(serviceName, 'resendVerificationMail')
 }
-
-const tokenService = {
-	forgotPassword,
-	findResetPasswordToken,
-	resetPassword,
-	verifyEmail,
-	resendVerificationMail
-}
-
-export default tokenService

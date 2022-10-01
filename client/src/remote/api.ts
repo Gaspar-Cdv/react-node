@@ -4,7 +4,7 @@ import HttpError from '../types/HttpError'
 /**
  * @throws {HttpError}
  */
-const call = async <T>(service: string, method: string, data?: any): Promise<T> => {
+export const call = async <T>(service: string, method: string, data?: any): Promise<T> => {
 	const url = `${SERVER_URL}/api/${service}/${method}`
 
 	const response = await fetch(url, {
@@ -51,9 +51,3 @@ const getHeaders = () => {
 function isSuccess (status: number): boolean {
 	return status >= 200 && status < 400
 }
-
-const api = {
-	call
-}
-
-export default api

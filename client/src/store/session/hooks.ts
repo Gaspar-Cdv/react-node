@@ -1,5 +1,5 @@
 import { Language } from '@title/common/build/types/Language'
-import userService from '../../remote/user'
+import * as userService from '../../remote/user'
 import { useLocalStorage } from '../../utils/hooks'
 import { createUseStoreState, useAppSelector } from '../store'
 import { deleteUser, updateLanguage, updateSession, updateUser } from './reducer'

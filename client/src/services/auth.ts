@@ -1,7 +1,7 @@
 import { LoginRequest, RegisterRequest } from '@title/common/build/types/requests/auth'
 import { useState } from 'react'
 import { useRouter } from '../common/routing/hooks'
-import authService from '../remote/auth'
+import * as authService from '../remote/auth'
 import { useLanguage } from '../store/session/hooks'
 import { deleteUser, updateSession } from '../store/session/reducer'
 import { useAppDispatch } from '../store/store'
