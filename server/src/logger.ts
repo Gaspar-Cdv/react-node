@@ -11,7 +11,6 @@ const logger = createLogger({
 		format.splat(),
 		format.json()
 	),
-	defaultMeta: { service: 'your-service-name' },
 	transports: [
 		new transports.File({ filename: 'logs/error.log', level: 'error' }),
 		new transports.File({ filename: 'logs/info.log' })
