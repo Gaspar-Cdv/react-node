@@ -75,7 +75,7 @@ function Form<T extends FormikValues> ({
 			enableReinitialize
 		>
 			{formikProps => (
-				<FormikForm onChange={resetError}>
+				<FormikForm onChange={resetError} encType='multipart/form-data'>
 					<div className={classes.container}>
 						{title != null && (
 							<h5>{title}</h5>
