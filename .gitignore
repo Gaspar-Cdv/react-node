@@ -14,3 +14,4 @@ build
 #server
 server/prisma/migrations
 server/logs
+server/upload

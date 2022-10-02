@@ -49,8 +49,16 @@ const i18n = defineI18n<ErrorI18n>({
 		IDENTICAL_VALUES: 'Values are identical',
 		IDENTICAL_PASSWORDS: 'You must choose a different password',
 
-		// email verification
+		// email verification errors
 		EMAIL_ALREADY_VERIFIED: 'Email is already verified',
+
+		// file upload errors
+		INVALID_FORMAT: 'The format is invalid',
+
+		// multer errors
+		LIMIT_FILE_SIZE: 'Maximum size exceeded',
+		LIMIT_FILE_COUNT: 'Maximum file count exceeded',
+		LIMIT_UNEXPECTED_FILE: 'Unexpected file',
 
 		// misc
 		INTERNAL_SERVER_ERROR: 'Internal server error'
@@ -98,8 +106,16 @@ const i18n = defineI18n<ErrorI18n>({
 		IDENTICAL_VALUES: 'Les valeurs sont identiques',
 		IDENTICAL_PASSWORDS: 'Vous devez choisir un mot de passe différent',
 
-		// email verification
+		// email verification errors
 		EMAIL_ALREADY_VERIFIED: 'L\'email est déjà vérifié',
+
+		// file upload errors
+		INVALID_FORMAT: 'Le format est invalide',
+
+		// multer errors
+		LIMIT_FILE_SIZE: 'Taille maximale atteinte',
+		LIMIT_FILE_COUNT: 'Nombre de fichiers max atteint',
+		LIMIT_UNEXPECTED_FILE: 'Fichier inattendu',
 
 		// misc
 		INTERNAL_SERVER_ERROR: 'Erreur interne du serveur.'
