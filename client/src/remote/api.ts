@@ -1,20 +1,16 @@
 import { SERVER_URL } from '../config/environment'
 import HttpError from '../types/HttpError'
 
+type HttpMethod = 'POST' | 'GET'
+
 /**
  * @throws {HttpError}
  */
-export const call = async <T>(service: string, method: string, data?: any): Promise<T> => {
-	const url = `${SERVER_URL}/api/${service}/${method}`
+export async function call<T> (service: string, method: string, data?: any): Promise<T> {
+	const url = buildUrl(service, method)
+	const init = getRequestInit('POST', data)
 
-	const response = await fetch(url, {
-		method: 'POST',
-		mode: 'cors',
-		credentials: 'same-origin',
-		headers: getHeaders(),
-		body: JSON.stringify(data)
-	})
-
+	const response = await fetch(url, init)
 	const clonedResponse = response.clone()
 
 	let result
@@ -36,9 +32,24 @@ export const call = async <T>(service: string, method: string, data?: any): Prom
 	return result as T
 }
 
-const getHeaders = () => {
+function getRequestInit (method: HttpMethod, data?: any): RequestInit {
+	const isFormData = data instanceof FormData
+
+	return {
+		method,
+		mode: 'cors',
+		credentials: 'same-origin',
+		headers: getHeaders(isFormData),
+		body: isFormData ? data : JSON.stringify(data)
+	}
+}
+
+function getHeaders (isFormData = true) {
 	const headers: HeadersInit = new Headers()
-	headers.set('Content-Type', 'application/json;charset=UTF-8')
+
+	if (!isFormData) { // do not specify content-type when form data (or specify boundary)
+		headers.set('Content-Type', 'application/json;charset=UTF-8')
+	}
 
 	const token = localStorage.getItem('token')
 	if (token != null) {
@@ -46,6 +57,10 @@ const getHeaders = () => {
 	}
 
 	return headers
+}
+
+export function buildUrl (service: string, method: string) {
+	return `${SERVER_URL}/api/${service}/${method}`
 }
 
 function isSuccess (status: number): boolean {
