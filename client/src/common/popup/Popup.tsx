@@ -6,7 +6,10 @@ import Scrollbar from '../Scrollbar'
 import { ReactComponent as CloseIcon } from '../../images/icons/close.svg'
 import Portal from './Portal'
 
-const userStyles = createUseStyles(theme => ({
+const MAX_WIDTH = '30rem'
+const MAX_HEIGHT = '20rem'
+
+const useStyles = createUseStyles(theme => ({
 	popup: {
 		backgroundColor: theme.color.background,
 		borderRadius: theme.borderRadius.sm,
@@ -14,15 +17,17 @@ const userStyles = createUseStyles(theme => ({
 		flexDirection: 'column',
 		gap: theme.size.xs,
 		padding: [theme.size.sm, 0],
-		position: 'relative'
+		position: 'relative',
+		maxWidth: MAX_WIDTH
 	},
 	title: {
 		textAlign: 'center',
-		minHeight: theme.size.lg
+		minHeight: theme.size.lg,
+		padding: [0, theme.size.xl]
 	},
 	scrollbars: {
 		flex: '1 1 auto',
-		maxWidth: '30rem'
+		maxWidth: MAX_WIDTH
 	},
 	content: {
 		padding: [0, theme.size.sm]
@@ -43,7 +48,7 @@ export interface PopupProps {
 }
 
 function Popup ({ show, title, children, onClose }: PopupProps) {
-	const classes = userStyles()
+	const classes = useStyles()
 	const theme = useAppTheme()
 
 	return (
@@ -54,7 +59,7 @@ function Popup ({ show, title, children, onClose }: PopupProps) {
 
 					<h5 className={classes.title}>{title}</h5>
 
-					<Scrollbar maxHeight='20rem' className={classes.scrollbars}>
+					<Scrollbar maxHeight={MAX_HEIGHT} className={classes.scrollbars}>
 						<div className={classes.content}>
 							{children}
 						</div>
