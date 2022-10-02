@@ -8,12 +8,16 @@ import Login from './Login/Login'
 import NotFound from './NotFound'
 
 const useStyles = createUseStyles({
-	main: {
+	container: {
+		display: 'flex',
 		flex: 1,
 		overflow: 'auto',
+	},
+	main: {
 		display: 'flex',
 		flexDirection: 'column',
 		gap: '2rem',
+		height: 'fit-content',
 		width: '100%',
 		maxWidth: 850,
 		margin: '0 auto',
@@ -33,19 +37,21 @@ function Main ({ children }: MainProps) {
 		<>
 			<Head />
 
-			<main className={classes.main}>
-				{currentRoute.hideHeader !== true && (
-					<Header />
-				)}
+			<div className={classes.container}>
+				<main className={classes.main}>
+					{currentRoute.hideHeader !== true && (
+						<Header />
+					)}
 
-				<Suspense fallback={<Loader show />}>
-					{currentRoute.name === 'notFound'
-						? <NotFound />
-						: isRouteAccessible
-							? children
-							: <Login />}
-				</Suspense>
-			</main>
+					<Suspense fallback={<Loader show />}>
+						{currentRoute.name === 'notFound'
+							? <NotFound />
+							: isRouteAccessible
+								? children
+								: <Login />}
+					</Suspense>
+				</main>
+			</div>
 		</>
 	)
 }
