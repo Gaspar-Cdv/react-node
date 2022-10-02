@@ -1,5 +1,5 @@
 import { Form as FormikForm, Formik, FormikProps, FormikValues } from 'formik'
-import { ReactNode } from 'react'
+import { ReactNode, Ref } from 'react'
 import { createUseStyles } from 'react-jss'
 import Alert from '../../common/Alert'
 import Button from '../../common/button/Button'
@@ -45,6 +45,7 @@ interface FormProps<T> extends UseFormProps<T> {
 	initialValues: T
 	validationSchema?: any
 	onCancel?: () => void
+	formRef?: Ref<HTMLFormElement> // forwardRef doesn't work with generic component
 	children: ReactNode | ReactNode[] | ((formikProps: FormikProps<T>) => ReactNode)
 }
 
@@ -59,6 +60,7 @@ function Form<T extends FormikValues> ({
 	cancelLabel,
 	error,
 	pending,
+	formRef,
 	children
 }: FormProps<T>) {
 	const classes = useStyles()
@@ -75,7 +77,7 @@ function Form<T extends FormikValues> ({
 			enableReinitialize
 		>
 			{formikProps => (
-				<FormikForm onChange={resetError} encType='multipart/form-data'>
+				<FormikForm onChange={resetError} encType='multipart/form-data' ref={formRef}>
 					<div className={classes.container}>
 						{title != null && (
 							<h5>{title}</h5>
