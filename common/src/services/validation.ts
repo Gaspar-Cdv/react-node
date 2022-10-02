@@ -9,6 +9,11 @@ const usernameValidator = Yup.string()
 	.max(255, ErrorMessage.MAX_LENGTH_255)
 	.required(ErrorMessage.REQUIRED)
 
+const fileNameValidator = Yup.string()
+	.min(1, ErrorMessage.REQUIRED)
+	.max(255, ErrorMessage.MAX_LENGTH_255)
+	.required(ErrorMessage.REQUIRED)
+
 const emailValidator = Yup.string()
 	.matches(
 		/^([a-z0-9]+(?:[._\-+][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$/i,
@@ -114,6 +119,11 @@ const resetPasswordValidationSchema = Yup.object({
 	passwordConfirmation: passwordConfirmationValidator('password')
 })
 
+const uploadFileValidationSchema = Yup.object({
+	name: fileNameValidator,
+	file: Yup.mixed().required(ErrorMessage.REQUIRED) // mixed used to handle frontEnd validation (known Yup issue about file validation)
+})
+
 export {
 	requiredValidator,
 	emailValidator,
@@ -123,5 +133,6 @@ export {
 	updateUserValidationSchema,
 	changePasswordValidationSchema,
 	forgotPasswordValidationSchema,
-	resetPasswordValidationSchema
+	resetPasswordValidationSchema,
+	uploadFileValidationSchema
 }
