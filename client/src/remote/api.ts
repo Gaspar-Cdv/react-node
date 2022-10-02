@@ -1,3 +1,4 @@
+import { ErrorMessage } from '@title/common/build/types/ErrorMessage'
 import { SERVER_URL } from '../config/environment'
 import HttpError from '../types/HttpError'
 
@@ -11,21 +12,17 @@ export async function call<T> (service: string, method: string, data?: any): Pro
 	const init = getRequestInit('POST', data)
 
 	const response = await fetch(url, init)
-	const clonedResponse = response.clone()
 
 	let result
 
 	try {
 		result = await response.json()
-	} catch (e) {
-		result = await clonedResponse.text()
-		if (result === '') {
-			result = null
-		}
+	} catch (e) { // only happens when server reponse was sent with res.sendStatus()
+		result = null
 	}
 
 	if (!isSuccess(response.status)) {
-		const message = typeof result === 'string' ? result : result.message
+		const message = result != null ? result.message : ErrorMessage.UNKNOWN_ERROR
 		throw new HttpError(response.status, message)
 	}
 
