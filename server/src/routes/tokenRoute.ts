@@ -28,7 +28,7 @@ router.post('/verifyEmail', async ({ body }: Req<TokenRequest>, res: Response) =
 })
 
 router.post('/resendVerificationMail', authenticated, async ({ userId }: Req, res: Response) => {
-	await tokenService.resendVerificationMail(userId)
+	await tokenService.resendVerificationMail(userId!)
 	res.sendStatus(200)
 })
 

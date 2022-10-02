@@ -89,8 +89,8 @@ class TokenService {
 		await verifyEmailTokenDao.setActive(tokenId, false)
 	}
 
-	resendVerificationMail = async (userId?: number) => {
-		const user = await userDao.findById(userId!)
+	resendVerificationMail = async (userId: number) => {
+		const user = await userDao.findById(userId)
 
 		if (user!.emailVerified) {
 			throw new UnprocessableEntityError(ErrorMessage.EMAIL_ALREADY_VERIFIED)

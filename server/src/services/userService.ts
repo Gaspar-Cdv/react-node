@@ -17,14 +17,14 @@ class UserService {
 
 	/* PUBLIC */
 
-	updateUser = async (body: UpdateUserRequest, userId?: number): Promise<UserDto> => {
+	updateUser = async (body: UpdateUserRequest, userId: number): Promise<UserDto> => {
 		try {
 			updateUserValidationSchema.validateSync(body)
 		} catch (e) {
 			throw new UnprocessableEntityError(ErrorMessage.INVALID_VALUES)
 		}
 
-		const user = await userDao.findById(userId!)
+		const user = await userDao.findById(userId)
 		const { username, email } = body
 		const usernameHasChanged = user!.username !== username
 		const emailHasChanged = user!.email !== email
@@ -55,28 +55,28 @@ class UserService {
 		})
 	}
 
-	changePassword = async (body: ChangePasswordRequest, userId?: number) => {
+	changePassword = async (body: ChangePasswordRequest, userId: number) => {
 		try {
 			changePasswordValidationSchema.validateSync(body)
 		} catch (e) {
 			throw new UnprocessableEntityError(ErrorMessage.INVALID_VALUES)
 		}
 
-		const user = await userDao.findById(userId!)
+		const user = await userDao.findById(userId)
 		const { password, oldPassword } = body
 
 		assertionService.assertTrue(await authService.isPasswordValid(oldPassword, user!.password), ErrorMessage.INVALID_PASSWORD)
 		const newPassword = await authService.hashPassword(password)
 
-		await userDao.updatePassword(newPassword, userId!)
+		await userDao.updatePassword(newPassword, userId)
 	}
 
-	changeLanguage = async (language: Language, userId?: number) => {
+	changeLanguage = async (language: Language, userId: number) => {
 		if (language == null || !Object.keys(Language).includes(language)) {
 			throw new UnprocessableEntityError(ErrorMessage.INVALID_VALUES)
 		}
 
-		await userDao.updateLanguage(language, userId!)
+		await userDao.updateLanguage(language, userId)
 	}
 
 	/* PRIVATE */
