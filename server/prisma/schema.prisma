@@ -1,6 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
-	previewFeatures = ["interactiveTransactions"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
 }
 
 datasource db {
@@ -9,15 +9,17 @@ datasource db {
 }
 
 model User {
-  userId              Int                  @id @default(autoincrement()) @map("id_user")
-  username            String
-  email               String
-  password            String
-  language            Language             @default(en)
-	emailVerified				Boolean              @default(false)
-  createdAt           DateTime             @default(now()) @map("created_at")
+  userId        Int      @id @default(autoincrement()) @map("id_user")
+  username      String
+  email         String
+  password      String
+  language      Language @default(en)
+  emailVerified Boolean  @default(false)
+  createdAt     DateTime @default(now()) @map("created_at")
+
   resetPasswordTokens ResetPasswordToken[]
   verifyEmailTokens   VerifyEmailToken[]
+  images              Image[]
 }
 
 enum Language {
@@ -58,4 +60,29 @@ model Email {
   template  MailTemplate
   params    Json
   date      DateTime     @default(now())
+}
+
+enum FileStatus {
+  ACTIVE
+  INACTIVE
+  DELETED
+}
+
+enum ImageType {
+	AVATAR
+}
+
+model Image {
+  imageId   Int        @id @default(autoincrement()) @map("id_image")
+  user      User       @relation(fields: [userId], references: [userId])
+  userId    Int        @map("id_user")
+  name      String
+  path      String
+  fileName  String     @map("file_name")
+  mimetype  String
+  status    FileStatus @default(ACTIVE)
+	imageType ImageType  @map("image_type")
+  public    Boolean
+  createdAt DateTime   @default(now()) @map("created_at")
+  deletedAt DateTime?  @map("deleted_at")
 }
