@@ -18,7 +18,7 @@ const useStyles = createUseStyles(theme => ({
 		display: 'flex',
 		borderRadius: theme.borderRadius.sm,
 		overflow: 'hidden',
-		boxShadow: '0 0 3px rgba(0, 0, 0, 0.2)'
+		boxShadow: theme.shadow.md
 	},
 	cell: {
 		flex: 1,

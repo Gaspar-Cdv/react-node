@@ -36,6 +36,9 @@ const theme = {
 		},
 		get lightBorder (): string {
 			return this.gray[300]
+		},
+		get darkBorder (): string {
+			return this.gray[500]
 		}
 	},
 	size: {
@@ -65,6 +68,18 @@ const theme = {
 		backdropTransition: 200,
 		crossFadeTransition: 200,
 		drawerTransition: 400,
+	},
+	border: {
+		get light () {
+			return `1px solid ${theme.color.lightBorder}`
+		},
+		get dark () {
+			return `1px solid ${theme.color.darkBorder}`
+		}
+	},
+	shadow: {
+		sm: '0px 1px 5px rgba(0, 0, 0, 0.25)',
+		md: '0px 3px 8px rgba(0, 0, 0, 0.25)'
 	}
 }
 

@@ -27,7 +27,7 @@ const useStyles = createUseStyles(theme => ({
 		display: 'flex',
 		justifyContent: 'space-between',
 		backgroundColor: theme.color.menu,
-		borderBottom: `1px solid ${theme.color.lightBorder}`,
+		borderBottom: theme.border.light,
 		zIndex: theme.zIndex.topbar
 	},
 	title: {

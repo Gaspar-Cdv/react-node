@@ -9,7 +9,7 @@ const useStyles = createUseStyles(theme => ({
 		height: theme.size.menuHeight,
 		backgroundColor: theme.color.menu,
 		zIndex: theme.zIndex.topbar,
-		borderTop: `1px solid ${theme.color.lightBorder}`
+		borderTop: theme.border.light
 	}
 }))
 

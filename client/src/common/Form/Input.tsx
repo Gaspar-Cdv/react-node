@@ -18,7 +18,7 @@ const useStyles = createUseStyles(theme => ({
 		padding: hasLabel ? [7, 12, 12, 12] : 12,
 		backgroundColor: 'white',
 		borderRadius: theme.borderRadius.xs,
-		border: [1, 'solid', theme.color.lightBorder],
+		border: theme.border.light,
 		cursor: 'text',
 		'&:focus-within': {
 			border: [1, 'solid', theme.color.info],

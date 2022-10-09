@@ -72,7 +72,7 @@ export const useCss = createUseStyles(theme => ({
 			borderCollapse: 'collapse'
 		},
 		'td, th': {
-			border: [1, 'solid', theme.color.lightBorder],
+			border: theme.border.light,
 			padding: '0.5rem',
 			textAlign: 'center'
 		},

@@ -13,7 +13,7 @@ const useStyles = createUseStyles(theme => ({
 	},
 	flag: {
 		borderRadius: theme.borderRadius.sm,
-		boxShadow: '1px 1px 1px 1px rgba(0, 0, 0, 0.4)',
+		boxShadow: theme.shadow.sm,
 		width: '2.5rem'
 	}
 }))

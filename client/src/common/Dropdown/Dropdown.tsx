@@ -22,7 +22,7 @@ const useStyles = createUseStyles(theme => ({
 		...positions,
 		zIndex: theme.zIndex.dropdown,
 		backgroundColor: theme.color.background,
-		border: `1px solid ${theme.color.lightBorder}`,
+		border: theme.border.light,
 		borderRadius: theme.borderRadius.xs,
 		minWidth: minWidth || MIN_WIDTH,
 		transition: `all ${theme.duration.dropdownTransition}ms linear`,

@@ -20,7 +20,7 @@ const useStyles = createUseStyles(theme => ({
 		backgroundColor: theme.color.background,
 		zIndex: zIndex || theme.zIndex.defaultDrawer,
 		boxSizing: 'content-box',
-		borderLeft: `1px solid ${theme.color.lightBorder}`
+		borderLeft: theme.border.light
 	}),
 	left: ({ visible, width }: JssProps) => ({
 		transition: `left ${theme.duration.drawerTransition}ms ease-in-out`,
